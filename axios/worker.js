@@ -344,6 +344,107 @@ export default {
     }
 
 
+
+    // ── /peers — sector benchmark medians (Fase 2) ───────────
+    if (url.pathname === '/peers') {
+      const sector  = (url.searchParams.get('sector') || 'technology').toLowerCase();
+      const exclude = (url.searchParams.get('exclude') || '').toUpperCase().trim();
+
+      const SECTOR_PEERS = {
+        technology:         ['MSFT','NVDA','META','GOOGL','AMZN'],
+        healthcare:         ['JNJ','UNH','ABT','TMO','PFE'],
+        consumer_cyclical:  ['HD','MCD','NKE','LOW','TGT'],
+        consumer_defensive: ['PG','KO','PEP','WMT','COST'],
+        financial:          ['JPM','BAC','WFC','GS','MS'],
+        reit:               ['PLD','AMT','EQIX','SPG','PSA'],
+        energy:             ['XOM','CVX','COP','SLB','EOG'],
+        industrial:         ['HON','UNP','GE','CAT','LMT'],
+        utilities:          ['NEE','DUK','SO','AEP','EXC'],
+        telecom:            ['VZ','T','TMUS','CMCSA','CHTR'],
+      };
+
+      const peers = (SECTOR_PEERS[sector] || SECTOR_PEERS.technology)
+        .filter(t => t !== exclude).slice(0, 5);
+
+      try {
+        const { cookie, crumb } = await getCookieAndCrumb();
+        const authH = { ...BROWSER_HEADERS, 'Cookie': cookie, 'Referer': 'https://finance.yahoo.com/' };
+        const PEER_MODULES = 'summaryDetail,financialData,defaultKeyStatistics';
+
+        const results = await Promise.allSettled(
+          peers.map(ticker =>
+            fetch(
+              `https://query2.finance.yahoo.com/v10/finance/quoteSummary/${ticker}` +
+              `?modules=${PEER_MODULES}&crumb=${encodeURIComponent(crumb)}&formatted=false`,
+              { headers: authH }
+            )
+            .then(r => r.ok ? r.json() : null)
+            .then(j => {
+              const res = j && j.quoteSummary && j.quoteSummary.result && j.quoteSummary.result[0];
+              if (!res) return null;
+              const sd = res.summaryDetail        || {};
+              const fd = res.financialData        || {};
+              const ks = res.defaultKeyStatistics || {};
+              const v   = (o,k) => (o[k] && o[k].raw !== undefined ? o[k].raw : o[k]) || null;
+              const pct = (o,k) => { const r=v(o,k); return r!==null ? +(r*100).toFixed(2) : null; };
+              return {
+                ticker,
+                pe: v(sd,'trailingPE'),
+                pb: v(sd,'priceToBook') || v(ks,'priceToBook'),
+                gm: pct(fd,'grossMargins'),
+                rg: pct(fd,'revenueGrowth'),
+                eg: pct(fd,'earningsGrowth'),
+                de: v(fd,'debtToEquity'),
+                dy: pct(sd,'dividendYield'),
+              };
+            })
+            .catch(() => null)
+          )
+        );
+
+        const valid = results
+          .map(r => r.status === 'fulfilled' ? r.value : null)
+          .filter(Boolean);
+
+        if (!valid.length) {
+          return new Response(
+            JSON.stringify({ ok: false, error: 'No peer data', fallback: true }),
+            { status: 200, headers: CORS }
+          );
+        }
+
+        function median(arr) {
+          const vals = arr.filter(v2 => v2 !== null && !isNaN(v2)).sort((a,b) => a-b);
+          if (!vals.length) return null;
+          const mid = Math.floor(vals.length / 2);
+          return vals.length % 2 !== 0
+            ? +vals[mid].toFixed(2)
+            : +((vals[mid-1] + vals[mid]) / 2).toFixed(2);
+        }
+
+        const medians = {
+          pe: median(valid.map(p => p.pe)),
+          pb: median(valid.map(p => p.pb)),
+          gm: median(valid.map(p => p.gm)),
+          rg: median(valid.map(p => p.rg)),
+          eg: median(valid.map(p => p.eg)),
+          de: median(valid.map(p => p.de !== null ? p.de / 100 : null)),
+          dy: median(valid.map(p => p.dy)),
+        };
+
+        return new Response(
+          JSON.stringify({ ok:true, sector, exclude, peers: valid.map(p=>p.ticker), n: valid.length, medians }),
+          { status: 200, headers: CORS }
+        );
+
+      } catch(err) {
+        return new Response(
+          JSON.stringify({ ok: false, error: err.message, fallback: true }),
+          { status: 200, headers: CORS }
+        );
+      }
+    }
+
     // ── /ai — Groq LLM analysis ───────────────────────────────
     if (url.pathname === '/ai') {
       const GROQ_KEY = env.GROQ_API_KEY;
