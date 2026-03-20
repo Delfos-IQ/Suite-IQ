@@ -740,6 +740,8 @@ es: {
   about_axios_desc:'Academia de inversión y analizador avanzado de acciones individuales. Mientras HarvestIQ gestiona tu cartera de dividendos, Axios-IQ te ayuda a entender en profundidad cada empresa.',
   about_axios_btn: 'Abrir Axios-IQ →',
   about_changelog_title: 'HISTORIAL DE VERSIONES',
+  about_v17_title: 'v1.7 — Estructura modular + Service Worker',
+  about_v17_desc:  'Repo reorganizado por carpetas (harvest/) · SW para actualizaciones silenciosas · Changelog independiente · Integración completa con IQ Suite',
   about_v11_title: 'v1.1 — Versión pública limpia',
   about_v11_desc:  'Datos del universo neutralizados · 4 ETFs de referencia · Rankings 100% dinámicos · Bilingüe ES/EN · Empty states en todas las vistas · Onboarding para nuevos usuarios',
   about_v1_title: 'Lanzamiento público v1.0',
@@ -999,6 +1001,8 @@ en: {
   about_axios_desc:'Investment academy and advanced stock analyzer. While HarvestIQ manages your dividend portfolio, Axios-IQ helps you understand each company in depth.',
   about_axios_btn: 'Open Axios-IQ →',
   about_changelog_title: 'CHANGELOG',
+  about_v17_title: 'v1.7 — Modular structure + Service Worker',
+  about_v17_desc:  'Repo reorganized into folders (harvest/) · SW for silent auto-updates · Independent changelog · Full IQ Suite integration',
   about_v11_title: 'v1.1 — Clean public release',
   about_v11_desc:  'Universe data neutralized · 4 reference ETFs · 100% dynamic rankings · Bilingual ES/EN · Empty states across all views · Onboarding for new users',
   about_v1_title: 'Public launch',
@@ -4220,6 +4224,7 @@ function renderAbout(){
       <div style="font-family:'DM Mono',monospace;font-size:10px;color:#4ADE80;letter-spacing:.2em;margin-bottom:20px">${t('about_changelog_title')}</div>
       <div style="display:flex;flex-direction:column;gap:6px">
         ${[
+          ['v1.7','2026-03','v1.7 — Estructura modular + Service Worker','Repo reorganizado por carpetas (harvest/) · Service Worker para actualizaciones silenciosas · Changelog independiente por app · Integración completa con IQ Suite launcher'],
           ['v1.6','2026-03','v1.6 — Estable: cartera vacía limpia','KPIs muestran guiones sin datos reales · About solo en su pestaña (fix IDs duplicados) · ETF sin crash (null-safe sub-tabs) · Guards hasPortfolioData en todos los renders · VT incluye about para ocultar correctamente'],
           ['v1.5','2026-03','v1.5 — Versión estable','Todas las secciones muestran CTA vacío sin datos reales (sin ejemplos) · Teoría de la Opinión Contraria en pestaña propia · Botón Análisis con IA (Groq) enriquece todas las pestañas con banners 🤖 sin popup · Privacidad total: sin persistencia en localStorage · Funciones JS restauradas y ordenadas · Guards hasPortfolioData en todos los renders · Startup siempre en pantalla de bienvenida'],
           ['v1.3','2026-03','v1.3 — IA integrada + Ciclo económico','Pestaña Descubrir con IA (Groq DGI) · Análisis IA de cartera con contexto de datos · Badge de calidad de datos · Ciclo económico por sectores con gráfico de favorabilidad · Header rediseñado con espiga SVG · Importación individual CSV o Excel (no obligatorio los dos)'],
