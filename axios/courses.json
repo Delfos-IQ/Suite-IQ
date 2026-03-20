@@ -1,0 +1,555 @@
+[
+  {
+    "id": "personal_finance",
+    "emoji": "💰",
+    "gradient": "linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%)",
+    "bgColor": "rgba(124,58,237,.15)",
+    "badge": "badge-pf",
+    "badgeLabel": {
+      "es": "Finanzas Personales",
+      "en": "Personal Finance",
+      "pt": "Finanças Pessoais"
+    },
+    "title": {
+      "es": "Tu Dinero, Tu Futuro",
+      "en": "Your Money, Your Future",
+      "pt": "O Teu Dinheiro, O Teu Futuro"
+    },
+    "subtitle": {
+      "es": "Domina tus finanzas antes de invertir en bolsa.",
+      "en": "Master your finances before investing in stocks.",
+      "pt": "Domina as tuas finanças antes de investir em bolsa."
+    },
+    "requires": null,
+    "modules": [
+      {
+        "id": "foundations",
+        "icon": "🏗️",
+        "title": {
+          "es": "Fundamentos",
+          "en": "Foundations",
+          "pt": "Fundamentos"
+        },
+        "lessons": [
+          {
+            "id": "pf_financial_goals",
+            "ytUrl": null
+          },
+          {
+            "id": "pf_emergency_fund",
+            "ytUrl": null
+          },
+          {
+            "id": "pf_compound_interest",
+            "ytUrl": "https://www.youtube.com/results?search_query=interes+compuesto+inversion"
+          },
+          {
+            "id": "pf_debt_management",
+            "ytUrl": null
+          }
+        ]
+      },
+      {
+        "id": "strategy",
+        "icon": "🎯",
+        "title": {
+          "es": "Estrategia",
+          "en": "Strategy",
+          "pt": "Estratégia"
+        },
+        "lessons": [
+          {
+            "id": "pf_dca",
+            "ytUrl": "https://www.youtube.com/results?search_query=dollar+cost+averaging+explicado"
+          },
+          {
+            "id": "pf_asset_allocation",
+            "ytUrl": null
+          },
+          {
+            "id": "pf_risk_management",
+            "ytUrl": null
+          },
+          {
+            "id": "pf_position_sizing",
+            "ytUrl": null
+          }
+        ]
+      },
+      {
+        "id": "advanced_pf",
+        "icon": "🔥",
+        "title": {
+          "es": "Nivel Avanzado",
+          "en": "Advanced Level",
+          "pt": "Nível Avançado"
+        },
+        "lessons": [
+          {
+            "id": "pf_taxes",
+            "ytUrl": null
+          },
+          {
+            "id": "pf_fire",
+            "ytUrl": "https://www.youtube.com/results?search_query=movimiento+FIRE+independencia+financiera"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "beginner",
+    "emoji": "🌱",
+    "gradient": "linear-gradient(135deg, #059669 0%, #0d9488 100%)",
+    "bgColor": "rgba(5,150,105,.12)",
+    "badge": "badge-beginner",
+    "badgeLabel": {
+      "es": "Nivel Iniciado",
+      "en": "Beginner Level",
+      "pt": "Nível Iniciado"
+    },
+    "title": {
+      "es": "De Cero a Inversor",
+      "en": "From Zero to Investor",
+      "pt": "De Zero a Investidor"
+    },
+    "subtitle": {
+      "es": "Los conceptos que todo inversor debe conocer desde el primer día.",
+      "en": "The concepts every investor must know from day one.",
+      "pt": "Os conceitos que todo investidor deve conhecer desde o primeiro dia."
+    },
+    "requires": null,
+    "modules": [
+      {
+        "id": "beg_fundamental",
+        "icon": "📊",
+        "title": {
+          "es": "Análisis Fundamental",
+          "en": "Fundamental Analysis",
+          "pt": "Análise Fundamental"
+        },
+        "lessons": [
+          {
+            "id": "what_is_stock",
+            "ytUrl": null
+          },
+          {
+            "id": "per",
+            "ytUrl": "https://www.youtube.com/results?search_query=que+es+el+PER+bolsa"
+          },
+          {
+            "id": "income_statement",
+            "ytUrl": null
+          },
+          {
+            "id": "balance_sheet",
+            "ytUrl": null
+          },
+          {
+            "id": "cash_flow_statement",
+            "ytUrl": null
+          },
+          {
+            "id": "dividend_basics",
+            "ytUrl": null
+          },
+          {
+            "id": "etf_basics",
+            "ytUrl": "https://www.youtube.com/results?search_query=que+es+un+ETF+indice"
+          }
+        ]
+      },
+      {
+        "id": "beg_technical",
+        "icon": "📐",
+        "title": {
+          "es": "Análisis Técnico",
+          "en": "Technical Analysis",
+          "pt": "Análise Técnica"
+        },
+        "lessons": [
+          {
+            "id": "technical_basics",
+            "ytUrl": null
+          },
+          {
+            "id": "chart_reading",
+            "ytUrl": "https://www.youtube.com/results?search_query=como+leer+grafico+acciones"
+          },
+          {
+            "id": "tech_support_resistance",
+            "ytUrl": null
+          },
+          {
+            "id": "tech_trend_lines",
+            "ytUrl": null
+          },
+          {
+            "id": "tech_rsi",
+            "ytUrl": null
+          }
+        ]
+      },
+      {
+        "id": "beg_macro",
+        "icon": "🌍",
+        "title": {
+          "es": "Macro",
+          "en": "Macro",
+          "pt": "Macro"
+        },
+        "lessons": [
+          {
+            "id": "macro_basics",
+            "ytUrl": null
+          },
+          {
+            "id": "interest_rates_basics",
+            "ytUrl": null
+          }
+        ]
+      },
+      {
+        "id": "beg_quality",
+        "icon": "🏛️",
+        "title": {
+          "es": "Calidad",
+          "en": "Quality",
+          "pt": "Qualidade"
+        },
+        "lessons": [
+          {
+            "id": "what_is_moat",
+            "ytUrl": "https://www.youtube.com/results?search_query=que+es+ventaja+competitiva+moat+bolsa"
+          },
+          {
+            "id": "board_directors",
+            "ytUrl": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "intermediate",
+    "emoji": "📈",
+    "gradient": "linear-gradient(135deg, #d97706 0%, #b45309 100%)",
+    "bgColor": "rgba(217,119,6,.12)",
+    "badge": "badge-inter",
+    "badgeLabel": {
+      "es": "Nivel Intermedio",
+      "en": "Intermediate Level",
+      "pt": "Nível Intermédio"
+    },
+    "title": {
+      "es": "El Arte de Valorar Empresas",
+      "en": "The Art of Valuing Companies",
+      "pt": "A Arte de Valorizar Empresas"
+    },
+    "subtitle": {
+      "es": "Métricas avanzadas, psicología y análisis sectorial para inversores serios.",
+      "en": "Advanced metrics, psychology and sector analysis for serious investors.",
+      "pt": "Métricas avançadas, psicologia e análise setorial para investidores sérios."
+    },
+    "requires": "beginner",
+    "modules": [
+      {
+        "id": "int_fundamental",
+        "icon": "📊",
+        "title": {
+          "es": "Fundamental Avanzado",
+          "en": "Advanced Fundamental",
+          "pt": "Fundamental Avançado"
+        },
+        "lessons": [
+          {
+            "id": "fcf",
+            "ytUrl": null
+          },
+          {
+            "id": "roic",
+            "ytUrl": null
+          },
+          {
+            "id": "margins",
+            "ytUrl": null
+          },
+          {
+            "id": "debt_analysis",
+            "ytUrl": null
+          },
+          {
+            "id": "eps_growth_detail",
+            "ytUrl": null
+          },
+          {
+            "id": "revenue_analysis",
+            "ytUrl": null
+          },
+          {
+            "id": "peg_ratio",
+            "ytUrl": null
+          },
+          {
+            "id": "gaap_non_gaap",
+            "ytUrl": null
+          }
+        ]
+      },
+      {
+        "id": "int_technical",
+        "icon": "📐",
+        "title": {
+          "es": "Técnico",
+          "en": "Technical",
+          "pt": "Técnica"
+        },
+        "lessons": [
+          {
+            "id": "moving_averages",
+            "ytUrl": null
+          },
+          {
+            "id": "tech_candlesticks",
+            "ytUrl": null
+          },
+          {
+            "id": "tech_volume",
+            "ytUrl": null
+          },
+          {
+            "id": "tech_fibonacci",
+            "ytUrl": null
+          },
+          {
+            "id": "tech_bollinger",
+            "ytUrl": null
+          },
+          {
+            "id": "tech_macd",
+            "ytUrl": null
+          },
+          {
+            "id": "technical_indicators",
+            "ytUrl": null
+          }
+        ]
+      },
+      {
+        "id": "int_macro",
+        "icon": "🌍",
+        "title": {
+          "es": "Macro",
+          "en": "Macro",
+          "pt": "Macro"
+        },
+        "lessons": [
+          {
+            "id": "inflation_investing",
+            "ytUrl": null
+          },
+          {
+            "id": "gdp_investing",
+            "ytUrl": null
+          },
+          {
+            "id": "portfolio_construction",
+            "ytUrl": null
+          }
+        ]
+      },
+      {
+        "id": "int_quality",
+        "icon": "🏛️",
+        "title": {
+          "es": "Calidad y Sectores",
+          "en": "Quality & Sectors",
+          "pt": "Qualidade e Setores"
+        },
+        "lessons": [
+          {
+            "id": "insider_ownership",
+            "ytUrl": null
+          },
+          {
+            "id": "management_effectiveness",
+            "ytUrl": null
+          },
+          {
+            "id": "capital_allocation",
+            "ytUrl": null
+          },
+          {
+            "id": "psych_fear_greed",
+            "ytUrl": null
+          },
+          {
+            "id": "psych_loss_aversion",
+            "ytUrl": null
+          },
+          {
+            "id": "psych_confirmation_bias",
+            "ytUrl": null
+          },
+          {
+            "id": "sector_tech",
+            "ytUrl": null
+          },
+          {
+            "id": "sector_financial",
+            "ytUrl": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "advanced",
+    "emoji": "🎯",
+    "gradient": "linear-gradient(135deg, #dc2626 0%, #9f1239 100%)",
+    "bgColor": "rgba(220,38,38,.12)",
+    "badge": "badge-advanced",
+    "badgeLabel": {
+      "es": "Nivel Avanzado",
+      "en": "Advanced Level",
+      "pt": "Nível Avançado"
+    },
+    "title": {
+      "es": "Pensar Como un Gestor de Fondos",
+      "en": "Think Like a Fund Manager",
+      "pt": "Pensar Como um Gestor de Fundos"
+    },
+    "subtitle": {
+      "es": "Valoración profesional, ciclos de mercado y situaciones especiales.",
+      "en": "Professional valuation, market cycles and special situations.",
+      "pt": "Valorização profissional, ciclos de mercado e situações especiais."
+    },
+    "requires": "beginner",
+    "modules": [
+      {
+        "id": "adv_fundamental",
+        "icon": "📊",
+        "title": {
+          "es": "Valoración Profesional",
+          "en": "Professional Valuation",
+          "pt": "Valorização Profissional"
+        },
+        "lessons": [
+          {
+            "id": "dcf",
+            "ytUrl": null
+          },
+          {
+            "id": "wacc",
+            "ytUrl": null
+          },
+          {
+            "id": "ev_multiples",
+            "ytUrl": null
+          },
+          {
+            "id": "value_investing",
+            "ytUrl": null
+          },
+          {
+            "id": "growth_investing",
+            "ytUrl": null
+          },
+          {
+            "id": "sum_of_parts",
+            "ytUrl": null
+          },
+          {
+            "id": "fundamental_scenario_analysis",
+            "ytUrl": null
+          }
+        ]
+      },
+      {
+        "id": "adv_technical",
+        "icon": "📐",
+        "title": {
+          "es": "Técnico Avanzado",
+          "en": "Advanced Technical",
+          "pt": "Técnica Avançada"
+        },
+        "lessons": [
+          {
+            "id": "tech_chart_patterns",
+            "ytUrl": null
+          },
+          {
+            "id": "tech_ichimoku",
+            "ytUrl": null
+          },
+          {
+            "id": "market_breadth",
+            "ytUrl": null
+          }
+        ]
+      },
+      {
+        "id": "adv_macro",
+        "icon": "🌍",
+        "title": {
+          "es": "Macro Avanzado",
+          "en": "Advanced Macro",
+          "pt": "Macro Avançado"
+        },
+        "lessons": [
+          {
+            "id": "sector_rotation",
+            "ytUrl": null
+          },
+          {
+            "id": "market_cycles",
+            "ytUrl": null
+          },
+          {
+            "id": "yield_curve",
+            "ytUrl": null
+          }
+        ]
+      },
+      {
+        "id": "adv_quality",
+        "icon": "🏛️",
+        "title": {
+          "es": "Calidad y Psicología",
+          "en": "Quality & Psychology",
+          "pt": "Qualidade e Psicologia"
+        },
+        "lessons": [
+          {
+            "id": "governance_advanced",
+            "ytUrl": null
+          },
+          {
+            "id": "spinoffs",
+            "ytUrl": null
+          },
+          {
+            "id": "behavioral_finance",
+            "ytUrl": null
+          },
+          {
+            "id": "psych_circle_of_competence",
+            "ytUrl": null
+          },
+          {
+            "id": "psych_process_outcome",
+            "ytUrl": null
+          },
+          {
+            "id": "fundamental_competitive_analysis",
+            "ytUrl": null
+          },
+          {
+            "id": "sector_luxury",
+            "ytUrl": null
+          }
+        ]
+      }
+    ]
+  }
+]
