@@ -1,0 +1,74 @@
+[
+  {
+    "es": "Ene",
+    "en": "Jan",
+    "avg": 1.2,
+    "bias": "bull"
+  },
+  {
+    "es": "Feb",
+    "en": "Feb",
+    "avg": 0.4,
+    "bias": "neut"
+  },
+  {
+    "es": "Mar",
+    "en": "Mar",
+    "avg": 1.1,
+    "bias": "bull"
+  },
+  {
+    "es": "Abr",
+    "en": "Apr",
+    "avg": 1.8,
+    "bias": "bull"
+  },
+  {
+    "es": "May",
+    "en": "May",
+    "avg": 0.2,
+    "bias": "warn"
+  },
+  {
+    "es": "Jun",
+    "en": "Jun",
+    "avg": -0.1,
+    "bias": "bear"
+  },
+  {
+    "es": "Jul",
+    "en": "Jul",
+    "avg": 1.3,
+    "bias": "bull"
+  },
+  {
+    "es": "Ago",
+    "en": "Aug",
+    "avg": 0.1,
+    "bias": "neut"
+  },
+  {
+    "es": "Sep",
+    "en": "Sep",
+    "avg": -0.7,
+    "bias": "bear"
+  },
+  {
+    "es": "Oct",
+    "en": "Oct",
+    "avg": 0.5,
+    "bias": "warn"
+  },
+  {
+    "es": "Nov",
+    "en": "Nov",
+    "avg": 1.6,
+    "bias": "bull"
+  },
+  {
+    "es": "Dic",
+    "en": "Dec",
+    "avg": 1.4,
+    "bias": "bull"
+  }
+]

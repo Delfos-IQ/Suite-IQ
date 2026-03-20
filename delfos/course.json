@@ -1,0 +1,886 @@
+[
+  {
+    "id": "beginner",
+    "num": 1,
+    "title_es": "Los Fundamentos del Especulador",
+    "title_en": "Speculator Fundamentals",
+    "sub_es": "Mentalidad, sistemas y primeros conceptos",
+    "sub_en": "Mindset, systems and first concepts",
+    "color": "#22c55e",
+    "topics": [
+      {
+        "id": "1-1",
+        "dur": 12,
+        "t_es": "La mentalidad del especulador",
+        "t_en": "The speculator mindset",
+        "s_es": "Cava distingue especulación de inversión: el especulador opera con sistema, no con intuición. La emoción es el mayor enemigo. Cava es tajante: 'No olvide poner los stops. Y cumplir a rajatabla su sistema de especulación.' Un especulador de éxito no toma decisiones, ejecuta reglas predefinidas con disciplina absoluta.",
+        "s_en": "Cava distinguishes speculation from investing: the speculator operates with a system, not intuition. Emotion is the greatest enemy. Cava is categorical: a successful speculator does not make decisions, they execute predefined rules with absolute discipline.",
+        "c_es": [
+          "Sistema vs intuición",
+          "Disciplina como ventaja",
+          "Gestión emocional",
+          "Autoconocimiento como herramienta"
+        ],
+        "c_en": [
+          "System vs intuition",
+          "Discipline as an edge",
+          "Emotional control",
+          "Self-knowledge as a tool"
+        ],
+        "q": "Especule con un sistema, especule con confianza. Es relativamente sencillo."
+      },
+      {
+        "id": "1-2",
+        "dur": 15,
+        "t_es": "¿Qué es un sistema de especulación?",
+        "t_en": "What is a trading system?",
+        "s_es": "Un sistema define cuándo entrar, cuándo salir y cuánto arriesgar. Sin estas tres reglas no existe sistema. Cava distingue sistemas automáticos (señal mecánica, sin discreción) y discrecionales con reglas fijas. El sistema debe ser probado en datos históricos antes de operar con dinero real. La sobreoptimización es el enemigo: un sistema con demasiados parámetros falla en tiempo real.",
+        "s_en": "A system defines when to enter, when to exit and how much to risk. Without these three rules there is no system. Cava distinguishes automatic and discretionary systems. The system must be backtested before trading real money. Over-optimization is the enemy.",
+        "c_es": [
+          "Señal de entrada",
+          "Señal de salida",
+          "Gestión de posición",
+          "Backtesting vs live trading"
+        ],
+        "c_en": [
+          "Entry signal",
+          "Exit signal",
+          "Position management",
+          "Backtesting vs live trading"
+        ],
+        "q": "Un sistema de especulación es un conjunto de reglas que indican cuándo comprar, cuándo vender y cuánto arriesgar."
+      },
+      {
+        "id": "1-3",
+        "dur": 10,
+        "t_es": "Sobre qué productos especular",
+        "t_en": "Which instruments to trade",
+        "s_es": "Solo productos muy líquidos con amplia participación pública: índices como el S&P 500 o el NASDAQ, ETFs sobre índices y divisas principales. La liquidez garantiza que las señales técnicas sean fiables y que podamos entrar y salir sin impacto de precio relevante. Cava desaconseja explícitamente los valores de pequeña capitalización para el especulador particular.",
+        "s_en": "Only highly liquid instruments with broad public participation: indices like S&P 500 or NASDAQ, index ETFs and major currencies. Liquidity ensures reliable technical signals and clean entry/exit without price impact.",
+        "c_es": [
+          "Liquidez como requisito",
+          "Futuros sobre índices",
+          "ETFs como alternativa",
+          "Evitar small caps y bajo volumen"
+        ],
+        "c_en": [
+          "Liquidity as requirement",
+          "Index futures",
+          "ETFs as alternative",
+          "Avoid low-volume instruments"
+        ],
+        "q": "Opere con productos negociados en mercados muy líquidos de amplia participación pública."
+      },
+      {
+        "id": "1-4",
+        "dur": 12,
+        "t_es": "Base diaria vs intradiaria",
+        "t_en": "Daily vs intraday trading",
+        "s_es": "Para el especulador particular Cava recomienda la base diaria: análisis el fin de semana, ejecución puntual. El intradiario requiere dedicación total, genera más señales falsas y enormes costes de transacción. En gráfico diario, Cava indica: 'Dedique algo de tiempo durante el fin de semana a comprobar si su sistema dio señal de compra o venta.' La ventaja psicológica es enorme: no se observa el precio constantemente.",
+        "s_en": "For individual speculators Cava recommends the daily timeframe: weekend analysis, precise execution. Intraday requires full dedication and generates more false signals and higher transaction costs.",
+        "c_es": [
+          "Ventajas del gráfico diario",
+          "Análisis de fin de semana",
+          "Gestión del tiempo",
+          "Costes de transacción en intradiario"
+        ],
+        "c_en": [
+          "Daily chart advantages",
+          "Weekend analysis",
+          "Time management",
+          "Intraday transaction costs"
+        ],
+        "q": "Dedique algo de tiempo durante el fin de semana a comprobar si su sistema dio señal de compra o venta."
+      },
+      {
+        "id": "1-5",
+        "dur": 18,
+        "t_es": "Teoría de Dow: la base de todo",
+        "t_en": "Dow Theory: the foundation",
+        "s_es": "La teoría de Dow es la base de todo el análisis técnico moderno. Seis principios fundamentales: 1) Los índices lo descuentan todo. 2) El mercado tiene tres tendencias: primaria (meses a años), secundaria (semanas a meses) e intradiaria. 3) La tendencia primaria tiene tres fases: acumulación, participación pública y distribución. 4) Los índices deben confirmarse mutuamente. 5) El volumen debe confirmar la tendencia. 6) La tendencia persiste hasta señal contraria clara.",
+        "s_en": "Dow Theory is the foundation of all modern technical analysis. Six principles: indices discount everything, three trend levels, three primary trend phases, indices must confirm each other, volume confirms trend, trend persists until clear contrary signal.",
+        "c_es": [
+          "Máximos y mínimos sucesivos",
+          "Tres fases de la tendencia primaria",
+          "Volumen confirma tendencia",
+          "Señales de giro de tendencia"
+        ],
+        "c_en": [
+          "Successive highs and lows",
+          "Three primary trend phases",
+          "Volume confirms trend",
+          "Trend reversal signals"
+        ],
+        "q": "La tendencia es tu amiga. Especula siempre a favor de la tendencia primaria."
+      },
+      {
+        "id": "1-6",
+        "dur": 14,
+        "t_es": "Medias móviles: definir la tendencia",
+        "t_en": "Moving averages: defining the trend",
+        "s_es": "Cava utiliza medias móviles desplazadas para definir la tendencia de forma objetiva. Precio sobre la media equivale a alcista. Precio bajo la media equivale a bajista. Las medias clave: EMA 21 (corto plazo), EMA 55 (tendencia operativa, la más importante para Cava), SMA 200 (tendencia de muy largo plazo). En el sistema principal, el precio retrocede a la EMA 55 para generar la señal óptima de entrada.",
+        "s_en": "Cava uses displaced moving averages to define the trend objectively. Price above = bullish. Price below = bearish. Key averages: EMA 21 (short-term), EMA 55 (operational trend, most important), SMA 200 (very long-term). In the main system, price pulls back to EMA 55 for the optimal entry signal.",
+        "c_es": [
+          "Media simple vs exponencial",
+          "EMA 55 como referencia operativa",
+          "Cruce de medias como señal",
+          "Precio en la EMA 55: zona de entrada"
+        ],
+        "c_en": [
+          "Simple vs exponential MA",
+          "EMA 55 as operational reference",
+          "MA crossover as signal",
+          "Price at EMA 55: entry zone"
+        ],
+        "q": "El precio se encuentra en tendencia alcista cuando está por encima de la media móvil desplazada."
+      },
+      {
+        "id": "1-7",
+        "dur": 16,
+        "t_es": "El MACD mensual: el filtro macro de Cava",
+        "t_en": "Monthly MACD: Cava's macro filter",
+        "s_es": "El MACD mensual es el filtro más importante del sistema. MACD mensual positivo (por encima de cero) significa permanecer solo largo. MACD mensual negativo significa permanecer corto o fuera del mercado. Cava es categórico: 'Nunca adoptes una posición larga si el MACD mensual está cortado a la baja.' Este filtro evita los grandes mercados bajistas y protege el capital en los periodos más destructivos.",
+        "s_en": "The monthly MACD is the most important system filter. Positive monthly MACD means stay long only. Negative means stay short or out. Cava is categorical: never take a long position if the monthly MACD is crossed down. This filter avoids major bear markets.",
+        "c_es": [
+          "MACD mensual como filtro supremo",
+          "Línea rápida y lenta del MACD",
+          "Cruce de señal mensual",
+          "Por qué el mensual protege el capital"
+        ],
+        "c_en": [
+          "Monthly MACD as supreme filter",
+          "Fast and slow MACD lines",
+          "Monthly signal crossover",
+          "Why monthly filter protects capital"
+        ],
+        "q": "Nunca adoptes una posición larga si el MACD mensual está cortado a la baja."
+      },
+      {
+        "id": "1-8",
+        "dur": 15,
+        "t_es": "Estrategia en mercados alcistas y bajistas",
+        "t_en": "Strategy in bull and bear markets",
+        "s_es": "En mercados alcistas (MACD mensual positivo + MACD semanal sobre cero + Estocástico semanal >60): solo posiciones largas, comprar en retrocesos a la EMA 55. En mercados bajistas (MACD mensual negativo + MACD semanal bajo cero + Estocástico semanal <40): solo cortos, vender en rebotes a la EMA 55. En mercados laterales con ADX inferior a 20: no operar. 'Especule en mercados con tendencia y deje de perder el tiempo en mercados laterales.'",
+        "s_en": "Bull market (positive monthly MACD + weekly above zero + weekly stochastic >60): only longs, buy pullbacks to EMA 55. Bear market (negative monthly MACD + weekly below zero + weekly stochastic <40): only shorts, sell bounces to EMA 55. Sideways with ADX below 20: don't trade.",
+        "c_es": [
+          "Triple confirmación de tendencia",
+          "Posiciones largas vs cortas",
+          "Mercados laterales: no operar",
+          "Adaptar estrategia al entorno"
+        ],
+        "c_en": [
+          "Triple trend confirmation",
+          "Long vs short positions",
+          "Sideways markets: no trade",
+          "Adapting strategy to market conditions"
+        ],
+        "q": "Especule en mercados con tendencia y deje de perder el tiempo en mercados laterales."
+      },
+      {
+        "id": "1-9",
+        "dur": 11,
+        "t_es": "Elección del vehículo según tendencia",
+        "t_en": "Choosing the right vehicle",
+        "s_es": "Cava explica qué vehículo usar según el escenario: ETFs directos (SPY, QQQ) en mercados alcistas; ETFs inversos en bajistas; opciones de compra (calls) para ampliar potencial alcista cuando el ADX es fuerte. Futuros sobre índices para especuladores más avanzados. La clave: el vehículo debe amplificar la tendencia sin añadir riesgo excesivo. Warrants con precaución por la pérdida de valor temporal.",
+        "s_en": "ETFs (SPY, QQQ) in bull markets; inverse ETFs in bear markets; call options to amplify upside when ADX is strong. Index futures for advanced speculators. The key: the vehicle must amplify the trend without excessive additional risk.",
+        "c_es": [
+          "ETFs directos e inversos",
+          "Opciones: calls en alcistas",
+          "Futuros para especuladores avanzados",
+          "Warrants: pérdida de valor temporal"
+        ],
+        "c_en": [
+          "Direct and inverse ETFs",
+          "Options: calls in bull markets",
+          "Futures for advanced speculators",
+          "Warrants: time value decay"
+        ],
+        "q": "Elija el producto que mejor se adapte a la fase de la tendencia del precio."
+      },
+      {
+        "id": "1-10",
+        "dur": 13,
+        "t_es": "Los stops: la regla de oro inamovible",
+        "t_en": "Stop losses: the unbreakable golden rule",
+        "s_es": "Sin stop no existe sistema. El stop define el riesgo máximo antes de entrar. Cava es categórico: el stop NUNCA se mueve en contra de la posición. Si el precio llega al stop se cierra sin excepciones. El stop se calcula con 2 veces el ATR (14 períodos) por debajo del precio de entrada. Una vez en beneficio, se puede usar el Parabolic SAR como stop dinámico para proteger ganancias mientras la tendencia continúa.",
+        "s_en": "Without a stop there is no system. The stop defines maximum risk before entering. Cava is categorical: the stop NEVER moves against the position. If price hits the stop, close without exceptions. Stop = entry price minus 2x ATR(14).",
+        "c_es": [
+          "Stop antes de entrar siempre",
+          "Stop nunca se mueve contra ti",
+          "ATR para calcular el stop",
+          "Parabolic SAR como stop dinámico"
+        ],
+        "c_en": [
+          "Stop before entry always",
+          "Stop never moves against you",
+          "ATR to calculate stop",
+          "Parabolic SAR as dynamic stop"
+        ],
+        "q": "No olvide poner los stops. Y cumplir a rajatabla su sistema de especulación."
+      }
+    ]
+  },
+  {
+    "id": "intermediate",
+    "num": 2,
+    "title_es": "Los Indicadores del Método",
+    "title_en": "The Method Indicators",
+    "sub_es": "MACD, Estocástico, RSI, ADX y Volumen",
+    "sub_en": "MACD, Stochastic, RSI, ADX and Volume",
+    "color": "#f59e0b",
+    "topics": [
+      {
+        "id": "2-1",
+        "dur": 20,
+        "t_es": "El MACD: definición y cálculo exacto",
+        "t_en": "MACD: definition and exact calculation",
+        "s_es": "El MACD (Moving Average Convergence-Divergence) fue ideado por Gerald Appel a comienzos de los años setenta. Fórmula exacta: Línea rápida = EMA(12) - EMA(26). Línea lenta (señal) = EMA(9) de la línea rápida. Histograma = Línea rápida - Línea lenta. Cava usa el MACD en tres marcos temporales con funciones distintas: mensual (filtro macro supremo), semanal (dirección operativa), diario (señal de entrada y salida).",
+        "s_en": "MACD was created by Gerald Appel in the early 1970s. Exact formula: Fast line = EMA(12) - EMA(26). Slow line (signal) = EMA(9) of fast line. Histogram = fast line minus slow line. Cava uses MACD in three timeframes: monthly (macro filter), weekly (operational direction), daily (entry/exit signal).",
+        "c_es": [
+          "Fórmula: EMA12 - EMA26",
+          "Señal: EMA9 de la línea rápida",
+          "Histograma de momento",
+          "MACD en tres marcos temporales"
+        ],
+        "c_en": [
+          "Formula: EMA12 - EMA26",
+          "Signal: EMA9 of fast line",
+          "Momentum histogram",
+          "MACD in three timeframes"
+        ],
+        "q": "Cuando las líneas del MACD se corten al alza y ambas estén por encima de cero, es señal de compra."
+      },
+      {
+        "id": "2-2",
+        "dur": 17,
+        "t_es": "Divergencias del MACD: la señal más potente",
+        "t_en": "MACD divergences: the most powerful signal",
+        "s_es": "Las divergencias son la señal más potente del MACD según Cava. Divergencia alcista: el precio dibuja mínimos decrecientes pero el MACD dibuja mínimos crecientes → agotamiento bajista inminente. Divergencia bajista: el precio dibuja máximos crecientes pero el MACD dibuja máximos decrecientes → agotamiento alcista. Cava pone ejemplos concretos con el S&P 500 y el Nikkei: en 2002-2003 una divergencia alcista en el MACD diario precedió la gran recuperación.",
+        "s_en": "Divergences are the most powerful MACD signal. Bullish divergence: price makes lower lows but MACD makes higher lows → imminent bearish exhaustion. Bearish divergence: price makes higher highs but MACD makes lower highs. Cava gives specific examples with S&P 500 and Nikkei.",
+        "c_es": [
+          "Divergencia alcista: suelo inminente",
+          "Divergencia bajista: techo inminente",
+          "Divergencia oculta: confirmación tendencia",
+          "Confirmar con volumen siempre"
+        ],
+        "c_en": [
+          "Bullish divergence: imminent bottom",
+          "Bearish divergence: imminent top",
+          "Hidden divergence: trend confirmation",
+          "Always confirm with volume"
+        ],
+        "q": "Las divergencias del MACD son una herramienta muy potente para detectar el agotamiento de la tendencia."
+      },
+      {
+        "id": "2-3",
+        "dur": 18,
+        "t_es": "El Estocástico: momentum a corto plazo",
+        "t_en": "Stochastic: short-term momentum",
+        "s_es": "El Estocástico mide la posición del cierre dentro del rango máximo-mínimo de los últimos K períodos. Fórmula: %K = (Cierre - Mínimo K) / (Máximo K - Mínimo K) × 100. Cava usa el Estocástico semanal como tercer filtro del sistema: >60 confirma tendencia alcista semanal, <40 confirma tendencia bajista. Sobrecompra (>80) y sobreventa (<20) como zonas de alerta para cerrar posiciones y no abrir nuevas contra la tendencia.",
+        "s_en": "Stochastic measures the close position within the high-low range. Cava uses weekly stochastic as the third system filter: >60 confirms weekly bullish trend, <40 confirms bearish. Overbought (>80) and oversold (<20) as warning zones.",
+        "c_es": [
+          "%K y %D: fórmulas exactas",
+          "Sobrecompra >80 y sobreventa <20",
+          "Estocástico semanal >60 como filtro",
+          "Cruces en zonas extremas: alta fiabilidad"
+        ],
+        "c_en": [
+          "%K and %D: exact formulas",
+          "Overbought >80 and oversold <20",
+          "Weekly stochastic >60 as filter",
+          "Crossovers in extreme zones: high reliability"
+        ],
+        "q": "La línea rápida del Estocástico semanal por encima del nivel 60 confirma la tendencia alcista."
+      },
+      {
+        "id": "2-4",
+        "dur": 15,
+        "t_es": "El RSI: fuerza relativa de Wilder",
+        "t_en": "RSI: Wilder's relative strength",
+        "s_es": "El RSI (Relative Strength Index) fue desarrollado por J. Welles Wilder en 1978. Rango 0-100. Fórmula: RSI = 100 - (100 / (1 + RS)), donde RS = media de ganancias/media de pérdidas en 14 períodos. Cava usa RSI 14 en gráfico diario. Estrategia combinada: si el MACD semanal está sobre cero y el RSI diario supera el nivel 60 tras estar en sobreventa, es señal de compra. Si el MACD semanal está bajo cero y el RSI diario pierde el nivel 60, señal de venta.",
+        "s_en": "RSI was developed by Wilder in 1978. Range 0-100. Cava uses RSI 14 daily. Combined strategy: if weekly MACD is above zero and daily RSI crosses 60 after oversold, buy signal. If weekly MACD below zero and RSI loses 60, sell signal.",
+        "c_es": [
+          "Fórmula Wilder: ganancias/pérdidas 14 días",
+          "Sobrecompra >70, sobreventa <30",
+          "Nivel 60: señal de compra con MACD semanal positivo",
+          "Divergencias RSI: anticipa giros"
+        ],
+        "c_en": [
+          "Wilder formula: gains/losses 14 days",
+          "Overbought >70, oversold <30",
+          "Level 60: buy signal with positive weekly MACD",
+          "RSI divergences: anticipate reversals"
+        ],
+        "q": "Cuando el RSI muestra una divergencia alcista en zona de sobreventa, la señal es muy fiable."
+      },
+      {
+        "id": "2-5",
+        "dur": 22,
+        "t_es": "El ADX: hay tendencia?",
+        "t_en": "ADX: is there a trend?",
+        "s_es": "El ADX (Average Directional Index) fue desarrollado por Wilder. Mide la FUERZA de la tendencia, no su dirección. Los tres componentes: ADX (fuerza), +DI (presión compradora), -DI (presión vendedora). Reglas de Cava: ADX >25 con pendiente positiva = tendencia fuerte, operar. ADX <20 = mercado lateral, no operar con sistemas de tendencia. Señal de compra adicional: +DI cruza por encima de -DI con ADX en ascenso. Señal de venta: -DI cruza por encima de +DI.",
+        "s_en": "ADX measures trend STRENGTH, not direction. Three components: ADX (strength), +DI (buying pressure), -DI (selling pressure). Cava rules: ADX >25 ascending = strong trend, trade. ADX <20 = sideways, don't trade with trend systems.",
+        "c_es": [
+          "ADX mide fuerza no dirección",
+          "Umbrales: >25 operar, <20 lateral",
+          "Cruce +DI/-DI: señal de dirección",
+          "ADX >40: tendencia muy fuerte"
+        ],
+        "c_en": [
+          "ADX measures strength not direction",
+          "Thresholds: >25 trade, <20 sideways",
+          "DI crossover: directional signal",
+          "ADX >40: very strong trend"
+        ],
+        "q": "Especule en mercados con tendencia. El ADX le dirá cuándo hay tendencia suficiente para operar."
+      },
+      {
+        "id": "2-6",
+        "dur": 20,
+        "t_es": "Sistema de especulación con ADX (1.3×ATR)",
+        "t_en": "ADX trading system (1.3×ATR)",
+        "s_es": "El sistema ADX de Cava para mercados en tendencia: si ADX es positivo (sobre la línea -DI) y el precio recorre al alza al menos 1.5 veces el Rango Verdadero del día anterior (1.3×ATR), señal de compra. El ATR (Average True Range) = máximo entre: máximo-mínimo del día, máximo-cierre anterior, mínimo-cierre anterior. Este sistema de ruptura captura movimientos bruscos dentro de tendencias fuertes.",
+        "s_en": "Cava ADX system for trending markets: if ADX is positive (above -DI line) and price moves up at least 1.5x the previous day True Range (1.3×ATR), buy signal. ATR = max of: daily range, high minus previous close, previous close minus low.",
+        "c_es": [
+          "Rango verdadero ATR: la fórmula",
+          "Sistema de ruptura 1.3×ATR",
+          "Condición ADX positivo y +DI>-DI",
+          "Cancelar posición si señal falla"
+        ],
+        "c_en": [
+          "True range ATR: the formula",
+          "1.3×ATR breakout system",
+          "Condition: ADX positive and +DI>-DI",
+          "Cancel position if signal fails"
+        ],
+        "q": "Si el precio recorre al alza 1.5 veces el rango verdadero del día anterior y el ADX está positivo, es señal de compra."
+      },
+      {
+        "id": "2-7",
+        "dur": 16,
+        "t_es": "El volumen: confirma o niega",
+        "t_en": "Volume: confirms or denies",
+        "s_es": "El volumen es la huella del dinero inteligente según Cava. Reglas fundamentales: una ruptura de resistencia con volumen elevado es señal fiable y potente. Una ruptura con volumen bajo es sospechosa y suele fracasar. El volumen debe aumentar en la dirección de la tendencia y disminuir en las correcciones. Divergencia precio-volumen (precio sube pero volumen baja) es señal de agotamiento alcista. En futuros, el open interest añade información adicional.",
+        "s_en": "Volume is the footprint of smart money. Key rules: resistance breakout with high volume is reliable. Low volume breakout is suspicious. Volume should increase in trend direction and decrease on corrections. Price-volume divergence = bullish exhaustion signal.",
+        "c_es": [
+          "Ruptura con volumen: señal fiable",
+          "Ruptura sin volumen: sospechosa",
+          "Divergencia precio-volumen: agotamiento",
+          "Open interest en futuros"
+        ],
+        "c_en": [
+          "Breakout with volume: reliable signal",
+          "Low volume breakout: suspicious",
+          "Price-volume divergence: exhaustion",
+          "Open interest in futures"
+        ],
+        "q": "El volumen es la huella del dinero inteligente."
+      },
+      {
+        "id": "2-8",
+        "dur": 19,
+        "t_es": "Soportes, resistencias y huecos",
+        "t_en": "Support, resistance and gaps",
+        "s_es": "Soporte = zona donde el precio ha rebotado al menos dos veces. Resistencia = zona donde el precio ha retrocedido al menos dos veces. Cuando una resistencia se perfora con volumen, se convierte en soporte (cambio de rol). Cava clasifica los huecos (gaps): de ruptura (inicio de tendencia, no se cierran), de continuación o medición (mitad de la tendencia, indica objetivo), de agotamiento (final de tendencia, se cierran rápidamente). Señal de venta: 'Al perforarse la zona de soporte tocada al menos dos veces, adoptamos posición corta.'",
+        "s_en": "Support = zone where price bounced at least twice. Resistance = zone where price reversed at least twice. When resistance is broken with volume, it becomes support. Gap types: breakout (start of trend, don't close), continuation (middle, indicates target), exhaustion (end of trend, close quickly).",
+        "c_es": [
+          "Soporte y resistencia: definición",
+          "Cambio de rol tras ruptura",
+          "Hueco de ruptura vs agotamiento",
+          "Medir objetivo con hueco de continuación"
+        ],
+        "c_en": [
+          "Support and resistance: definition",
+          "Role reversal after breakout",
+          "Breakout gap vs exhaustion gap",
+          "Measuring target with continuation gap"
+        ],
+        "q": "Al perforarse la zona de soporte tocada al menos dos veces, adoptamos posición corta."
+      },
+      {
+        "id": "2-9",
+        "dur": 17,
+        "t_es": "Indicadores de sentimiento",
+        "t_en": "Sentiment indicators",
+        "s_es": "Cava analiza tres indicadores de sentimiento como contraindicadores: 1) Ratio Put/Call: cuando todos son alcistas (ratio muy bajo), el mercado toca techo; cuando todos son bajistas (ratio muy alto), el mercado toca suelo. 2) VIX (índice del miedo): picos extremos del VIX (>40) coinciden con suelos importantes. VIX bajo (<15) con mercado alto = complacencia peligrosa. 3) COT (Commitments of Traders): revela las posiciones de los grandes especuladores comerciales y no comerciales.",
+        "s_en": "Three sentiment indicators as contrarian tools: 1) Put/Call ratio: extreme bullishness = market top; extreme bearishness = market bottom. 2) VIX: extreme peaks (>40) coincide with major bottoms. Low VIX (<15) at highs = dangerous complacency. 3) COT: reveals positions of large commercial and non-commercial speculators.",
+        "c_es": [
+          "Ratio Put/Call como contraindicador",
+          "VIX: índice del miedo",
+          "Extremos VIX >40: suelos de mercado",
+          "COT: manos fuertes vs débiles"
+        ],
+        "c_en": [
+          "Put/Call ratio as contrarian",
+          "VIX: the fear index",
+          "Extreme VIX >40: market bottoms",
+          "COT: strong hands vs weak hands"
+        ],
+        "q": "Cuando el ratio put-call está en extremo bajista, es el momento de buscar la vuelta alcista."
+      },
+      {
+        "id": "2-10",
+        "dur": 25,
+        "t_es": "El triple marco temporal: el núcleo del método",
+        "t_en": "The triple timeframe: the method's core",
+        "s_es": "El triple marco temporal es el núcleo del método Cava. Se analiza de mayor a menor timeframe. Mensual: filtro de fondo con MACD mensual (alcista o bajista). Semanal: dirección operativa con MACD semanal + Estocástico semanal (>60 alcista, <40 bajista). Diario: señal de entrada con MACD diario + EMA 55 + ADX. Los tres deben alinearse en la misma dirección para dar la señal de máxima calidad. 'Siempre busco detectar si el precio está en una fuerte tendencia analizando gráficos mensuales, semanales y diarios.'",
+        "s_en": "The triple timeframe is the core of the Cava method. Analyze from largest to smallest. Monthly: background filter with monthly MACD. Weekly: operational direction with weekly MACD + weekly stochastic. Daily: entry signal with daily MACD + EMA 55 + ADX. All three must align for maximum quality signal.",
+        "c_es": [
+          "Mensual: filtro macro (MACD M)",
+          "Semanal: dirección (MACD W + Estoc W)",
+          "Diario: entrada (MACD D + EMA55 + ADX)",
+          "Triple alineación = señal máxima calidad"
+        ],
+        "c_en": [
+          "Monthly: macro filter (MACD M)",
+          "Weekly: direction (MACD W + Stoch W)",
+          "Daily: entry (MACD D + EMA55 + ADX)",
+          "Triple alignment = maximum quality signal"
+        ],
+        "q": "Siempre busco detectar si el precio está en una fuerte tendencia analizando gráficos mensuales, semanales y diarios."
+      }
+    ]
+  },
+  {
+    "id": "advanced",
+    "num": 3,
+    "title_es": "Del Análisis a la Operación Real",
+    "title_en": "From Analysis to Real Trading",
+    "sub_es": "Sistemas completos, gestión y ejemplos del libro",
+    "sub_en": "Complete systems, management and book examples",
+    "color": "#a78bfa",
+    "topics": [
+      {
+        "id": "3-1",
+        "dur": 24,
+        "t_es": "Sistema principal: MACD + EMA 55",
+        "t_en": "Main system: MACD + EMA 55",
+        "s_es": "El sistema estrella de Cava requiere alineación de los tres marcos. REQUISITOS: MACD mensual positivo + MACD semanal sobre cero + Estocástico semanal >60. SEÑAL: el precio retrocede hasta la zona de la EMA 55 (dentro del 2%) + el MACD diario cruza al alza con AMBAS líneas sobre cero + ADX >25 + +DI>-DI. SALIDA: cuando el MACD diario cruza a la baja. Cava añade: 'Se desencadenará una señal de compra cuando el precio retroceda hasta la EMA de 55 sesiones y el MACD diario se corte al alza, estando ambas líneas por encima de cero.'",
+        "s_en": "Cava's flagship system requires triple timeframe alignment. REQUIREMENTS: positive monthly MACD + weekly MACD above zero + weekly stochastic >60. SIGNAL: price pulls back to EMA 55 zone (within 2%) + daily MACD crosses up with BOTH lines above zero + ADX >25 + +DI>-DI. EXIT: when daily MACD crosses down.",
+        "c_es": [
+          "Checklist completo de 9 condiciones",
+          "EMA 55: zona de retroceso óptima",
+          "Cruce MACD diario con ambas líneas +",
+          "Salida mecánica: cruce MACD a la baja"
+        ],
+        "c_en": [
+          "Full 9-condition checklist",
+          "EMA 55: optimal pullback zone",
+          "Daily MACD cross with both lines positive",
+          "Mechanical exit: downward MACD cross"
+        ],
+        "q": "Se desencadenará una señal de compra cuando el precio retroceda hasta la EMA de 55 sesiones y el MACD diario se corte al alza, estando ambas líneas por encima de cero."
+      },
+      {
+        "id": "3-2",
+        "dur": 20,
+        "t_es": "Sistema bajista: el espejo exacto",
+        "t_en": "Bearish system: the exact mirror",
+        "s_es": "El sistema bajista es el espejo perfecto del alcista. REQUISITOS bajistas: MACD mensual negativo + MACD semanal bajo cero + Estocástico semanal <40. SEÑAL de venta corta: el precio rebota hasta la zona de la EMA 55 + el MACD diario cruza a la baja con AMBAS líneas bajo cero + ADX >25 + -DI>+DI. VEHÍCULOS: ETFs inversos (SH, SDS sobre S&P 500), futuros vendidos, opciones de venta (puts). SALIDA: cuando el MACD diario cruza al alza.",
+        "s_en": "The bearish system is the perfect mirror of the bullish one. BEARISH REQUIREMENTS: negative monthly MACD + weekly MACD below zero + weekly stochastic <40. SHORT SIGNAL: price bounces to EMA 55 zone + daily MACD crosses down with BOTH lines below zero + ADX >25 + -DI>+DI.",
+        "c_es": [
+          "Condiciones bajistas: triple negativo",
+          "EMA 55 como zona de rebote para vender",
+          "Vehículos cortos: ETFs inversos y puts",
+          "Salida: cruce MACD diario al alza"
+        ],
+        "c_en": [
+          "Bearish conditions: triple negative",
+          "EMA 55 as bounce zone to sell",
+          "Short vehicles: inverse ETFs and puts",
+          "Exit: daily MACD crosses up"
+        ],
+        "q": "En mercados bajistas, el precio sube hasta la media de 55 sesiones y el MACD se cruza a la baja, es la señal de venta."
+      },
+      {
+        "id": "3-3",
+        "dur": 18,
+        "t_es": "El ciclo presidencial: estadística poderosa",
+        "t_en": "The presidential cycle: powerful statistics",
+        "s_es": "Cava dedica un capítulo entero al ciclo presidencial estadounidense. Datos históricos (1833-2005): Año 1 de mandato: rendimiento medio moderado. Año 2 (midterms): el más débil, correcciones frecuentes de octubre-noviembre. Año 3: ÓPTIMO, el más alcista estadísticamente. El S&P 500 sube en el año 3 con mucha más frecuencia. Año 4: positivo por estímulos electorales. 'No debería dejar pasar los grandes movimientos alcistas del tercer año del ciclo presidencial. Las bolsas regalan dinero.'",
+        "s_en": "Cava dedicates a full chapter to the US presidential cycle. Historical data (1833-2005): Year 1: moderate average return. Year 2 (midterms): weakest, frequent corrections. Year 3: OPTIMAL, most bullish statistically. Year 4: positive from electoral stimulus.",
+        "c_es": [
+          "Año 1: rendimiento moderado",
+          "Año 2 midterms: débil, correcciones",
+          "Año 3: ÓPTIMO, las bolsas regalan dinero",
+          "Año 4: positivo electoral"
+        ],
+        "c_en": [
+          "Year 1: moderate return",
+          "Year 2 midterms: weak corrections",
+          "Year 3: OPTIMAL, markets gift money",
+          "Year 4: positive electoral stimulus"
+        ],
+        "q": "No deberíamos dejar pasar los grandes movimientos alcistas del tercer año del ciclo presidencial. Las bolsas regalan dinero."
+      },
+      {
+        "id": "3-4",
+        "dur": 16,
+        "t_es": "Estacionalidad: mejores y peores meses",
+        "t_en": "Seasonality: best and worst months",
+        "s_es": "Cava analiza los retornos mensuales históricos del S&P 500. Conclusiones clave: Septiembre es el PEOR mes del año históricamente (media negativa). Cava lo subraya: 'La importancia de conocer los factores estacionales, especialmente aquellos días o meses en que suelen producirse fuertes caídas.' Abril y noviembre son los mejores. El patrón 'Sell in May' tiene respaldo estadístico. Cava usa esto como contexto de probabilidad, no como señal independiente.",
+        "s_en": "Cava analyzes historical S&P 500 monthly returns. Key findings: September is the WORST month historically. April and November are the best. The 'Sell in May' pattern has statistical support. Cava uses this as probability context, not an independent signal.",
+        "c_es": [
+          "Septiembre: EVITAR posiciones largas",
+          "Abril y noviembre: ÓPTIMOS",
+          "Sell in May: respaldo estadístico",
+          "Estacionalidad como contexto, no señal"
+        ],
+        "c_en": [
+          "September: AVOID long positions",
+          "April and November: OPTIMAL",
+          "Sell in May: statistical support",
+          "Seasonality as context, not signal"
+        ],
+        "q": "La importancia de conocer los factores estacionales, especialmente aquellos días o meses en que suelen producirse fuertes caídas."
+      },
+      {
+        "id": "3-5",
+        "dur": 19,
+        "t_es": "La M2 y la política monetaria como viento de fondo",
+        "t_en": "M2 and monetary policy as tailwind",
+        "s_es": "Cava subraya la importancia de la política monetaria como marco de largo plazo. Cuando la M2 (masa monetaria) crece, los mercados tienden a subir porque hay más liquidez buscando rentabilidad. Cuando la Fed sube tipos agresivamente y la M2 se contrae, el entorno es bajista para la renta variable. 'Vigile con atención la política monetaria de los grandes bancos centrales.' Este factor no da señales de entrada pero determina el escenario de fondo.",
+        "s_en": "Cava emphasizes monetary policy as the long-term framework. When M2 grows, markets tend to rise due to increased liquidity. When the Fed aggressively raises rates and M2 contracts, the environment is bearish for equities.",
+        "c_es": [
+          "M2 como indicador líder",
+          "Tipos de interés y bolsa",
+          "Fed funds rate: el termómetro",
+          "Liquidez como combustible del mercado"
+        ],
+        "c_en": [
+          "M2 as leading indicator",
+          "Interest rates and stocks",
+          "Fed funds rate: the thermometer",
+          "Liquidity as market fuel"
+        ],
+        "q": "Vigile con atención la política monetaria de los grandes bancos centrales."
+      },
+      {
+        "id": "3-6",
+        "dur": 22,
+        "t_es": "Gestión del riesgo: la regla del 1% y el ratio R:R",
+        "t_en": "Risk management: the 1% rule and R:R ratio",
+        "s_es": "Cava es muy específico sobre la gestión del capital. Regla del 1-2%: nunca arriesgar más del 1-2% del capital total por operación. Con un capital de 10.000€ y riesgo del 1%, la pérdida máxima es 100€. El ratio riesgo-beneficio mínimo es 1:2 (si arriesgo 100€, el objetivo debe ser de 200€ mínimo). Con el 40% de aciertos y ratio 1:2, se gana dinero matemáticamente. Cálculo del tamaño: Unidades = (Capital × %Riesgo) / (Precio entrada - Stop).",
+        "s_en": "Cava is very specific about capital management. 1-2% rule: never risk more than 1-2% of total capital per trade. Minimum risk-reward ratio is 1:2. With 40% win rate and 1:2 ratio, you make money mathematically. Position size calculation: Units = (Capital × %Risk) / (Entry price - Stop).",
+        "c_es": [
+          "Regla del 1-2% de riesgo por operación",
+          "Ratio R:R mínimo 1:2",
+          "Fórmula de tamaño de posición",
+          "Por qué el 40% de aciertos es suficiente"
+        ],
+        "c_en": [
+          "1-2% risk rule per trade",
+          "Minimum 1:2 R:R ratio",
+          "Position size formula",
+          "Why 40% win rate is enough"
+        ],
+        "q": "Al principio opere con pequeñas cantidades. No olvide poner los stops."
+      },
+      {
+        "id": "3-7",
+        "dur": 25,
+        "t_es": "El checklist de 9 pasos: proceso completo",
+        "t_en": "The 9-step checklist: complete process",
+        "s_es": "Proceso exacto de Cava antes de cada operación: 1) ¿MACD mensual positivo? 2) ¿MACD semanal sobre cero? 3) ¿Estocástico semanal >60? 4) ¿El precio ha retrocedido a la EMA 55 (dentro del 2%)? 5) ¿El MACD diario cruza al alza? 6) ¿Ambas líneas MACD sobre cero? 7) ¿ADX >25? 8) ¿+DI>-DI? 9) Calcular stop (2×ATR) y tamaño de posición. Si los 9 pasos se cumplen: EJECUTAR. Si falla alguno: ESPERAR.",
+        "s_en": "Cava's exact pre-trade process: 1) Monthly MACD positive? 2) Weekly MACD above zero? 3) Weekly stochastic >60? 4) Price pulled back to EMA 55 (within 2%)? 5) Daily MACD crosses up? 6) Both MACD lines above zero? 7) ADX >25? 8) +DI>-DI? 9) Calculate stop (2×ATR) and position size. All 9 = EXECUTE. Any failure = WAIT.",
+        "c_es": [
+          "9 condiciones ordenadas de mayor a menor TF",
+          "Stop = precio entrada - 2×ATR(14)",
+          "Tamaño = (Capital × 1%) / distancia stop",
+          "Trailing stop con Parabolic SAR en beneficio"
+        ],
+        "c_en": [
+          "9 conditions ordered from largest to smallest TF",
+          "Stop = entry price - 2×ATR(14)",
+          "Size = (Capital × 1%) / stop distance",
+          "Trailing stop with Parabolic SAR in profit"
+        ],
+        "q": "Sé cuándo debo estar en el mercado y cuándo no. Y sé cuándo el precio se encuentra dentro de una tendencia."
+      },
+      {
+        "id": "3-8",
+        "dur": 20,
+        "t_es": "Ejecución en broker real",
+        "t_en": "Execution in real broker",
+        "s_es": "Cava explica los tipos de órdenes: orden de mercado (ejecución inmediata al precio actual), orden limitada (solo se ejecuta al precio indicado o mejor), stop-limit (activación de orden limitada al llegar al stop). Para el sistema Cava lo más habitual es usar órdenes de mercado al cierre o al día siguiente en apertura. Diferencia clave: acciones (propiedad real) vs CFDs (contrato por diferencias, con apalancamiento y coste overnight). Las comisiones y el spread afectan al ratio R:R real.",
+        "s_en": "Order types: market order (immediate execution), limit order (only at indicated price or better), stop-limit (activation of limit order). For Cava's system, most common is market orders at close or next day open. Key difference: stocks (real ownership) vs CFDs (leveraged, overnight cost).",
+        "c_es": [
+          "Orden de mercado vs límite",
+          "Stop loss en el broker: tipos",
+          "CFDs vs acciones: costes reales",
+          "Comisiones en el ratio R:R efectivo"
+        ],
+        "c_en": [
+          "Market order vs limit order",
+          "Stop loss in broker: types",
+          "CFDs vs stocks: real costs",
+          "Commissions in the effective R:R ratio"
+        ],
+        "q": "Opere con tranquilidad, sin excitación, cumpliendo las señales y disfrutando del proceso."
+      },
+      {
+        "id": "3-9",
+        "dur": 17,
+        "t_es": "Gestión de la posición abierta",
+        "t_en": "Managing an open position",
+        "s_es": "Una vez en posición, Cava recomienda: no revisar el precio constantemente (solo al cierre del día o el fin de semana). Revisar el MACD diario al cierre: si cruza a la baja → cerrar sin dudar. Nunca mover el stop en contra de la posición. Cuando la posición entra en beneficio suficiente, activar trailing stop con el Parabolic SAR. 'Cancele la posición cuando nuestro sistema proporcione la señal de cancelación. La función del stop es impedir fuertes pérdidas.'",
+        "s_en": "Once in position: don't constantly check the price (only at daily close or weekend). Check daily MACD at close: if it crosses down → close without hesitation. Never move stop against position. When in sufficient profit, activate trailing stop with Parabolic SAR.",
+        "c_es": [
+          "No microgestionar la posición",
+          "Revisión diaria al cierre: MACD D",
+          "Trailing stop: Parabolic SAR",
+          "El sistema siempre manda"
+        ],
+        "c_en": [
+          "Don't micromanage the position",
+          "Daily close review: MACD D",
+          "Trailing stop: Parabolic SAR",
+          "The system always rules"
+        ],
+        "q": "Cancele la posición cuando nuestro sistema proporcione la señal de cancelación. La función del stop es impedir fuertes pérdidas."
+      },
+      {
+        "id": "3-10",
+        "dur": 30,
+        "t_es": "Caso práctico completo: SPY o QQQ",
+        "t_en": "Complete practical case: SPY or QQQ",
+        "s_es": "Cava propone como producto ideal el SPY (ETF sobre el S&P 500) para aplicar el sistema. Ejercicio completo: 1) Abrir gráfico mensual → verificar MACD mensual. 2) Gráfico semanal → MACD semanal y Estocástico semanal. 3) Gráfico diario → localizar retroceso a EMA 55 + cruce MACD. 4) Calcular stop: último mínimo relevante o 2×ATR bajo la EMA 55. 5) Calcular objetivo: 3×ATR sobre la EMA 55. 6) Calcular tamaño: (Capital × 1%) / distancia al stop. 7) Ejecutar, vigilar al cierre. 8) Cerrar cuando MACD diario cruza a la baja.",
+        "s_en": "Cava proposes SPY as the ideal product. Full exercise: 1) Monthly chart → verify monthly MACD. 2) Weekly chart → weekly MACD and stochastic. 3) Daily chart → locate EMA 55 pullback + MACD cross. 4) Calculate stop: last significant low or 2×ATR below EMA 55. 5) Target: 3×ATR above EMA 55. 6) Size: (Capital × 1%) / stop distance. 7) Execute, monitor at close. 8) Close when daily MACD crosses down.",
+        "c_es": [
+          "Flujo completo de 8 pasos con SPY",
+          "Calcular stop y objetivo con ATR",
+          "Dimensionar posición al 1% de riesgo",
+          "Seguimiento y salida mecánica"
+        ],
+        "c_en": [
+          "Complete 8-step flow with SPY",
+          "Calculate stop and target with ATR",
+          "Size position at 1% risk",
+          "Monitoring and mechanical exit"
+        ],
+        "q": "Especule con un sistema, especule con confianza. Empiece con pequeñas cantidades y vaya adquiriendo experiencia."
+      }
+    ]
+  },
+  {
+    "id": "ejemplos",
+    "num": 4,
+    "title_es": "Casos del Libro: Análisis Real",
+    "title_en": "Book Cases: Real Analysis",
+    "sub_es": "Ejemplos extraídos y explicados del texto de Cava",
+    "sub_en": "Examples extracted and explained from Cava's book",
+    "color": "#22D3EE",
+    "topics": [
+      {
+        "id": "4-1",
+        "dur": 25,
+        "t_es": "El S&P 500 en 2002-2003: divergencia alcista",
+        "t_en": "S&P 500 in 2002-2003: bullish divergence",
+        "s_es": "Cava usa el mínimo de 2002-2003 como ejemplo clásico de divergencia alcista en el MACD. El S&P 500 tocó un mínimo de mercado bajista en octubre de 2002. En ese punto el precio dibujó un mínimo más bajo que el anterior, pero el MACD diario dibujó un mínimo más alto → divergencia alcista clásica. Lección: cuando el precio hace un mínimo nuevo y el MACD no lo acompaña, el momento bajista se está agotando. La señal de compra llegó cuando el MACD semanal cruzó al alza sobre cero en 2003.",
+        "s_en": "Cava uses the 2002-2003 bottom as a classic bullish MACD divergence example. The S&P 500 made a lower low in October 2002, but the daily MACD made a higher low → classic bullish divergence. The buy signal came when the weekly MACD crossed above zero in 2003.",
+        "c_es": [
+          "Mínimo S&P 500: oct-2002",
+          "Divergencia alcista: precio baja, MACD sube",
+          "MACD semanal sobre cero: señal de compra 2003",
+          "Lección: divergencia anticipa el giro"
+        ],
+        "c_en": [
+          "S&P 500 bottom: oct-2002",
+          "Bullish divergence: price drops, MACD rises",
+          "Weekly MACD above zero: buy signal 2003",
+          "Lesson: divergence anticipates the turn"
+        ],
+        "q": "Las divergencias del MACD son una herramienta muy potente para detectar el agotamiento de la tendencia."
+      },
+      {
+        "id": "4-2",
+        "dur": 22,
+        "t_es": "El petróleo en 2004: tendencia perfecta",
+        "t_en": "Oil in 2004: a perfect trend",
+        "s_es": "Cava analiza la subida del petróleo en 2004 como ejemplo de tendencia perfectamente aplicable al método. Desde noviembre de 2003, el MACD semanal del petróleo estuvo por encima de cero → tendencia alcista confirmada. El precio dibujó mínimos crecientes marcando una línea de tendencia clara. Cada retroceso a la EMA 55 fue una oportunidad de compra mientras el MACD semanal permaneció positivo. El MACD mensual no cayó bajo cero en todo el año → filtro macro positivo durante toda la subida.",
+        "s_en": "Cava analyzes the 2004 oil rally as a textbook example. From November 2003, the weekly oil MACD stayed above zero → confirmed uptrend. Price drew rising lows marking a clear trendline. Each EMA 55 pullback was a buy opportunity while weekly MACD remained positive.",
+        "c_es": [
+          "MACD semanal positivo: nov-2003 a dic-2004",
+          "Mínimos crecientes: línea de tendencia",
+          "Cada retroceso a EMA 55: oportunidad",
+          "Filtro mensual positivo todo el año"
+        ],
+        "c_en": [
+          "Weekly MACD positive: nov-2003 to dec-2004",
+          "Rising lows: trendline",
+          "Each EMA 55 pullback: opportunity",
+          "Monthly filter positive all year"
+        ],
+        "q": "Siempre busco detectar si el precio está en una fuerte tendencia analizando gráficos mensuales, semanales y diarios."
+      },
+      {
+        "id": "4-3",
+        "dur": 20,
+        "t_es": "El Nikkei japonés: señal de venta con RSI",
+        "t_en": "Japanese Nikkei: RSI sell signal",
+        "s_es": "Cava analiza el Nikkei como ejemplo del sistema RSI-MACD combinado. A comienzos de diciembre de 2002, con el MACD semanal del Nikkei por debajo de cero (tendencia bajista confirmada), el RSI en gráfico diario superó el nivel 60 y seguidamente perdió ese nivel → señal de venta corta. El precio dejó un hueco de arranque bajista al iniciar el movimiento a la baja. Cava usa esto para ilustrar: el nivel 60 del RSI con MACD semanal negativo es señal de venta, no de compra.",
+        "s_en": "Cava analyzes the Nikkei as an example of the combined RSI-MACD system. In December 2002, with the weekly Nikkei MACD below zero, the daily RSI briefly exceeded 60 then lost that level → short sell signal. Price left a bearish breakout gap.",
+        "c_es": [
+          "MACD semanal Nikkei bajo cero: dic-2002",
+          "RSI supera 60 y pierde 60: señal venta",
+          "Hueco de arranque bajista confirmación",
+          "Lección: mismo nivel = señal opuesta según MACD"
+        ],
+        "c_en": [
+          "Weekly Nikkei MACD below zero: dec-2002",
+          "RSI crosses 60 then loses it: sell signal",
+          "Bearish breakout gap confirmation",
+          "Lesson: same level = opposite signal depending on MACD"
+        ],
+        "q": "Cuando el RSI muestra una divergencia alcista en zona de sobreventa, la señal es muy fiable."
+      },
+      {
+        "id": "4-4",
+        "dur": 18,
+        "t_es": "El ciclo presidencial 2002-2004: año 3",
+        "t_en": "Presidential cycle 2002-2004: year 3",
+        "s_es": "Cava da el ejemplo concreto del ciclo presidencial Bush II. El año 2 (2002, midterms) fue desastroso para las bolsas: el S&P 500 cayó más del 30%. El año 3 (2003) fue extraordinariamente alcista: el S&P 500 subió más del 26% y el NASDAQ más del 50%. El año 4 (2004) fue positivo moderado. Cava señala que 'no debería dejar pasar los grandes movimientos alcistas del tercer año del ciclo presidencial. Las bolsas regalan dinero.' Este patrón se repite con alta consistencia histórica.",
+        "s_en": "Cava gives the concrete example of the Bush II presidential cycle. Year 2 (2002, midterms) was disastrous: S&P 500 fell over 30%. Year 3 (2003) was extraordinarily bullish: S&P 500 rose over 26%, NASDAQ over 50%. Year 4 (2004) was moderately positive.",
+        "c_es": [
+          "2002 (año 2): S&P -30%",
+          "2003 (año 3): S&P +26%, NASDAQ +50%",
+          "2004 (año 4): positivo moderado",
+          "Patrón consistente históricamente desde 1833"
+        ],
+        "c_en": [
+          "2002 (year 2): S&P -30%",
+          "2003 (year 3): S&P +26%, NASDAQ +50%",
+          "2004 (year 4): moderately positive",
+          "Consistent pattern historically since 1833"
+        ],
+        "q": "No deberíamos dejar pasar los grandes movimientos alcistas del tercer año del ciclo presidencial. Las bolsas regalan dinero."
+      },
+      {
+        "id": "4-5",
+        "dur": 20,
+        "t_es": "Septiembre: el peor mes del año",
+        "t_en": "September: the worst month of the year",
+        "s_es": "Cava analiza los datos históricos del S&P 500 mes a mes. Septiembre es el único mes con retorno medio negativo consistente a lo largo de décadas. Cava explica las razones: vuelta de vacaciones, ajuste de carteras institucionales, vencimientos trimestrales. El 11 de septiembre de 2001 reforzó esta estacionalidad negativa. Cava recomienda: en septiembre extremar la precaución, reducir posiciones largas y esperar a octubre-noviembre para retomar posiciones alcistas si el MACD lo confirma.",
+        "s_en": "Cava analyzes historical S&P 500 data month by month. September is the only month with consistently negative average return across decades. Reasons: return from vacations, institutional portfolio adjustments, quarterly expirations. Cava recommends extreme caution in September.",
+        "c_es": [
+          "Retorno medio negativo en septiembre",
+          "Razones: vacaciones, institucionales, vencimientos",
+          "Reducir posiciones largas en agosto-septiembre",
+          "Octubre-noviembre: reentrada con confirmación MACD"
+        ],
+        "c_en": [
+          "Negative average return in September",
+          "Reasons: vacations, institutions, expirations",
+          "Reduce long positions in August-September",
+          "October-November: reentry with MACD confirmation"
+        ],
+        "q": "La importancia de conocer los factores estacionales, especialmente aquellos días o meses en que suelen producirse fuertes caídas."
+      },
+      {
+        "id": "4-6",
+        "dur": 17,
+        "t_es": "Medias desplazadas: el ejemplo del S&P 500 horario",
+        "t_en": "Displaced averages: S&P 500 hourly example",
+        "s_es": "Cava ilustra el uso de medias desplazadas con un gráfico horario del S&P 500. La media móvil simple de 25 períodos desplazada 5 períodos hacia adelante (25×5) divide perfectamente el movimiento: del 13 al 20 de abril, el precio estuvo consistentemente por debajo de la media desplazada → tendencia bajista en gráfico horario. Este es un ejemplo práctico de cómo la media desplazada da señales más limpias que la media estándar porque suaviza el ruido de los cruces falsos.",
+        "s_en": "Cava illustrates displaced averages with an S&P 500 hourly chart. The 25-period SMA displaced 5 periods forward (25×5) perfectly divides the movement. From April 13-20, price consistently stayed below the displaced average → bearish trend on hourly chart.",
+        "c_es": [
+          "Media 25×5 en gráfico horario S&P 500",
+          "Precio bajo la media desplazada: bajista",
+          "Menos señales falsas que la media estándar",
+          "Aplicable en todos los marcos temporales"
+        ],
+        "c_en": [
+          "25×5 SMA on S&P 500 hourly chart",
+          "Price below displaced average: bearish",
+          "Fewer false signals than standard MA",
+          "Applicable in all timeframes"
+        ],
+        "q": "El precio se encuentra en tendencia alcista cuando está por encima de la media móvil desplazada."
+      },
+      {
+        "id": "4-7",
+        "dur": 22,
+        "t_es": "Sistema ADX aplicado: ejemplo de ruptura",
+        "t_en": "ADX system applied: breakout example",
+        "s_es": "Cava explica el sistema ADX con ejemplos de mercado. Condiciones necesarias: ADX por encima de 20 y en ascenso + +DI por encima de -DI. Señal de compra: cuando el precio supera al alza al menos 1.5 veces el ATR del día anterior. Ejemplo: si el ATR de ayer fue 10 puntos y el ADX es positivo, la señal de compra se activa si el precio sube más de 15 puntos desde el cierre anterior. Si el precio no alcanza ese nivel en la sesión, la señal se cancela automáticamente.",
+        "s_en": "Cava explains the ADX system with market examples. Necessary conditions: ADX above 20 and rising + +DI above -DI. Buy signal: when price exceeds at least 1.3×ATR from previous day's range. If price doesn't reach that level in the session, signal cancels automatically.",
+        "c_es": [
+          "Condición ADX: >20 y en ascenso",
+          "Condición DI: +DI>-DI",
+          "Señal: precio +1.3×ATR del día anterior",
+          "Cancelación automática si no se activa"
+        ],
+        "c_en": [
+          "ADX condition: >20 and rising",
+          "DI condition: +DI>-DI",
+          "Signal: price +1.3×ATR from previous day",
+          "Automatic cancellation if not triggered"
+        ],
+        "q": "Si el precio recorre al alza 1.5 veces el rango verdadero del día anterior y el ADX está positivo, es señal de compra."
+      },
+      {
+        "id": "4-8",
+        "dur": 19,
+        "t_es": "Hueco de arranque y de continuación: medición del objetivo",
+        "t_en": "Breakout and continuation gaps: measuring the target",
+        "s_es": "Cava enseña a usar los huecos para calcular objetivos de precio. Hueco de ruptura: señala el inicio de una nueva tendencia. No se cierra durante la tendencia. Objetivo mínimo: el tamaño del hueco proyectado desde el punto de ruptura. Hueco de continuación (o de medición): aparece a mitad del movimiento y permite calcular el objetivo final. Si el precio subió 10% antes del hueco y el hueco es de 2%, el objetivo total es aproximadamente 20-22% desde el inicio. Hueco de agotamiento: cierre rápido indica final inminente de tendencia.",
+        "s_en": "Cava teaches using gaps to calculate price targets. Breakout gap: signals start of new trend, not filled during trend. Continuation gap: appears mid-move and allows calculating final target. If price rose 10% before the gap, total target ≈ 20-22% from start. Exhaustion gap: quick fill signals imminent trend end.",
+        "c_es": [
+          "Hueco de ruptura: inicio de tendencia",
+          "Hueco de continuación: objetivo = 2× primer tramo",
+          "Hueco de agotamiento: final de tendencia",
+          "Cómo proyectar el objetivo de precio"
+        ],
+        "c_en": [
+          "Breakout gap: start of trend",
+          "Continuation gap: target = 2× first leg",
+          "Exhaustion gap: end of trend",
+          "How to project the price target"
+        ],
+        "q": "Al perforarse la zona de soporte tocada al menos dos veces, adoptamos posición corta."
+      },
+      {
+        "id": "4-9",
+        "dur": 21,
+        "t_es": "La rentabilidad de las bolsas en el largo plazo",
+        "t_en": "Stock market long-term returns",
+        "s_es": "Cava abre el libro con datos contundentes sobre la inversión en el S&P 500: 1$ invertido en enero de 1950 en un fondo que replicara el S&P 500 valdría 74$ en septiembre de 2005. Sin embargo, si se hubieran evitado los 100 días con peores resultados, el mismo 1$ habría crecido a 53.000$. Conclusión de Cava: 'El especulador debe mantenerse alejado del mercado cuando la tendencia sea bajista.' La ventaja de especular sobre la inversión pasiva reside en evitar las caídas más destructivas.",
+        "s_en": "Cava opens the book with powerful data: $1 invested in the S&P 500 in January 1950 would have grown to $74 by September 2005. But avoiding the 100 worst days, the same $1 would have grown to $53,000. Cava's conclusion: the speculator must stay out when the trend is bearish.",
+        "c_es": [
+          "1$ en 1950 → 74$ en 2005 (S&P 500)",
+          "Evitar los 100 peores días → 53.000$",
+          "Ventaja de especular: evitar caídas",
+          "El coste de estar siempre invertido"
+        ],
+        "c_en": [
+          "$1 in 1950 → $74 in 2005 (S&P 500)",
+          "Avoid 100 worst days → $53,000",
+          "Speculation advantage: avoiding crashes",
+          "The cost of being always invested"
+        ],
+        "q": "Si en enero de 1950 hubiéramos invertido 1$ en el S&P 500, en septiembre de 2005 habríamos tenido 74$."
+      },
+      {
+        "id": "4-10",
+        "dur": 23,
+        "t_es": "El oscilador McClellan: amplitud del mercado",
+        "t_en": "McClellan oscillator: market breadth",
+        "s_es": "Cava presenta el Oscilador McClellan como herramienta de amplitud. Fórmula: [EMA 19 días (avances-descensos)] - [EMA 39 días (avances-descensos)]. Es básicamente un MACD de la amplitud del mercado. Señal de venta: oscilador en nivel muy alto y gira a la baja cortando la línea cero. Señal de compra: oscilador en nivel muy bajo y gira al alza superando la línea cero. Las divergencias (el oscilador no confirma los nuevos máximos del índice) son señales tempranas de techo de mercado.",
+        "s_en": "Cava presents the McClellan Oscillator as a breadth tool. Formula: [19-day EMA (advances-declines)] - [39-day EMA (advances-declines)]. It is essentially a MACD of market breadth. Sell signal: oscillator at very high level, turns down and crosses zero. Divergences (oscillator doesn't confirm new index highs) are early top signals.",
+        "c_es": [
+          "Fórmula: EMA19(A-D) - EMA39(A-D)",
+          "El MACD de la amplitud del mercado",
+          "Señal de compra: giro al alza sobre cero",
+          "Divergencia: no confirma máximos = techo"
+        ],
+        "c_en": [
+          "Formula: EMA19(A-D) - EMA39(A-D)",
+          "The MACD of market breadth",
+          "Buy signal: upward turn above zero",
+          "Divergence: doesn't confirm highs = top"
+        ],
+        "q": "Los giros a la baja del mercado van precedidos de divergencias bajistas en el oscilador McClellan."
+      }
+    ]
+  }
+]
