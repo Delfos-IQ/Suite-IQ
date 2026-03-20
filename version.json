@@ -1,0 +1,12 @@
+{
+  "suite":   "2.1.0",
+  "axios":   "2.1.0",
+  "harvest": "1.6.0",
+  "delfos":  "2.1.0",
+  "updated": "2026-03-20",
+  "notes": {
+    "axios":   "Scorecard Fase 2 — peers dinámicos por sector",
+    "harvest": "v1.6 estable",
+    "delfos":  "v2.1 — Oracle, curso y aviso legal completo"
+  }
+}
