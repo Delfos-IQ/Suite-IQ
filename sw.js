@@ -7,7 +7,7 @@
  *   - No banner, no interruption — next page load = new version
  */
 
-const CACHE_NAME = 'iq-suite-v1';
+const CACHE_NAME = 'iq-suite-v2';
 const VERSION_URL = '/version.json';
 
 // Assets to pre-cache on install
