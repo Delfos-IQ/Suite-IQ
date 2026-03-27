@@ -126,6 +126,74 @@ h1{font-size:clamp(17px,2.4vw,28px);font-weight:700;color:#F1F5F9;letter-spacing
   .header{padding:14px 12px 0}.content{padding:14px 12px}
   .card{grid-template-columns:26px 72px 1fr}.opp-card{grid-template-columns:20px 28px 84px 1fr}
 }
+/* ═══════════════════════════════════════════
+   PATCH v1.8 — DASHBOARD · RECURSOS · CONTRARIAN
+═══════════════════════════════════════════ */
+/* DASHBOARD */
+.dash-kpi-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.dash-kpi{background:#0F1624;border:1px solid #1A2235;border-radius:9px;padding:12px 16px;flex:1;min-width:120px;transition:border-color .2s}
+.dash-kpi:hover{border-color:#243048}
+.dash-kpi-lbl{font-size:9px;color:#475569;letter-spacing:.13em;font-family:'DM Mono',monospace;text-transform:uppercase;margin-bottom:4px}
+.dash-kpi-val{font-size:19px;font-weight:700;letter-spacing:-.02em;font-family:'DM Mono',monospace}
+.dash-kpi-sub{font-size:9px;color:#2D3F5A;margin-top:2px;font-family:'DM Mono',monospace}
+.dash-grid2{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:14px}
+.dash-grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
+@media(max-width:860px){.dash-grid2,.dash-grid3{grid-template-columns:1fr}}
+.dash-card{background:#0F1624;border:1px solid #1A2235;border-radius:9px;padding:16px;transition:border-color .2s}
+.dash-card:hover{border-color:#243048}
+.dash-card-ttl{font-size:9px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.14em;font-family:'DM Mono',monospace;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.dash-card-badge{font-size:9px;font-family:'DM Mono',monospace;padding:2px 7px;border-radius:3px;font-weight:600}
+.dash-chart-wrap{position:relative;height:220px}
+.dash-chart-wrap-sm{position:relative;height:180px}
+.dash-chart-wrap-lg{position:relative;height:260px}
+.dash-sec-label{font-size:9px;color:#475569;letter-spacing:.15em;font-family:'DM Mono',monospace;text-transform:uppercase;margin:20px 0 12px;display:flex;align-items:center;gap:8px}
+.dash-sec-label::after{content:"";flex:1;height:1px;background:#1A2235}
+/* RECURSOS */
+.res-section-ttl{font-size:15px;font-weight:700;color:#F1F5F9;letter-spacing:-.02em;margin:22px 0 5px;display:flex;align-items:center;gap:9px}
+.res-section-sub{font-size:11px;color:#475569;margin-bottom:16px;line-height:1.6}
+.res-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:13px;margin-bottom:22px}
+.res-card{background:#0F1624;border:1px solid #1A2235;border-radius:10px;padding:16px;transition:border-color .2s;text-decoration:none;display:block;color:inherit}
+.res-card:hover{border-color:#243048;background:#111820}
+.res-card-hdr{display:flex;align-items:center;gap:11px;margin-bottom:9px}
+.res-card-icon{font-size:22px;line-height:1;flex-shrink:0}
+.res-card-name{font-size:13px;font-weight:700;color:#F1F5F9}
+.res-card-sub{font-size:10px;color:#475569;margin-top:1px}
+.res-card-badge{margin-left:auto;flex-shrink:0;font-size:9px;font-family:'DM Mono',monospace;padding:2px 8px;border-radius:4px;font-weight:700}
+.res-card-desc{font-size:11px;color:#64748B;line-height:1.6;margin-bottom:10px}
+.res-tag{display:inline-block;background:#1A2235;color:#475569;border-radius:3px;padding:1px 6px;font-size:9px;font-family:'DM Mono',monospace;margin:2px 2px 0 0}
+.macro-live{background:#080C18;border:1px solid #22D3EE22;border-radius:10px;padding:16px 20px;margin-bottom:20px}
+.macro-live-hdr{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.macro-live-dot{width:7px;height:7px;border-radius:50%;background:#22D3EE;animation:pulse 2s infinite;flex-shrink:0}
+.macro-live-ttl{font-size:11px;font-weight:700;color:#22D3EE;font-family:'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase}
+.macro-live-ts{font-size:9px;color:#334155;font-family:'DM Mono',monospace;margin-left:auto}
+.macro-metrics{display:flex;gap:10px;flex-wrap:wrap}
+.macro-metric{background:#0F1624;border:1px solid #1A2235;border-radius:7px;padding:10px 14px;flex:1;min-width:110px}
+.macro-metric-lbl{font-size:8px;color:#334155;letter-spacing:.13em;font-family:'DM Mono',monospace;text-transform:uppercase;margin-bottom:4px}
+.macro-metric-val{font-size:16px;font-weight:700;font-family:'DM Mono',monospace}
+.macro-metric-sub{font-size:9px;color:#475569;margin-top:2px;font-family:'DM Mono',monospace}
+.macro-metric-trend{display:inline-block;font-size:9px;font-family:'DM Mono',monospace;padding:1px 5px;border-radius:3px;margin-top:4px;font-weight:700}
+/* CONTRARIAN MEJORADO */
+.ctr-header{background:#080C18;border:1px solid #22D3EE22;border-radius:12px;padding:18px 22px;margin-bottom:18px}
+.ctr-header-ttl{font-size:15px;font-weight:700;color:#F1F5F9;margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ctr-header-desc{font-size:11px;color:#64748B;line-height:1.75}
+.ctr-kpis{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.ctr-signal-badge{display:inline-flex;align-items:center;gap:5px;border-radius:4px;padding:2px 8px;font-size:9px;font-family:'DM Mono',monospace;font-weight:700;letter-spacing:.04em;margin:2px 2px 0 0}
+.ctr-card{background:#0F1624;border:1px solid #1A2235;border-radius:10px;padding:14px 16px;margin-bottom:8px;transition:background .15s}
+.ctr-card:hover{background:#111820}
+.ctr-card-top{display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.ctr-score-box{background:#080C18;border:1px solid #1A2235;border-radius:8px;padding:8px 12px;text-align:center;flex-shrink:0}
+.ctr-score-val{font-size:19px;font-weight:700;font-family:'DM Mono',monospace}
+.ctr-score-lbl{font-size:7px;color:#334155;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.1em;margin-top:1px}
+.ctr-stats{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:8px}
+.ctr-stat{background:#080C18;border:1px solid #1A2235;border-radius:5px;padding:4px 9px}
+.ctr-stat-lbl{font-size:7px;color:#334155;font-family:'DM Mono',monospace;text-transform:uppercase}
+.ctr-stat-val{font-size:11px;font-weight:700;color:#94A3B8;font-family:'DM Mono',monospace;margin-top:1px}
+.ctr-signals-list{display:flex;flex-direction:column;gap:4px}
+.ctr-sig-row{display:flex;align-items:center;gap:7px;font-size:11px;color:#64748B;line-height:1.4}
+.ctr-sig-icon{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0}
+.ctr-ai-box{background:#080C18;border:1px solid #A78BFA22;border-radius:9px;padding:13px 16px;margin-top:12px}
+.ctr-ai-hdr{display:flex;align-items:center;gap:7px;margin-bottom:8px;font-size:9px;font-weight:700;color:#A78BFA;font-family:'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase}
+.ctr-ai-content{font-size:11px;color:#94A3B8;line-height:1.7}
 </style>
 </head>
 <body>
@@ -291,6 +359,7 @@ h1{font-size:clamp(17px,2.4vw,28px);font-weight:700;color:#F1F5F9;letter-spacing
   </div>
   <div class="search-count" id="searchCount"></div>
   <div class="nav-tabs" style="margin-top:10px">
+    <button class="nav-tab" id="vt-dashboard" onclick="setView('dashboard')">📊 Dashboard</button>
     <button class="nav-tab" id="vt-edit" onclick="setView('edit')" data-tkey="nav_edit">✎ Mi Cartera</button>
     <button class="nav-tab" id="vt-opp" onclick="setView('opp')" data-tkey="nav_opp">✦ Oportunidades</button>
     <button class="nav-tab" id="vt-rc" onclick="setView('rc')" data-tkey="nav_rc">⚖️ Reforzar vs Construir</button>
@@ -300,6 +369,7 @@ h1{font-size:clamp(17px,2.4vw,28px);font-weight:700;color:#F1F5F9;letter-spacing
     <button class="nav-tab" id="vt-audit" onclick="setView('audit')" data-tkey="nav_audit">🔬 Auditoría</button>
     <button class="nav-tab" id="vt-dgi" onclick="setView('dgi')" data-tkey="nav_dgi">🏆 DGI Score</button>
     <button class="nav-tab" id="vt-contrarian" onclick="setView('contrarian')">&#x1F504; Opinion Contraria</button>
+    <button class="nav-tab" id="vt-recursos" onclick="setView('recursos')">🔗 Recursos</button>
   </div>
   <div id="search-results-view" class="hidden"></div>
   <div id="view-edit" class="hidden"></div>
@@ -311,6 +381,8 @@ h1{font-size:clamp(17px,2.4vw,28px);font-weight:700;color:#F1F5F9;letter-spacing
   <div id="view-audit" class="hidden"></div>
   <div id="view-dgi" class="hidden"></div>
   <div id="view-contrarian" class="hidden"></div>
+  <div id="view-dashboard" class="hidden"></div>
+  <div id="view-recursos" class="hidden"></div>
   <div id="view-about" class="hidden"></div>
   <div class="legend" id="legend"></div>
 </div>
@@ -327,7 +399,7 @@ var snapshotOverrides = {};
 var snapshotDate = null;
 var activeView   = 'opp';
 var activeSector = 'tech';
-var activeEtfCat = 'global';
+// activeEtfCat defined inside ETF_UNIVERSE block below
 var filterOwned  = false;
 var sortBy       = 'rank';
 var sectors,allStocks,allEtfs,DIVS_BASE,DGI_SCORED;
@@ -1198,7 +1270,7 @@ function setLang(l){
   renderAll();
   const v = activeView;
   if(v==='sector'){if(hasPortfolioData()){renderSectorTabs();renderSectorCards();}else{var _vs=document.getElementById('view-sector');if(_vs)_vs.innerHTML=emptyPortfolioCTA('◈','','');}}
-  else if(v==='etf'){renderEtfTabs();renderEtfCards();}
+  else if(v==='etf'){if(hasPortfolioData()){initEtfView();renderEtfTabs();}renderEtfCards();}
   else if(v==='edit')renderEditCards();
   else if(v==='about')renderAbout();
   else if(v==='analysis')renderAnalysis();
@@ -1290,16 +1362,59 @@ function gp(t){
 /* var sortBy — hoisted above */
 
 
+// ═══ ETF UNIVERSE — Acumulación y Distribución ═══
+// Acumulación: reinvierte dividendos automáticamente. Ideal para largo plazo, máxima eficiencia fiscal.
+// Distribución: reparte los dividendos periódicamente. Genera flujo de caja, ideal como complemento DGI.
+var ETF_UNIVERSE = {
+  acc: [
+    // Renta variable global
+    {ticker:"VWCE.DE", cat:"global",    name:"Vanguard FTSE All-World Acc",       currency:"EUR", index:"FTSE All-World (3.700+ empresas)", ter:"0.22%", desc:"Máxima diversificación global incluyendo mercados emergentes. La referencia para largo plazo."},
+    {ticker:"VUAA.DE", cat:"global",    name:"Vanguard S&P 500 Acc",               currency:"EUR", index:"S&P 500 (500 mayores EEUU)",        ter:"0.07%", desc:"El índice americano con mejor rentabilidad histórica. Alta concentración en tecnología USA."},
+    {ticker:"XDWD.DE", cat:"global",    name:"Xtrackers MSCI World Acc",           currency:"EUR", index:"MSCI World (1.500 empr. desarrolladas)", ter:"0.19%", desc:"Mercados desarrollados sin emergentes. Diversificación con sesgo calidad."},
+    {ticker:"EUNL.DE", cat:"global",    name:"iShares Core MSCI World Acc",        currency:"EUR", index:"MSCI World",                         ter:"0.20%", desc:"Alternativa iShares al MSCI World. Alta liquidez y spreads reducidos."},
+    {ticker:"QDVE.DE", cat:"sector",    name:"iShares S&P 500 Information Tech Acc",currency:"EUR",index:"S&P 500 Tech",                       ter:"0.15%", desc:"Concentrado en tecnología americana. Alta volatilidad, alto crecimiento histórico."},
+    {ticker:"XAIX.DE", cat:"sector",    name:"Xtrackers MSCI World AI & Big Data", currency:"EUR", index:"MSCI World AI & Big Data",           ter:"0.35%", desc:"Empresas líderes en inteligencia artificial y big data a nivel mundial."},
+    // Materias primas — acumulación
+    {ticker:"SGLD.DE", cat:"commodities",name:"iShares Physical Gold ETC",         currency:"EUR", index:"Precio spot del oro",                ter:"0.12%", desc:"Exposición directa al oro físico. Cobertura frente a inflación y crisis. Sin dividendo."},
+    {ticker:"SSIL.DE", cat:"commodities",name:"iShares Physical Silver ETC",       currency:"EUR", index:"Precio spot de la plata",             ter:"0.19%", desc:"Exposición a la plata física. Uso industrial creciente en energía solar y electrónica."},
+    {ticker:"AUCO.DE", cat:"commodities",name:"WisdomTree Physical Gold",           currency:"EUR", index:"Precio spot del oro",                ter:"0.15%", desc:"ETC de oro físico almacenado en bóvedas. Alternativa a SGLD con estructura similar."},
+    {ticker:"URA.US",  cat:"commodities",name:"Global X Uranium ETF",              currency:"USD", index:"Indxx Global Uranium & Nuclear Components",ter:"0.69%", desc:"Empresas de uranio y energía nuclear. Alta volatilidad, demanda creciente por transición energética."},
+    {ticker:"URNU.L",  cat:"commodities",name:"Sprott Uranium Miners UCITS ETF",   currency:"USD", index:"North Shore Global Uranium Mining",  ter:"0.85%", desc:"Mineras de uranio globales. Exposición pura a la cadena de suministro nuclear. Versión UCITS."},
+    {ticker:"COPP.L",  cat:"commodities",name:"WisdomTree Copper",                 currency:"USD", index:"Precio spot del cobre",              ter:"0.39%", desc:"Cobre físico. Metal clave en la electrificación, vehículos eléctricos e infraestructura."},
+  ],
+  dist: [
+    // ETFs de dividendos distributing
+    {ticker:"VGWD.DE", cat:"global",    name:"Vanguard FTSE All-World High Div Dist", currency:"EUR", index:"FTSE All-World High Dividend", ter:"0.29%", freq:"Trimestral", yld:"~3.2%", desc:"Dividendos globales distributing. Amplia diversificación geográfica con income trimestral regular."},
+    {ticker:"SPYD.DE", cat:"usa",       name:"SPDR S&P 500 High Dividend Dist",       currency:"EUR", index:"S&P 500 High Dividend",        ter:"0.35%", freq:"Trimestral", yld:"~4.1%", desc:"Los mayores pagadores de dividendo del S&P 500. Yield superior, complemento para flujo trimestral."},
+    {ticker:"ISPA.DE", cat:"europe",    name:"iShares Euro Dividend Dist",            currency:"EUR", index:"EURO STOXX Select Div 30",     ter:"0.40%", freq:"Semestral",  yld:"~4.5%", desc:"Los 30 mayores pagadores de dividendo de la eurozona. Alta exposición a bancos y utilities europeas."},
+    {ticker:"TDIV.AS", cat:"global",    name:"VanEck Morningstar Developed Mkts Div", currency:"EUR", index:"Morningstar Developed Markets",ter:"0.38%", freq:"Mensual",    yld:"~3.8%", desc:"Dividendos de mercados desarrollados con pago mensual. Ideal para complementar ingresos DGI."},
+    {ticker:"VUSA.DE", cat:"usa",       name:"Vanguard S&P 500 UCITS ETF Dist",       currency:"EUR", index:"S&P 500",                      ter:"0.07%", freq:"Trimestral", yld:"~1.3%", desc:"Versión distributing del S&P 500. Dividendo modesto pero máxima calidad de índice y liquidez."},
+    {ticker:"HDIV.L",  cat:"global",    name:"WisdomTree Global Quality Div Growth",  currency:"USD", index:"WisdomTree Global Quality Div",ter:"0.38%", freq:"Semestral",  yld:"~2.8%", desc:"Enfocado en empresas con crecimiento de dividendo sostenible. Calidad sobre yield bruto."},
+    {ticker:"SDIV.US", cat:"global",    name:"Global X SuperDividend ETF",            currency:"USD", index:"Solactive Global SuperDiv",    ter:"0.58%", freq:"Mensual",    yld:"~8-10%",desc:"100 acciones con los dividendos más altos del mundo. Alto yield, mayor riesgo. Pago mensual."},
+  ]
+};
+
+// Explicit whitelist — ONLY these tickers are treated as ETFs (not stocks)
+var KNOWN_ETF_TICKERS = new Set(
+  ETF_UNIVERSE.acc.map(function(e){return e.ticker;}).concat(
+  ETF_UNIVERSE.dist.map(function(e){return e.ticker;}))
+);
+
+// ETF category labels
+var ETF_CAT_META = {
+  global:      {label:'Renta Variable Global', icon:'🌍'},
+  usa:         {label:'EEUU / S&P 500',         icon:'🇺🇸'},
+  europe:      {label:'Europa',                 icon:'🇪🇺'},
+  sector:      {label:'Sectorial / Temático',   icon:'⚡'},
+  commodities: {label:'Materias Primas',        icon:'🪙'},
+};
+
+// Legacy etfCategories (kept for other references)
 var etfCategories = [
-  {id:"global",name:"Renta Variable Global",icon:"🌍",color:"#3B82F6",etfs:[
-    {ticker:"VWCE.DE",name:"Vanguard FTSE All-World Acc",shares:0,invested:0,price:122.0,currency:"EUR",type:"Acumulación",index:"FTSE All-World (3.700+ empresas)",note:"Máxima diversificación global incluyendo emergentes. La base más sólida para largo plazo."},
-    {ticker:"VUAA.DE",name:"Vanguard S&P 500 Acc",shares:0,invested:0,price:110.0,currency:"EUR",type:"Acumulación",index:"S&P 500 (500 mayores USA)",note:"Históricamente el índice con mejor rentabilidad a largo plazo. Concentración USA."},
-  ]},
-  {id:"dividendos",name:"ETFs de Dividendos",icon:"💰",color:"#F59E0B",etfs:[
-    {ticker:"VGWD.DE",name:"Vanguard FTSE All-World High Div.",shares:0,invested:0,price:62.52,currency:"EUR",type:"Distribución",index:"FTSE All-World High Dividend",note:"Dividendos globales, distributing. Amplia diversificación geográfica con income regular."},
-    {ticker:"SPYD.DE",name:"SPDR S&P 500 EUR Div. ETF",shares:0,invested:0,price:66.97,currency:"EUR",type:"Distribución",index:"S&P 500 High Dividend",note:"ETF de altos dividendos del S&P 500. Yield superior, buen complemento para flujo mensual."},
-  ]},
+  {id:"acc",  name:"Acumulación", icon:"📈", color:"#3B82F6", etfs:ETF_UNIVERSE.acc},
+  {id:"dist", name:"Distribución",icon:"💰", color:"#F59E0B", etfs:ETF_UNIVERSE.dist},
 ];
+var activeEtfCat = 'acc';
 
 
 
@@ -1778,15 +1893,16 @@ function renderSectorCycle(){
 
 
 function initEtfView(){
-  document.getElementById('view-etf').innerHTML=`
-    <div class="sub-tabs"></div>
-    <div class="section-header">
-      <div style="display:flex;align-items:center;gap:10px">
-        <div class="section-icon-box"></div>
-        <div><div class="section-title"></div><div class="section-meta"></div></div>
-      </div>
-    </div>
-    <div class="cards"></div>`;
+  var el=document.getElementById('view-etf');
+  if(!el) return;
+  el.innerHTML=
+    '<div class="sub-tabs" id="etf-subtabs"></div>'
+    +'<div id="etf-header" style="margin:12px 0 10px;display:flex;align-items:center;gap:10px">'
+    +  '<div id="etf-icon" style="width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px"></div>'
+    +  '<div><div id="etf-title" style="font-size:17px;font-weight:700;color:#F1F5F9;letter-spacing:-.02em"></div>'
+    +  '<div id="etf-meta" style="font-size:10px;color:#475569;font-family:DM Mono,monospace;margin-top:2px"></div></div>'
+    +'</div>'
+    +'<div id="etf-body"></div>';
 }
 var _editSort = 'invested';
 
@@ -2429,7 +2545,6 @@ function renderDGI(){
   </div>
   <div class="sub-tabs" style="margin-bottom:16px">
     <button class="sub-tab" id="dgi-tab-ranking" onclick="setDgiSub('ranking')" style="${dgiSubView==='ranking'?'background:#F59E0B22;border-color:#F59E0B55;color:#F59E0B':''}">🏆 Ranking DGI</button>
-    <button class="sub-tab" id="dgi-tab-sim"     onclick="setDgiSub('sim')"     style="${dgiSubView==='sim'?'background:#34D39922;border-color:#34D39955;color:#34D399':''}">⚡ Simulador de Compra</button>
     <button class="sub-tab" id="dgi-tab-disc"    onclick="setDgiSub('disc')"    style="${dgiSubView==='disc'?'background:#A78BFA22;border-color:#A78BFA55;color:#A78BFA':''}">🤖 Descubrir con IA</button>
   </div>
   <div id="dgi-content"></div>`;
@@ -2441,7 +2556,6 @@ function renderDgiContent(){
   const el=document.getElementById('dgi-content');
   if(!el)return;
   if(dgiSubView==='ranking')renderDgiRanking(el);
-  else if(dgiSubView==='sim')renderDgiSim(el);
   else renderDgiDiscover(el);
 }
 
@@ -2639,14 +2753,24 @@ function _dgiDiscoverEmptyState(){
     +'<div style="font-size:9px;color:#ef4444;font-family:DM Mono,monospace;margin-top:6px">'
     +'Excluidas: WBA (deslistada) T (2022) INTC (2024) VZ (racha)'
     +'</div></div>';
+  var _capDefs=[['all','Todas'],['small','Small cap'],['mid','Mid cap'],['large','Large cap']];
+  var capBtns=_capDefs.map(function(cd){
+    var cf=cd[0],cl=cd[1],active=(window._discoverCapFilter||'all')===cf;
+    var btn=document.createElement('button');
+    // Return HTML string using data-cap attribute, onclick sets variable then updates styles
+    return '<button data-cap="'+cf+'" class="cap-btn" onclick="window._discoverCapFilter=this.getAttribute('+JSON.stringify('data-cap')+');var bs=document.querySelectorAll('+JSON.stringify('.cap-btn')+');bs.forEach(function(b){b.style.background='+JSON.stringify('#111827')+';b.style.borderColor='+JSON.stringify('#1E293B')+';b.style.color='+JSON.stringify('#64748B')+'});this.style.background='+JSON.stringify('#A78BFA22')+';this.style.borderColor='+JSON.stringify('#A78BFA55')+';this.style.color='+JSON.stringify('#A78BFA')+';" style="background:'+(active?'#A78BFA22':'#111827')+';border:1px solid '+(active?'#A78BFA55':'#1E293B')+';color:'+(active?'#A78BFA':'#64748B')+';border-radius:5px;padding:4px 12px;font-size:10px;cursor:pointer;font-family:DM Mono,monospace">'+cl+'</button>';
+  }).join('');
   return '<div style="background:#0f1624;border:1px solid #a78bfa22;border-radius:12px;padding:28px 24px;text-align:center">'
-    +'<div style="font-size:36px;margin-bottom:12px">&#x1F52D;</div>'
-    +'<div style="font-size:14px;font-weight:700;color:#a78bfa;margin-bottom:8px">'+(lang==='en'?'Discover DGI Companies':'Descubrir empresas DGI')+'</div>'
-    +'<div style="font-size:12px;color:#475569;max-width:440px;margin:0 auto 8px">'
-    +(lang==='en'?'Groq analyzes your portfolio and suggests high-quality DGI companies.':'Groq analiza tu cartera y sugiere empresas DGI de alta calidad.')+'</div>'
+    +'<div style="font-size:36px;margin-bottom:12px">🔭</div>'
+    +'<div style="font-size:14px;font-weight:700;color:#a78bfa;margin-bottom:6px">Descubrir: empresas en dificultades temporales</div>'
+    +'<div style="font-size:11px;color:#475569;max-width:480px;margin:0 auto 14px;line-height:1.7">'
+    +'Groq analiza tu cartera e identifica empresas con <strong style="color:#94A3B8">fundamentales intactos que están sufriendo temporalmente</strong>: caídas de precio exageradas, ciclo adverso puntual o presión regulatoria sin deterioro del negocio. Solo empresas activas en 2026.</div>'
     +crit
-    +'<button onclick="runDgiDiscover(this)" style="background:linear-gradient(135deg,rgba(167,139,250,.15),rgba(59,130,246,.1));border:1px solid #a78bfa44;color:#a78bfa;border-radius:8px;padding:10px 24px;font-family:DM Mono,monospace;font-size:11px;font-weight:700;cursor:pointer;margin-top:10px">'
-    +(lang==='en'?'Generate suggestions':'Generar sugerencias')
+    +'<div style="margin:14px 0 6px;font-size:9px;color:#475569;font-family:DM Mono,monospace;letter-spacing:.1em">CAPITALIZACIÓN</div>'
+    +'<div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:16px">'+capBtns+'</div>'
+    +'<button onclick="runDgiDiscover(this)" style="background:linear-gradient(135deg,rgba(167,139,250,.15),rgba(59,130,246,.1));border:1px solid #a78bfa44;color:#a78bfa;border-radius:8px;padding:10px 28px;font-family:DM Mono,monospace;font-size:11px;font-weight:700;cursor:pointer">'
+
+    +'🤖 Generar sugerencias'
     +'</button></div>';
 }
 
@@ -2710,23 +2834,33 @@ async function runDgiDiscover(btn){
 
     const pLang = lang==='en'?'English':'Español';
 
+    // Cap size filter selector (persisted)
+    var capFilter = window._discoverCapFilter || 'all';
+
     const prompt = 'Eres un asesor DGI (Dividend Growth Investing) experto.\n\n'
+      + 'REGLAS ESTRICTAS — DEBES CUMPLIRLAS TODAS:\n'
+      + '1. Solo empresas que cotizan ACTIVAMENTE en NYSE, NASDAQ o bolsas europeas principales en 2026.\n'
+      + '2. Cero empresas deslistadas, en quiebra, fusionadas o que hayan recortado dividendo en 2023-2026.\n'
+      + '3. Empresas con DIFICULTADES TEMPORALES pero fundamentales intactos: '
+      + 'caída de precio >15% en 12 meses SIN deterioro de negocio estructural, '
+      + 'presión regulatoria puntual, ciclo adverso temporal, o sentimiento negativo exagerado.\n'
+      + '4. Filtro capitalización: '+(capFilter==='small'?'SOLO small caps (< $5B)':capFilter==='mid'?'SOLO mid caps ($5B-$50B)':capFilter==='large'?'SOLO large caps (> $50B)':'mezcla de small, mid y large caps')+'.\n'
+      + '5. Criterios mínimos: racha dividendo >= 5 años, payout < 75%, crecimiento dividendo > 3%/año.\n\n'
       + 'CARTERA ACTUAL:\n'
-      + '- '+ownedTickers.length+' posiciones · $'+totalVal.toFixed(0)+' valor · $'+totalInc.toFixed(0)+'/año ingresos · yield medio '+avgYield+'%\n'
-      + '- Distribución sectorial: '+sectorStr+'\n'
-      + '- Top posiciones: '+(topOwned||'datos de ejemplo')+'\n'
-      + '- Sectores infrarrepresentados (<5%): '+(missingSecs.join(', ')||'ninguno')+'\n\n'
-      + 'CICLO ECONÓMICO ACTUAL (Mar 2026):\n'
-      + '- Fase: Pico-expansión tardía · Fed 4.25% en pausa · Bajadas graduales esperadas\n'
-      + '- Sectores más favorables ahora: '+cycleCtx+'\n\n'
-      + 'TAREA: Sugiere exactamente 8 empresas DGI que complementen esta cartera. '
-      + 'Prioriza: (1) sectores infrarrepresentados, (2) sectores favorables en el ciclo actual, '
-      + '(3) empresas con payout <60%, racha >10 años y crecimiento del dividendo >5%/año. '
-      + 'NO sugieras empresas que ya están en cartera.\n\n'
-      + 'Responde SOLO en '+pLang+' con este JSON exacto (sin markdown, sin texto fuera):\n'
+      + '- '+ownedTickers.length+' posiciones · $'+totalVal.toFixed(0)+' valor · yield medio '+avgYield+'%\n'
+      + '- Sectores: '+sectorStr+'\n'
+      + '- Tickers a EXCLUIR (ya en cartera): '+ownedTickers.join(', ')+'\n'
+      + '- Sectores infrarrepresentados: '+(missingSecs.join(', ')||'ninguno')+'\n\n'
+      + 'CICLO ECONÓMICO (Mar 2026):\n'
+      + '- Fed 4.25% en pausa · bajadas graduales previstas\n'
+      + '- Favorables: '+cycleCtx+'\n\n'
+      + 'TAREA: Sugiere exactamente 6 empresas que cumplan TODAS las reglas anteriores. '
+      + 'Para cada empresa explica en "why" qué dificultad temporal está sufriendo y por qué los fundamentales siguen intactos. '
+      + 'Incluye su capitalización (small/mid/large) y si el precio actual supone descuento vs su media histórica.\n\n'
+      + 'Responde SOLO en '+pLang+' con este JSON exacto (sin markdown ni texto fuera):\n'
       + '{"suggestions":['
-      + '{"ticker":"XXX","name":"Nombre empresa","sector":"sector","why":"1-2 frases por qué encaja en ESTA cartera ahora","yld":0.0,"dg5":0.0,"payout":0,"streak":0,"moat":0,"cycle_fit":"alta/media/baja","urgency":"INICIAR/CONSIDERAR/WATCHLIST"}'
-      + '],"portfolio_gap":"1 frase sobre el mayor gap de esta cartera","cycle_advice":"1 frase sobre qué sector priorizar ahora con el ciclo actual"}';
+      + '{"ticker":"XXX","name":"Nombre","sector":"sector","cap":"small|mid|large","why":"qué problema temporal tiene y por qué los fundamentales siguen intactos","discount":"descuento estimado vs media histórica o fair value","yld":0.0,"dg5":0.0,"payout":0,"streak":0,"moat":0,"urgency":"INICIAR/CONSIDERAR/WATCHLIST"}'
+      + '],"portfolio_gap":"gap principal de la cartera","cycle_advice":"sector a priorizar en el ciclo actual"}';
 
     const res = await fetch(WORKER_URL + '/ai', {
       method: 'POST',
@@ -2810,6 +2944,9 @@ function _renderDgiSuggestions(a, totalVal, avgYield, sectorStr){
       + '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">'
       + '<span style="font-family:DM Mono,monospace;font-size:15px;font-weight:700;color:#f1f5f9">'+s.ticker+'</span>'
       + '<span style="font-size:11px;color:#475569">'+s.name+'</span>'
+      + '<span style="font-size:9px;color:#334155;font-family:DM Mono,monospace">'+s.sector+'</span>'
+      + (s.cap?'<span style="font-size:9px;background:'+({'small':'#A78BFA','mid':'#60A5FA','large':'#34D399'}[s.cap]||'#64748B')+'15;color:'+({'small':'#A78BFA','mid':'#60A5FA','large':'#34D399'}[s.cap]||'#64748B')+';border:1px solid '+({'small':'#A78BFA','mid':'#60A5FA','large':'#34D399'}[s.cap]||'#64748B')+'33;border-radius:3px;padding:1px 6px;font-family:DM Mono,monospace">'+s.cap+' cap</span>':'')
+      + (s.discount?'<span style="font-size:9px;background:#F8717115;color:#F87171;border:1px solid #F8717133;border-radius:3px;padding:1px 6px;font-family:DM Mono,monospace">📉 '+s.discount+'</span>':'')
       + '<span style="margin-left:auto;font-size:9px;font-weight:700;font-family:DM Mono,monospace;padding:2px 9px;border-radius:100px;background:'+uc+'18;color:'+uc+';border:1px solid '+uc+'33">'+s.urgency+'</span>'
       + '</div>'
       + '</div></div>'
@@ -3392,7 +3529,7 @@ function renderAll(){
   // Refresh the currently active view so edits are reflected immediately
   const v=activeView;
   if(v==='sector'){if(hasPortfolioData()){renderSectorTabs();renderSectorCards();}else{var _vs=document.getElementById('view-sector');if(_vs)_vs.innerHTML=emptyPortfolioCTA('◈','','');}}
-  else if(v==='etf'){renderEtfTabs();renderEtfCards();}
+  else if(v==='etf'){if(hasPortfolioData()){initEtfView();renderEtfTabs();}renderEtfCards();}
   else if(v==='edit')renderEditCards();
   else if(v==='rc')renderRC();
   else if(v==='div')renderDiv();
@@ -3589,16 +3726,23 @@ function renderContrarian(){
   var el=document.getElementById('view-contrarian');if(!el)return;
   if(!hasPortfolioData()){
     el.innerHTML='<div style="background:#0F1624;border:1px solid #1A2235;border-radius:12px;padding:36px 28px;text-align:center">'
-      +'<div style="font-size:36px;margin-bottom:14px">&#x1F504;</div>'
-      +'<div style="font-size:14px;font-weight:700;color:#22D3EE;margin-bottom:8px">Teoria de la Opinion Contraria</div>'
+      +'<div style="font-size:36px;margin-bottom:14px">🔄</div>'
+      +'<div style="font-size:14px;font-weight:700;color:#22D3EE;margin-bottom:8px">Teoría de la Opinión Contraria</div>'
       +'<div style="font-size:12px;color:#475569;max-width:380px;margin:0 auto 20px;line-height:1.7">'
-      +'Importa tu cartera para descubrir empresas de alta calidad DGI penalizadas temporalmente.</div>'
-      +'<button onclick="goEdit()" style="background:linear-gradient(135deg,#0D2218,#0A1520);border:1px solid #4ADE8044;color:#4ADE80;border-radius:100px;padding:10px 24px;font-size:12px;font-weight:700;cursor:pointer">Importar mi cartera</button>'
+      +'Importa tu cartera para descubrir empresas de alta calidad DGI penalizadas temporalmente por el mercado.</div>'
+      +'<button onclick="goEdit()" style="background:linear-gradient(135deg,#0D2218,#0A1520);border:1px solid #4ADE8044;color:#4ADE80;border-radius:100px;padding:10px 24px;font-size:12px;font-weight:700;cursor:pointer;font-family:\'DM Sans\',sans-serif">Importar mi cartera</button>'
       +'</div>';
     return;
   }
   var mm=getMasterMap?getMasterMap():{};
   var universe=(typeof DGI_SCORED!=='undefined'&&DGI_SCORED&&DGI_SCORED.length>0)?DGI_SCORED:[];
+  var SIG_TYPES={
+    pnl:    {icon:'📉',label:'Precio deprimido',    color:'#F87171',bg:'#F8717115'},
+    yield:  {icon:'💰',label:'Yield históricamente alto',color:'#F59E0B',bg:'#F59E0B15'},
+    cycle:  {icon:'🔄',label:'Presión cíclica',      color:'#22D3EE',bg:'#22D3EE15'},
+    verdict:{icon:'⚖️',label:'Consenso conservador', color:'#A78BFA',bg:'#A78BFA15'},
+    dgi:    {icon:'🏆',label:'Calidad DGI subvalorada',color:'#4ADE80',bg:'#4ADE8015'}
+  };
   var candidates=[];
   universe.forEach(function(d){
     var base=mm[d.t]||{},ov=snapshotOverrides[d.t]||{},p=port[d.t];
@@ -3610,68 +3754,117 @@ function renderContrarian(){
     var verdict=d.verdict||base.verdict||'';
     var sector=d.sec||base.sec||'portfolio';
     var cycInfo=(typeof SECTOR_CYCLE!=='undefined')?SECTOR_CYCLE[sector]:null;
-    var signals=[];
-    if(pnlPct!==null&&pnlPct<-5)signals.push({icon:'down',text:'P&L '+pnlPct.toFixed(1)+'% — precio deprimido'});
-    if(verdict==='VIGILAR'||verdict==='MANTENER')signals.push({icon:'warn',text:'Veredicto conservador pese a fundamentales solidos'});
-    if(cycInfo&&cycInfo.score<55)signals.push({icon:'cycle',text:'Sector en fase '+cycInfo.phase+' — presion ciclica temporal'});
     var yld=+(ov.yld!==undefined?ov.yld:(base.yld||0));
-    if(yld>4.0&&streak>=15)signals.push({icon:'yield',text:'Yield historicamente elevado — precio comprimido'});
+    var signals=[];
+    if(pnlPct!==null&&pnlPct<-5)signals.push({type:'pnl',text:'P&L '+pnlPct.toFixed(1)+'% — precio deprimido bajo coste'});
+    if(verdict==='VIGILAR'||verdict==='MANTENER')signals.push({type:'verdict',text:'Veredicto conservador pese a fundamentales sólidos'});
+    if(cycInfo&&cycInfo.score<55)signals.push({type:'cycle',text:'Sector en fase '+cycInfo.phase+' — presión cíclica temporal'});
+    if(yld>4.0&&streak>=15)signals.push({type:'yield',text:'Yield históricamente elevado · Precio comprimido'});
+    if((d.total||0)>=75&&yld>=2.5&&streak>=20)signals.push({type:'dgi',text:'Puntuación DGI elite ('+d.total+') con yield atractivo'});
     if(signals.length===0)return;
+    var contractScore=(d.total||0)+signals.length*10+(pnlPct!==null&&pnlPct<-10?15:0)+(yld>5?8:0)+(streak>25?10:0);
     candidates.push({ticker:d.t,name:base.n||d.t,dgiScore:d.total,
-      yld:+yld.toFixed(2),dg:+(+dg).toFixed(1),payout:+py.toFixed(0),
+      yld:yld,dg:+(+dg).toFixed(1),payout:+py.toFixed(0),
       streak:streak,moat:base.moat||3,sector:sector,signals:signals,
-      pnlPct:pnlPct,inPort:!!(p&&p.s>0),
-      score:(d.total||0)+signals.length*12+(pnlPct!==null&&pnlPct<-10?15:0)});
+      pnlPct:pnlPct,inPort:!!(p&&p.s>0),score:contractScore});
   });
   candidates.sort(function(a,b){return b.score-a.score;});
   var top=candidates.slice(0,15);
-  var sc=function(n){return n>=80?'#34D399':n>=65?'#f59e0b':n>=50?'#f97316':'#ef4444';};
+  var sc=function(n){return n>=80?'#34D399':n>=65?'#F59E0B':n>=50?'#F97316':'#EF4444';};
   var star=function(n){var m=Math.max(0,Math.min(5,Math.floor(+n||0)));return '★'.repeat(m)+'☆'.repeat(5-m);};
-  var out='<div style="background:#080c18;border:1px solid #22d3ee22;border-radius:12px;padding:16px 20px;margin-bottom:20px">'
-    +'<div style="font-size:15px;font-weight:700;color:#F1F5F9;margin-bottom:6px">Teoria de la Opinion Contraria</div>'
-    +'<div style="font-size:12px;color:#64748B;line-height:1.8">'
-    +'Formulada por <b style="color:#94A3B8">Humphrey B. Neill</b> (The Art of Contrary Thinking, 1954) y desarrollada por <b style="color:#94A3B8">David Dreman</b> (1982). '
-    +'Cuando el mercado penaliza unanimemente un activo de calidad, ese consenso marca el suelo. '
-    +'En DGI: <b style="color:#C4B5FD">comprar aristocratas del dividendo cuando el mercado los castiga temporalmente</b>.</div>'
-    +'</div>';
+
+  // Header
+  var out='<div class="ctr-header">'
+    +'<div class="ctr-header-ttl">🔄 Teoría de la Opinión Contraria'
+    +'<span style="font-size:9px;background:#22D3EE15;color:#22D3EE;border:1px solid #22D3EE33;border-radius:4px;padding:2px 8px;font-family:\'DM Mono\',monospace;font-weight:700">'+top.length+' candidatos</span>'
+    +'</div>'
+    +'<div class="ctr-header-desc">'
+    +'Formulada por <strong style="color:#94A3B8">Humphrey B. Neill</strong> (The Art of Contrary Thinking, 1954) y desarrollada por <strong style="color:#94A3B8">David Dreman</strong>. '
+    +'Cuando el mercado penaliza unánimemente un activo de calidad, ese consenso marca el suelo. '
+    +'En DGI: <strong style="color:#C4B5FD">comprar aristócratas del dividendo cuando el mercado los castiga temporalmente</strong>. '
+    +'Identificamos la señal concreta que genera el descuento: precio, ciclo, yield o sentimiento.'
+    +'</div></div>';
+
   if(top.length===0){
-    out+='<div style="text-align:center;padding:24px;color:#475569">No hay candidatos con los datos actuales.</div>';
-  }else{
-    var inP=top.filter(function(c){return c.inPort;}).length;
-    var dgiM=Math.round(top.reduce(function(a,c){return a+(c.dgiScore||0);},0)/top.length);
-    out+='<div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">'
-      +'<div class="kpi"><div class="kpi-label">CANDIDATOS</div><div class="kpi-val" style="color:#22D3EE">'+top.length+'</div><div class="kpi-sub">oportunidades contrarias</div></div>'
-      +'<div class="kpi"><div class="kpi-label">EN CARTERA</div><div class="kpi-val" style="color:#A78BFA">'+inP+'</div><div class="kpi-sub">ya tienes posicion</div></div>'
-      +'<div class="kpi"><div class="kpi-label">DGI MEDIO</div><div class="kpi-val" style="color:#F59E0B">'+dgiM+'</div><div class="kpi-sub">score calidad</div></div></div>';
-    out+='<div style="display:flex;flex-direction:column;gap:10px">';
-    top.forEach(function(c){
-      var cycI=(typeof SECTOR_CYCLE!=='undefined')?SECTOR_CYCLE[c.sector]:null;
-      var cCol=cycI&&(typeof CYCLE_PHASES!=='undefined')?(CYCLE_PHASES[cycI.phase]||{}).color||'#64748B':'#64748B';
-      out+='<div style="background:#0F1624;border:1px solid #1A2235;border-radius:10px;padding:14px 16px;border-left:3px solid '+(c.inPort?'#22D3EE':'#334155')+'">'
-        +'<div style="display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap;margin-bottom:8px">'
-        +'<div style="flex:1;min-width:160px">'
-        +'<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:3px">'
-        +'<span style="font-family:DM Mono,monospace;font-size:15px;font-weight:700;color:#F1F5F9">'+c.ticker+'</span>'
-        +'<span style="font-size:10px;color:#475569">'+c.name+'</span>'
-        +(c.inPort&&c.pnlPct!==null?'<span style="font-size:9px;background:#22D3EE12;color:#22D3EE;border:1px solid #22D3EE33;border-radius:4px;padding:1px 7px">'+c.pnlPct.toFixed(1)+'%</span>':'')
-        +'</div>'
-        +'<span style="font-size:9px;background:#1A2235;color:#64748B;border-radius:4px;padding:2px 7px;font-family:DM Mono,monospace">'+c.sector+'</span>'
-        +(cycI?'<span style="font-size:9px;background:'+cCol+'12;color:'+cCol+';border:1px solid '+cCol+'25;border-radius:4px;padding:2px 7px;font-family:DM Mono,monospace">'+cycI.phase+'</span>':'')
-        +'</div>'
-        +'<div style="text-align:center;background:#080C18;border:1px solid #1A2235;border-radius:8px;padding:8px 12px;flex-shrink:0">'
-        +'<div style="font-size:18px;font-weight:700;color:'+sc(c.dgiScore||0)+';font-family:DM Mono,monospace">'+(c.dgiScore||0)+'</div>'
-        +'<div style="font-size:8px;color:#334155;font-family:DM Mono,monospace">DGI</div></div></div>'
-        +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">'
-        +[['YIELD',c.yld+'%'],['DG5',c.dg+'%'],['PAYOUT',c.payout+'%'],['RACHA',c.streak+'a'],['MOAT',star(c.moat)]]
-          .map(function(s){return '<div style="background:#080C18;border:1px solid #1A2235;border-radius:5px;padding:3px 8px"><div style="font-size:8px;color:#334155;font-family:DM Mono,monospace">'+s[0]+'</div><div style="font-size:11px;font-weight:700;color:#94A3B8;font-family:DM Mono,monospace">'+s[1]+'</div></div>';}).join('')+'</div>'
-        +'<div style="display:flex;flex-direction:column;gap:4px;font-size:11px;color:#64748B">'
-        +c.signals.map(function(s){return '<div>'+s.text+'</div>';}).join('')+'</div>'
-        +'</div>';
-    });
-    out+='</div>';
+    out+='<div style="text-align:center;padding:32px;background:#0F1624;border:1px solid #1A2235;border-radius:10px;color:#475569;font-size:12px">No hay candidatos con los datos actuales. Importa más datos o amplía el universo.</div>';
+    el.innerHTML=out; return;
   }
+
+  // KPIs resumen
+  var inP=top.filter(function(c){return c.inPort;}).length;
+  var dgiMed=Math.round(top.reduce(function(a,c){return a+(c.dgiScore||0);},0)/top.length);
+  var yldMed=+(top.reduce(function(a,c){return a+c.yld;},0)/top.length).toFixed(2);
+  out+='<div class="ctr-kpis">'
+    +'<div class="kpi"><div class="kpi-label">CANDIDATOS</div><div class="kpi-val" style="color:#22D3EE">'+top.length+'</div><div class="kpi-sub">oportunidades contrarias</div></div>'
+    +'<div class="kpi"><div class="kpi-label">EN CARTERA</div><div class="kpi-val" style="color:#A78BFA">'+inP+'</div><div class="kpi-sub">ya tienes posición</div></div>'
+    +'<div class="kpi"><div class="kpi-label">DGI MEDIO</div><div class="kpi-val" style="color:#F59E0B">'+dgiMed+'</div><div class="kpi-sub">calidad del universo</div></div>'
+    +'<div class="kpi"><div class="kpi-label">YIELD MEDIO</div><div class="kpi-val" style="color:#4ADE80">'+yldMed+'%</div><div class="kpi-sub">yield candidatos</div></div>'
+    +'</div>';
+
+  // Leyenda de señales
+  out+='<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;padding:10px 14px;background:#080C18;border:1px solid #1A2235;border-radius:8px">'
+    +'<span style="font-size:9px;color:#334155;font-family:\'DM Mono\',monospace;margin-right:4px;align-self:center">SEÑALES:</span>';
+  Object.keys(SIG_TYPES).forEach(function(k){
+    var st=SIG_TYPES[k];
+    out+='<span class="ctr-signal-badge" style="background:'+st.bg+';color:'+st.color+';border:1px solid '+st.color+'33">'+st.icon+' '+st.label+'</span>';
+  });
+  out+='</div>';
+
+  // Tarjetas candidatos
+  out+='<div style="display:flex;flex-direction:column;gap:8px">';
+  top.forEach(function(c){
+    var cycI=(typeof SECTOR_CYCLE!=='undefined')?SECTOR_CYCLE[c.sector]:null;
+    var cCol=cycI&&(typeof CYCLE_PHASES!=='undefined')?(CYCLE_PHASES[cycI.phase]||{}).color||'#64748B':'#64748B';
+    var secMeta=SECTOR_META[c.sector]||{};
+    out+='<div class="ctr-card" style="border-left:3px solid '+(c.inPort?'#22D3EE':'#334155')+'">'
+      +'<div class="ctr-card-top">'
+      +'<div style="flex:1;min-width:160px">'
+      +'<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px">'
+      +'<span style="font-family:\'DM Mono\',monospace;font-size:15px;font-weight:700;color:#F1F5F9">'+c.ticker+'</span>'
+      +'<span style="font-size:11px;color:#475569">'+c.name+'</span>'
+      +(c.inPort&&c.pnlPct!==null
+        ?'<span style="font-size:9px;background:'+(c.pnlPct>=0?'#4ADE8012':'#F8717112')+';color:'+(c.pnlPct>=0?'#4ADE80':'#F87171')+';border:1px solid '+(c.pnlPct>=0?'#4ADE8033':'#F8717133')+';border-radius:4px;padding:1px 7px;font-family:\'DM Mono\',monospace">'+(c.pnlPct>=0?'+':'')+c.pnlPct.toFixed(1)+'%</span>':'')
+      +(c.inPort?'<span style="font-size:9px;background:#22D3EE12;color:#22D3EE;border:1px solid #22D3EE33;border-radius:4px;padding:1px 6px;font-family:\'DM Mono\',monospace">EN CARTERA</span>':'')
+      +'</div>'
+      +'<div style="display:flex;gap:5px;flex-wrap:wrap">'
+      +'<span style="font-size:9px;background:#1A2235;color:#64748B;border-radius:4px;padding:2px 7px;font-family:\'DM Mono\',monospace">'+(secMeta.icon||'')+' '+(secMeta.name||c.sector)+'</span>'
+      +(cycI?'<span style="font-size:9px;background:'+cCol+'12;color:'+cCol+';border:1px solid '+cCol+'25;border-radius:4px;padding:2px 7px;font-family:\'DM Mono\',monospace">'+cycI.phase+'</span>':'')
+      +'</div></div>'
+      // Score box
+      +'<div class="ctr-score-box">'
+      +'<div class="ctr-score-val" style="color:'+sc(c.dgiScore||0)+'">'+(c.dgiScore||0)+'</div>'
+      +'<div class="ctr-score-lbl">DGI</div>'
+      +'<div style="font-size:9px;color:#F59E0B;margin-top:3px">'+star(c.moat)+'</div>'
+      +'<div style="font-size:7px;color:#334155;font-family:\'DM Mono\',monospace">moat</div>'
+      +'</div></div>'
+      // Stats
+      +'<div class="ctr-stats">'
+      +[['YIELD',c.yld+'%'],['DG5',c.dg+'%'],['PAYOUT',c.payout+'%'],['RACHA',c.streak+' a']]
+        .map(function(s){return '<div class="ctr-stat"><div class="ctr-stat-lbl">'+s[0]+'</div><div class="ctr-stat-val">'+s[1]+'</div></div>';}).join('')
+      +'</div>'
+      // Señales con icono tipo
+      +'<div class="ctr-signals-list">'
+      +c.signals.map(function(sig){
+        var st=SIG_TYPES[sig.type]||SIG_TYPES.verdict;
+        return '<div class="ctr-sig-row">'
+          +'<div class="ctr-sig-icon" style="background:'+st.bg+';border:1px solid '+st.color+'33">'+st.icon+'</div>'
+          +'<span>'+sig.text+'</span></div>';
+      }).join('')
+      +'</div>'
+      +'</div>';
+  });
+  out+='</div>';
+
+  // Bloque IA
+  out+='<div class="ctr-ai-box"><div class="ctr-ai-hdr">🤖 Análisis IA · Opinión Contraria</div>'
+    +'<div class="ctr-ai-content">';
+  if(_aiAnalysis&&_aiAnalysis.contrarian_insight){
+    out+=_aiAnalysis.contrarian_insight;
+  }else{
+    out+='<span style="color:#334155">El análisis de IA aparecerá aquí cuando ejecutes el análisis completo de cartera.</span>';
+  }
+  out+='</div></div>';
   el.innerHTML=out;
-  injectAIBadge('view-contrarian',_aiAnalysis&&_aiAnalysis.contrarian_insight);
 }
 
 
@@ -3736,8 +3929,10 @@ function renderEditCards(){
 // ── SEARCH ──
 
 function renderLegend(){
+  var _leg=document.getElementById('legend');
+  if(!_leg) return;
   const its=[["COMPRAR","#00D4FF"],["OPORTUNIDAD","#F97316"],["CRECIMIENTO","#7C3AED"],["MANTENER","#FFB800"],["VIGILAR","#94A3B8"],["EVITAR","#EF4444"]];
-  document.getElementById('legend').innerHTML=`<span class="legend-lbl">LEYENDA:</span>${its.map(([v,c])=>`<span class="vb" style="background:${c}22;color:${c};border:1px solid ${c}55">${VI[v]} ${v}</span>`).join('')}<span style="margin-left:8px;font-size:10px;color:#2D3F5A"><span class="est-badge">★ precio estimado</span> ETFs sin precio real disponible</span>`;
+  _leg.innerHTML='<span class="legend-lbl">LEYENDA:</span>'+its.map(function(_iv){var v=_iv[0],c=_iv[1];return '<span class="vb" style="background:'+c+'22;color:'+c+';border:1px solid '+c+'55">'+(VI[v]||'')+' '+v+'</span>';}).join('')+'<span style="margin-left:8px;font-size:10px;color:#2D3F5A"><span class="est-badge">★ precio estimado</span> sin precio real</span>';
 }
 
 // ── SECTOR VIEW INIT ──
@@ -3780,14 +3975,17 @@ const CURRENT_MACRO = {
 
 
 function renderEtfTabs(){
-  const el=document.getElementById('view-etf');
-  if(!el) return;
-  const _st=el.querySelector('.sub-tabs');
-  if(!_st) return;
-  _st.innerHTML=etfCategories.map(c=>{
-    const ia=c.id===activeEtfCat;
-    const tv=c.etfs.reduce((a,e)=>{const d=port[e.ticker];return a+(d?d.s*(d.p||0):e.shares*e.price);},0);
-    return`<button class="sub-tab" onclick="setEtfCat('${c.id}')" style="${ia?`background:${c.color}22;border-color:${c.color}55;color:${c.color}`:''}">${c.icon} ${c.name}</button>`;
+  var st=document.getElementById('etf-subtabs');
+  if(!st){ initEtfView(); st=document.getElementById('etf-subtabs'); }
+  if(!st) return;
+  var cats=[
+    {id:'acc',  name:'📈 Acumulación', color:'#3B82F6', badge:ETF_UNIVERSE.acc.length},
+    {id:'dist', name:'💰 Distribución',color:'#F59E0B', badge:ETF_UNIVERSE.dist.length},
+  ];
+  st.innerHTML=cats.map(function(c){
+    var ia=c.id===activeEtfCat;
+    var bdg='<span style="background:#1E293B;color:#475569;border-radius:10px;padding:1px 6px;font-size:10px;font-family:DM Mono,monospace;margin-left:4px">'+c.badge+'</span>';
+    return '<button class="sub-tab" onclick="setEtfCat(\''+c.id+'\')" style="'+(ia?'background:'+c.color+'22;border-color:'+c.color+'55;color:'+c.color+'':'')+'">'+c.name+bdg+'</button>';
   }).join('');
 }
 
@@ -3820,7 +4018,7 @@ function setView(v){
     Object.assign(b.style,id===v?{background:VCOLORS[i]+'22',borderColor:`${VCOLORS[i]}55 ${VCOLORS[i]}55 transparent`,borderBottom:`2px solid ${VCOLORS[i]}`,color:VCOLORS[i]}:{background:'transparent',borderColor:'transparent',borderBottom:'2px solid transparent',color:'#64748B'});
   });
   if(v==='sector'){if(hasPortfolioData()){renderSectorTabs();renderSectorCards();}else{var _vs=document.getElementById('view-sector');if(_vs)_vs.innerHTML=emptyPortfolioCTA('◈','','');}}
-  if(v==='etf'){if(hasPortfolioData()){renderEtfTabs();renderEtfCards();}else{var _ve=document.getElementById('view-etf');if(_ve)_ve.innerHTML=emptyPortfolioCTA('📦','','');}}
+  if(v==='etf'){if(hasPortfolioData()){initEtfView();renderEtfTabs();}renderEtfCards();}
   if(v==='edit')renderEditCards();
   if(v==='rc')renderRC();
   if(v==='div')renderDiv();
@@ -3829,6 +4027,8 @@ function setView(v){
   if(v==='opp')renderOpp();
   if(v==='about')renderAbout();
   if(v==='contrarian')renderContrarian();
+  if(v==='dashboard')renderDashboard();
+  if(v==='recursos')renderRecursos();
   renderLegend();
 }
 
@@ -3839,100 +4039,156 @@ function setEtfCat(id){activeEtfCat=id;renderEtfTabs();renderEtfCards();}
 
 function setSort(s){sortBy=s;renderSectorCards();}
 
-var VT=['edit','opp','rc','sector','etf','div','audit','dgi','contrarian','about'];
-var VCOLORS=['#60A5FA','#7C3AED','#34D399','#64748B','#3B82F6','#10B981','#EF4444','#F59E0B','#22D3EE'];
+var VT=['dashboard','edit','opp','rc','sector','etf','div','audit','dgi','contrarian','recursos','about'];
+var VCOLORS=['#60A5FA','#7C3AED','#34D399','#64748B','#3B82F6','#10B981','#EF4444','#F59E0B','#22D3EE','#4ADE80','#A78BFA','#64748B'];
 
+
+function _detectUserEtfs(){
+  // SAFE detection: only tickers explicitly in KNOWN_ETF_TICKERS whitelist count as ETFs.
+  // This avoids false positives like GEST.ES, VOW.DE, VRLA.FR (which are stocks, not ETFs).
+  return Object.keys(port).filter(function(k){
+    var d=port[k]; if(!d||!d.s||d.s<=0) return false;
+    return KNOWN_ETF_TICKERS.has(k);
+  });
+}
 
 function renderEtfCards(){
-  if(!hasPortfolioData()){var _etfContent=document.querySelector('#view-etf .section-content')||document.getElementById('view-etf');if(_etfContent)_etfContent.innerHTML=emptyPortfolioCTA('','','');return;}
-  const cat=etfCategories.find(c=>c.id===activeEtfCat);
-  const el=document.getElementById('view-etf');
-  // Detectar ETFs del usuario que NO están en etfCategories
-  // (los tickers EUR del portfolio que no tienen datos dividendo: VUSA.DE, QDVE.DE, etc.)
-  const knownEtfTickers = new Set(etfCategories.flatMap(c=>c.etfs.map(e=>e.ticker)));
-  const userEtfs = Object.keys(port).filter(function(k){
-    var d = port[k];
-    if(!d || !d.s || d.s<=0) return false;
-    if(knownEtfTickers.has(k)) return false;
-    // Es un ETF si no tiene datos de dividendo en snapshotOverrides Y su moneda es EUR/GBP
-    // O si el ticker tiene extensión de mercado (.DE, .GB, .FR, etc.)
-    return /\./.test(k) || d.c==='EUR' || d.c==='GBP';
-  });
-  let ti=0,tv=0;
-  cat.etfs.forEach(e=>{const d=port[e.ticker]||{s:e.shares,i:e.invested,p:e.price};ti+=d.i;tv+=d.s*(d.p||0);});
-  const pnl=tv-ti,pp=ti>0?pnl/ti*100:0;
-  el.querySelector('.section-icon-box').textContent=cat.icon;
-  el.querySelector('.section-icon-box').style=`width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px;background:${cat.color}22;border:1px solid ${cat.color}44`;
-  el.querySelector('.section-title').textContent=cat.name;
-  el.querySelector('.section-meta').textContent= ti > 0 ? `${cat.etfs.length} ETFs · Invertido: ${ff(ti,'')}€ · Valor est: ${ff(tv,'')}€ · P&L: ${fpnl(pnl)} (${fp(pp)})` : `${cat.etfs.length} ${t('etf_ref_label')}`;
-  
-  // Render ETFs del usuario (los que tiene en cartera fuera del universo)
-  var userEtfHtml = '';
-  if(userEtfs.length > 0){
-    var totalEurInv = 0, totalEurVal = 0;
-    var etfRows = userEtfs.map(function(k){
-      var d = port[k];
-      var v = d.s*(d.p||0), pnl = v-d.i, pp = d.i>0?pnl/d.i*100:0;
-      totalEurInv += d.i; totalEurVal += v;
-      return '<div class="card" style="border-left-color:#64748B">'
-        +'<div class="rank-box" style="font-size:10px">ETF</div>'
-        +'<div><div class="ticker">'+k+'</div>'
-        +'<div class="company">'+d.c+' · '+d.s.toFixed(3)+' shares</div></div>'
-        +'<div class="card-body"><div class="pos-row">'
-        +'<div class="ps"><div class="pl">INVERTIDO</div><div class="pv" style="color:#94A3B8">'+d.i.toFixed(0)+' '+d.c+'</div></div>'
-        +'<div class="ps"><div class="pl">PRECIO</div><div class="pv" style="color:#64748B">'+(d.p||0).toFixed(2)+'</div></div>'
-        +'<div class="ps"><div class="pl">VALOR EST.</div><div class="pv" style="color:#F1F5F9">'+v.toFixed(0)+' '+d.c+'</div></div>'
-        +'<div class="ps"><div class="pl">P&L</div><div class="pv" style="color:'+(pp>=0?'#34D399':'#F87171')+'">'+(pp>=0?'+':'')+pp.toFixed(1)+'%</div></div>'
-        +'</div></div>'
-        +'<div class="verdict-col"><button class="edit-btn" onclick="openEdit(&quot;'+k+'&quot;)">✎</button></div>'
-        +'</div>';
-    }).join('');
-    var eurPnl = totalEurVal-totalEurInv, eurPp = totalEurInv>0?eurPnl/totalEurInv*100:0;
-    userEtfHtml = '<div style="background:#0A1015;border:1px solid #4ADE8022;border-radius:9px;padding:12px 14px;margin-bottom:14px">'
-      +'<div style="font-size:10px;color:#4ADE80;font-family:DM Mono,monospace;letter-spacing:.1em;margin-bottom:10px">TUS ETFs E ÍNDICES</div>'
-      +'<div style="display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap">'
-      +'<div class="kpi" style="min-width:100px"><div class="kpi-label">POSICIONES</div><div class="kpi-val" style="color:#F1F5F9">'+userEtfs.length+'</div></div>'
-      +'<div class="kpi" style="min-width:100px"><div class="kpi-label">INVERTIDO</div><div class="kpi-val" style="color:#94A3B8">'+totalEurInv.toFixed(0)+'</div></div>'
-      +'<div class="kpi" style="min-width:100px"><div class="kpi-label">P&L</div><div class="kpi-val" style="color:'+(eurPp>=0?'#34D399':'#F87171')+'">'+(eurPp>=0?'+':'')+eurPp.toFixed(1)+'%</div></div>'
+  var body=document.getElementById('etf-body');
+  if(!body){ initEtfView(); renderEtfTabs(); body=document.getElementById('etf-body'); }
+  if(!body) return;
+
+  // ── Sin cartera: mostrar CTA igual que el resto de pestañas ──
+  if(!hasPortfolioData()){
+    var etfViewEl=document.getElementById('view-etf');
+    if(etfViewEl) etfViewEl.innerHTML=emptyPortfolioCTA('📦','','');
+    return;
+  }
+
+  var iconEl =document.getElementById('etf-icon');
+  var titleEl=document.getElementById('etf-title');
+  var metaEl =document.getElementById('etf-meta');
+
+  var universe = activeEtfCat==='acc' ? ETF_UNIVERSE.acc : ETF_UNIVERSE.dist;
+  var catColor  = activeEtfCat==='acc' ? '#3B82F6' : '#F59E0B';
+  var catLabel  = activeEtfCat==='acc' ? 'Acumulación' : 'Distribución';
+  var catIcon   = activeEtfCat==='acc' ? '📈' : '💰';
+  var catDesc   = activeEtfCat==='acc'
+    ? 'Reinvierte los dividendos automáticamente dentro del fondo. No hay pago periódico — el valor liquidativo crece. Máxima eficiencia fiscal en carteras de acumulación a largo plazo.'
+    : 'Distribuye los dividendos o cupones a tu cuenta periódicamente (mensual/trimestral/semestral). Genera flujo de caja real. Ideal como complemento a una cartera DGI de acciones.';
+
+  if(iconEl){ iconEl.textContent=catIcon; iconEl.style.cssText='width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px;background:'+catColor+'22;border:1px solid '+catColor+'44'; }
+  if(titleEl) titleEl.textContent='ETFs de '+catLabel;
+  if(metaEl) metaEl.textContent=universe.length+' ETFs · Universo de referencia curado · Precios orientativos';
+
+  // ── Mini dashboard — only owned ETFs in this category ──────
+  var ownedInCat = universe.filter(function(e){ var d=port[e.ticker]; return d&&d.s>0; });
+  var dashHtml = '';
+  if(ownedInCat.length>0){
+    var totInv=0, totVal=0;
+    ownedInCat.forEach(function(e){ var d=port[e.ticker]; totInv+=d.i; totVal+=d.s*(d.p||0); });
+    var totPnl=totVal-totInv, totPp=totInv>0?totPnl/totInv*100:0;
+    var pColor=totPnl>=0?'#34D399':'#F87171';
+    // Breakdown by category
+    var catGroups={};
+    ownedInCat.forEach(function(e){
+      var d=port[e.ticker], cat=e.cat||'global';
+      if(!catGroups[cat]) catGroups[cat]={inv:0,val:0,count:0,meta:ETF_CAT_META[cat]||{label:cat,icon:'📦'}};
+      catGroups[cat].inv+=(d.i||0); catGroups[cat].val+=d.s*(d.p||0); catGroups[cat].count++;
+    });
+    dashHtml='<div style="background:#080C18;border:1px solid '+catColor+'22;border-radius:10px;padding:14px 16px;margin-bottom:18px">'
+      +'<div style="font-size:9px;color:'+catColor+';font-family:DM Mono,monospace;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px">📊 Mis posiciones — ETFs de '+catLabel+'</div>'
+      +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">'
+      +'<div style="background:#0F1624;border:1px solid #1A2235;border-radius:8px;padding:10px 14px;min-width:110px"><div style="font-size:8px;color:#334155;font-family:DM Mono,monospace;text-transform:uppercase;margin-bottom:4px">Posiciones</div><div style="font-size:18px;font-weight:700;color:'+catColor+';font-family:DM Mono,monospace">'+ownedInCat.length+'</div></div>'
+      +'<div style="background:#0F1624;border:1px solid #1A2235;border-radius:8px;padding:10px 14px;min-width:110px"><div style="font-size:8px;color:#334155;font-family:DM Mono,monospace;text-transform:uppercase;margin-bottom:4px">Invertido</div><div style="font-size:18px;font-weight:700;color:#94A3B8;font-family:DM Mono,monospace">'+totInv.toFixed(0)+'</div></div>'
+      +'<div style="background:#0F1624;border:1px solid #1A2235;border-radius:8px;padding:10px 14px;min-width:110px"><div style="font-size:8px;color:#334155;font-family:DM Mono,monospace;text-transform:uppercase;margin-bottom:4px">Valor est.</div><div style="font-size:18px;font-weight:700;color:#F1F5F9;font-family:DM Mono,monospace">'+totVal.toFixed(0)+'</div></div>'
+      +'<div style="background:#0F1624;border:1px solid #1A2235;border-radius:8px;padding:10px 14px;min-width:110px"><div style="font-size:8px;color:#334155;font-family:DM Mono,monospace;text-transform:uppercase;margin-bottom:4px">P&amp;L</div><div style="font-size:18px;font-weight:700;font-family:DM Mono,monospace;color:'+pColor+'">'+(totPp>=0?'+':'')+totPp.toFixed(1)+'%</div></div>'
       +'</div>'
-      +'<div class="cards">'+etfRows+'</div>'
+      // Category breakdown chips
+      +'<div style="display:flex;gap:6px;flex-wrap:wrap">'
+      +Object.entries(catGroups).map(function(eg){
+          var cat=eg[0],g=eg[1],pp2=g.inv>0?(g.val-g.inv)/g.inv*100:0,pc2=pp2>=0?'#34D399':'#F87171';
+          return '<div style="background:#0F1624;border:1px solid #1A2235;border-radius:6px;padding:5px 10px;font-size:10px;font-family:DM Mono,monospace">'
+            +(g.meta.icon||'')+'<span style="color:#475569;margin:0 4px">'+g.meta.label+'</span>'
+            +'<span style="color:#94A3B8">'+g.inv.toFixed(0)+'</span>'
+            +'<span style="color:'+pc2+';margin-left:5px">'+(pp2>=0?'+':'')+pp2.toFixed(1)+'%</span>'
+            +'</div>';
+        }).join('')
+      +'</div>'
       +'</div>';
   }
 
-  const noEtfData = !cat.etfs.some(function(e){ var d=port[e.ticker]; return d&&d.s>0; });
-  const etfRefBanner = noEtfData ? `<div style="background:#0D1F2D;border:1px solid #3B82F633;border-radius:8px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px"><span style="font-size:15px">📋</span><div style="font-size:11px;color:#60A5FA;line-height:1.6">Universo de referencia — precios estimados. Sube tu CSV para ver tus posiciones reales.</div><button onclick="setView('edit')" style="flex-shrink:0;background:transparent;border:1px solid #3B82F644;color:#60A5FA;border-radius:6px;padding:4px 10px;font-family:'DM Mono',monospace;font-size:10px;font-weight:700;cursor:pointer">${t('about_cta_btn')}</button></div>` : '';
-  el.querySelector('.cards').innerHTML=userEtfHtml+etfRefBanner+cat.etfs.map(e=>{
-    const d=port[e.ticker]||{s:e.shares,i:e.invested,p:e.price,c:e.currency};
-    const v=d.s*(d.p||0),pnl=v-d.i,pp=d.i>0?pnl/d.i*100:0,col=pc(pp);
-    const isEst=!port[e.ticker]||true; // always show est badge for ETFs
-    const cur=e.currency;
-    return`<div class="etf-card" style="border-left-color:${cat.color}">
-      <div class="etf-icon" style="background:${cat.color}22;border:1px solid ${cat.color}44">${cat.icon}</div>
-      <div>
-        <div class="etf-ticker">${e.ticker} <span class="est-badge">★ precio estimado</span></div>
-        <div class="etf-name">${e.name}</div>
-        <div class="etf-type" style="background:${cat.color}22;color:${cat.color}">${e.type} · ${e.index}</div>
-        <div class="stats-row" style="margin-top:8px">
-          <div class="stat"><div class="sl">SHARES</div><div class="sv">${d.s.toFixed(3)}</div></div>
-          <div class="stat"><div class="sl">INVERTIDO</div><div class="sv">${d.i.toFixed(0)} ${cur}</div></div>
-          <div class="stat"><div class="sl">PRECIO EST.</div><div class="sv">${(d.p||0).toFixed(2)} ${cur}</div></div>
-          <div class="stat"><div class="sl">VALOR EST.</div><div class="sv" style="color:#F1F5F9">${v.toFixed(0)} ${cur}</div></div>
-          <div class="stat"><div class="sl">P&L EST.</div><div class="sv" style="color:${col}">${fpnl(pnl)} (${fp(pp)})</div></div>
-        </div>
-        <div class="note" style="margin-top:7px">${e.note}</div>
-      </div>
-      <div><button class="edit-btn" onclick="openEdit('${e.ticker}')">✎</button></div>
-    </div>`;
-  }).join('');
+  // ── Description banner ───────────────────────────────────
+  var descBanner='<div style="background:#0F1624;border:1px solid #1A2235;border-left:3px solid '+catColor+';border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:11px;color:#475569;line-height:1.65">'+catDesc+'</div>';
+
+  // ── Group universe by category ────────────────────────────
+  var groups={};
+  universe.forEach(function(e){
+    var cat=e.cat||'global';
+    if(!groups[cat]) groups[cat]=[];
+    groups[cat].push(e);
+  });
+
+  // ── Render cards per group ─────────────────────────────────
+  var cardsHtml='';
+  Object.entries(groups).forEach(function(ge){
+    var grpId=ge[0], grpEtfs=ge[1];
+    var grpMeta=ETF_CAT_META[grpId]||{label:grpId,icon:'📦'};
+    cardsHtml+='<div style="font-size:9px;color:#475569;letter-spacing:.13em;font-family:DM Mono,monospace;text-transform:uppercase;margin:16px 0 8px;display:flex;align-items:center;gap:6px">'
+      +grpMeta.icon+' '+grpMeta.label
+      +'<span style="flex:1;height:1px;background:#1A2235;margin-left:8px"></span>'
+      +'</div>';
+    cardsHtml+='<div class="cards">';
+    grpEtfs.forEach(function(e){
+      var d=port[e.ticker];
+      var hasPos=!!(d&&d.s>0);
+      var v=hasPos?d.s*(d.p||0):0;
+      var pnl=hasPos?v-d.i:0;
+      var pp=hasPos&&d.i>0?pnl/d.i*100:0;
+      var pColor=pp>=0?'#34D399':'#F87171';
+      var avgPx=hasPos&&d.s>0?d.i/d.s:0;
+      cardsHtml+='<div class="card" style="border-left:3px solid '+(hasPos?catColor:catColor+'33')+';grid-template-columns:auto 1fr auto">'
+        // Col 1: badge
+        +'<div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:44px">'
+        +'<div style="background:'+catColor+'15;border:1px solid '+catColor+'33;border-radius:6px;padding:3px 7px;font-size:9px;font-weight:700;color:'+catColor+';font-family:DM Mono,monospace">ETF</div>'
+        +(hasPos?'<div style="font-size:8px;background:'+catColor+'22;color:'+catColor+';border-radius:3px;padding:1px 5px;font-family:DM Mono,monospace;white-space:nowrap">★ mío</div>':'')
+        +'</div>'
+        // Col 2: info
+        +'<div>'
+        +'<div style="display:flex;align-items:baseline;gap:8px;margin-bottom:2px">'
+        +'<span style="font-family:DM Mono,monospace;font-size:13px;font-weight:700;color:#F1F5F9">'+e.ticker+'</span>'
+        +'<span style="font-size:9px;background:#1A2235;color:#475569;border-radius:3px;padding:1px 6px;font-family:DM Mono,monospace">TER '+e.ter+'</span>'
+        +(e.freq?'<span style="font-size:9px;background:#F59E0B15;color:#F59E0B;border-radius:3px;padding:1px 6px;font-family:DM Mono,monospace">'+e.freq+'</span>':'')
+        +(e.yld?'<span style="font-size:9px;background:#4ADE8015;color:#4ADE80;border-radius:3px;padding:1px 6px;font-family:DM Mono,monospace">yield '+e.yld+'</span>':'')
+        +'</div>'
+        +'<div style="font-size:11px;color:#94A3B8;margin-bottom:3px">'+e.name+'</div>'
+        +'<div style="font-size:10px;color:#334155;font-family:DM Mono,monospace;margin-bottom:6px">'+e.index+'</div>'
+        +'<div style="font-size:10px;color:#475569;line-height:1.5">'+e.desc+'</div>'
+        +(hasPos?'<div class="pos-row" style="margin-top:8px">'
+          +'<div class="ps"><div class="pl">INVERTIDO</div><div class="pv" style="color:#94A3B8">'+(d.i||0).toFixed(0)+' '+d.c+'</div></div>'
+          +'<div class="ps"><div class="pl">PRECIO MEDIO</div><div class="pv" style="color:#64748B">'+avgPx.toFixed(2)+'</div></div>'
+          +'<div class="ps"><div class="pl">PRECIO ACT.</div><div class="pv" style="color:#F1F5F9">'+(d.p||0).toFixed(2)+'</div></div>'
+          +'<div class="ps"><div class="pl">VALOR EST.</div><div class="pv" style="color:#F1F5F9">'+v.toFixed(0)+'</div></div>'
+          +'<div class="ps"><div class="pl">P&L</div><div class="pv" style="color:'+pColor+'">'+(pp>=0?'+':'')+pp.toFixed(1)+'%</div></div>'
+          +'</div>':'')
+        +'</div>'
+        // Col 3: edit
+        +'<div class="verdict-col"><button class="edit-btn" onclick="openEdit(\''+e.ticker+'\')">✎</button></div>'
+        +'</div>';
+    });
+    cardsHtml+='</div>';
+  });
+
+  body.innerHTML = dashHtml + descBanner + cardsHtml;
 }
 
+// ── EDIT VIEW ──
 // ── EDIT VIEW ──
 
 function handleSearch(q){
   const sq=q.trim().toLowerCase();
   document.getElementById('searchClear').style.display=q?'flex':'none';
   if(!sq){document.getElementById('search-results-view').classList.add('hidden');document.getElementById('searchCount').textContent='';showView(activeView);return;}
-  ['view-opp','view-rc','view-sector','view-etf','view-div','view-audit','view-dgi','view-edit','view-about'].forEach(id=>document.getElementById(id).classList.add('hidden'));
+  ['view-dashboard','view-opp','view-rc','view-sector','view-etf','view-div','view-audit','view-dgi','view-edit','view-contrarian','view-recursos','view-about'].forEach(id=>{const _e=document.getElementById(id);if(_e)_e.classList.add('hidden');});
   const ms=allStocks.filter(s=>s.ticker.toLowerCase().includes(sq)||s.name.toLowerCase().includes(sq)||s.sectorName.toLowerCase().includes(sq));
   const me=allEtfs.filter(e=>e.ticker.toLowerCase().includes(sq)||e.name.toLowerCase().includes(sq)||e.index.toLowerCase().includes(sq)||e.catName.toLowerCase().includes(sq));
   const tot=ms.length+me.length;
@@ -4006,22 +4262,17 @@ function deletePosition(){
 }
 
 // ── VIEW CONTROL ──
-var VT=['edit','opp','rc','sector','etf','div','audit','dgi'];
-var VCOLORS=['#60A5FA','#7C3AED','#34D399','#64748B','#3B82F6','#10B981','#EF4444','#F59E0B'];
 
 
 
 function showView(v){
-  // Ocultar explícitamente view-about si no es la vista activa
-  var _va=document.getElementById('view-about');
-  if(_va) _va.classList.add('hidden');
-  // Ocultar todas las vistas del array VT
-  VT.forEach(id=>{ const el=document.getElementById('view-'+id); if(el) el.classList.add('hidden'); });
-  // Mostrar solo la vista activa
-  var _vt=document.getElementById('view-'+v);
-  if(_vt) _vt.classList.remove('hidden');
-  var _sr=document.getElementById('search-results-view');
-  if(_sr) _sr.classList.add('hidden');
+  // Ocultar TODAS las vistas conocidas
+  ['dashboard','edit','opp','rc','sector','etf','div','audit','dgi','contrarian','recursos','about'].forEach(function(id){
+    var el=document.getElementById('view-'+id);if(el)el.classList.add('hidden');
+  });
+  // Mostrar solo la activa
+  var _vt=document.getElementById('view-'+v);if(_vt)_vt.classList.remove('hidden');
+  var _sr=document.getElementById('search-results-view');if(_sr)_sr.classList.add('hidden');
 }
 
 function toggleOwned(){
@@ -4048,7 +4299,7 @@ function toggleOwned(){
   const _xlsxStInit = document.getElementById('xlsxStatus');
   if(_csvStInit  && !_csvStInit.innerHTML)  _csvStInit.textContent  = lang==='en'?'No file · Ticker, Quantity, Cost, Currency':'Sin archivo · Ticker, Quantity, Cost, Currency';
   if(_xlsxStInit && !_xlsxStInit.innerHTML) _xlsxStInit.textContent = lang==='en'?'No file · Yield, DG%, Payout, Streak':'Sin archivo · Yield, DG%, Payout, Racha';    // show AI badge if data is loaded
-  setView('about');  // siempre empezar en about — no hay datos reales
+  setView('dashboard');  // boot — dashboard primero (muestra CTA si no hay datos)
   try{ if(!localStorage.getItem('hiq_welcomed')) setTimeout(showWelcome,500); }catch(e){}
 })();
 
@@ -4224,6 +4475,8 @@ function renderAbout(){
       <div style="font-family:'DM Mono',monospace;font-size:10px;color:#4ADE80;letter-spacing:.2em;margin-bottom:20px">${t('about_changelog_title')}</div>
       <div style="display:flex;flex-direction:column;gap:6px">
         ${[
+          ['v1.9','2026-03','v1.9 — Auditoría completa + ETF rediseñado','ETFs separados en Acumulación/Distribución · Dashboard mini por categoría · Universo ampliado con oro, plata, uranio, cobre · Detección ETF por whitelist (excluye acciones europeas) · DGI Simulator eliminado · Descubrir con IA mejorado (empresas sufriendo + filtro cap) · TypeError null guards · renderLegend fix'],
+          ['v1.8','2026-03','v1.8 — Dashboard + Recursos + Opinión Contraria','Tab Dashboard con 6 KPIs grandes y 5 gráficos Chart.js · Tab Recursos con macro live FRED + 8 herramientas curadas + 3 libros DGI · Opinión Contraria rediseñada con 5 tipos de señal · showView oculta correctamente las 12 pestañas · VT array unificado'],
           ['v1.7','2026-03','v1.7 — Estructura modular + Service Worker','Repo reorganizado por carpetas (harvest/) · Service Worker para actualizaciones silenciosas · Changelog independiente por app · Integración completa con IQ Suite launcher'],
           ['v1.6','2026-03','v1.6 — Estable: cartera vacía limpia','KPIs muestran guiones sin datos reales · About solo en su pestaña (fix IDs duplicados) · ETF sin crash (null-safe sub-tabs) · Guards hasPortfolioData en todos los renders · VT incluye about para ocultar correctamente'],
           ['v1.5','2026-03','v1.5 — Versión estable','Todas las secciones muestran CTA vacío sin datos reales (sin ejemplos) · Teoría de la Opinión Contraria en pestaña propia · Botón Análisis con IA (Groq) enriquece todas las pestañas con banners 🤖 sin popup · Privacidad total: sin persistencia en localStorage · Funciones JS restauradas y ordenadas · Guards hasPortfolioData en todos los renders · Startup siempre en pantalla de bienvenida'],
@@ -4291,7 +4544,7 @@ function renderAbout(){
   const _xlsxStInit = document.getElementById('xlsxStatus');
   if(_csvStInit  && !_csvStInit.innerHTML)  _csvStInit.textContent  = lang==='en'?'No file · Ticker, Quantity, Cost, Currency':'Sin archivo · Ticker, Quantity, Cost, Currency';
   if(_xlsxStInit && !_xlsxStInit.innerHTML) _xlsxStInit.textContent = lang==='en'?'No file · Yield, DG%, Payout, Streak':'Sin archivo · Yield, DG%, Payout, Racha';    // show AI badge if data is loaded
-  setView('about');  // siempre empezar en about — no hay datos reales
+  setView('dashboard');  // boot — dashboard primero (muestra CTA si no hay datos)
   try{ if(!localStorage.getItem('hiq_welcomed')) setTimeout(showWelcome,500); }catch(e){}
 })();
 
@@ -4451,14 +4704,269 @@ function renderHarvestAI(a, langPref, ctx) {
   const _xlsxStInit = document.getElementById('xlsxStatus');
   if(_csvStInit  && !_csvStInit.innerHTML)  _csvStInit.textContent  = lang==='en'?'No file · Ticker, Quantity, Cost, Currency':'Sin archivo · Ticker, Quantity, Cost, Currency';
   if(_xlsxStInit && !_xlsxStInit.innerHTML) _xlsxStInit.textContent = lang==='en'?'No file · Yield, DG%, Payout, Streak':'Sin archivo · Yield, DG%, Payout, Racha';    // show AI badge if data is loaded
-  setView('about');  // siempre empezar en about — no hay datos reales
+  setView('dashboard');  // boot — dashboard primero (muestra CTA si no hay datos)
   try{ if(!localStorage.getItem('hiq_welcomed')) setTimeout(showWelcome,500); }catch(e){}
 })();
 
 // ═══════════════════════════════════════════
 // ABOUT
-// ═══════════════════════════════════════════</script>
+// ═══════════════════════════════════════════
+// ABOUT
+// ═══════════════════════════════════════════
 
+// ═══════════════════════════════════════════
+// DASHBOARD v1.8
+// ═══════════════════════════════════════════
+var _dashCharts={};
+function dkpi2(lbl,val,sub,color){
+  return '<div style="background:#0F1624;border:1px solid #1A2235;border-radius:10px;padding:16px 18px">'
+    +'<div style="font-size:9px;color:#334155;letter-spacing:.13em;font-family:DM Mono,monospace;text-transform:uppercase;margin-bottom:6px">'+lbl+'</div>'
+    +'<div style="font-size:24px;font-weight:700;letter-spacing:-.02em;font-family:DM Mono,monospace;color:'+color+';margin-bottom:4px">'+val+'</div>'
+    +'<div style="font-size:10px;color:#475569;font-family:DM Mono,monospace;line-height:1.5">'+sub+'</div>'
+    +'</div>';
+}
+function renderDashboard(){
+  var el=document.getElementById('view-dashboard');if(!el)return;
+  if(!hasPortfolioData()){
+    el.innerHTML='<div style="background:#0F1624;border:1px solid #1A2235;border-radius:12px;padding:36px 28px;text-align:center">'
+      +'<div style="font-size:36px;margin-bottom:14px">\u{1F4CA}</div>'
+      +'<div style="font-size:14px;font-weight:700;color:#4ADE80;margin-bottom:8px">Dashboard de Cartera</div>'
+      +'<div style="font-size:12px;color:#475569;max-width:360px;margin:0 auto 20px;line-height:1.7">Importa tu cartera para ver gráficos de distribución sectorial, top dividendos e ingresos proyectados.</div>'
+      +'<button onclick="setView(\'edit\')" style="background:linear-gradient(135deg,#0D2218,#0A1520);border:1px solid #4ADE8044;color:#4ADE80;border-radius:100px;padding:10px 24px;font-size:12px;font-weight:700;cursor:pointer;font-family:\'DM Sans\',sans-serif">Importar mi cartera</button>'
+      +'</div>';
+    return;
+  }
+  Object.keys(_dashCharts).forEach(function(k){try{_dashCharts[k].destroy();}catch(e){}});
+  _dashCharts={};
+  var mm=getMasterMap?getMasterMap():{};
+  var tickers=Object.keys(port).filter(function(t){return port[t]&&port[t].s>0;});
+  var totalValue=0,totalInvested=0,totalAnnualDiv=0,pnlPos=0,pnlNeg=0;
+  var sectorMap={},topDivArr=[],yldBuckets=[0,0,0,0,0];
+  tickers.forEach(function(ticker){
+    var d=port[ticker],ov=snapshotOverrides[ticker]||{},base=mm[ticker]||{};
+    var price=d.p||0,shares=d.s||0,val=shares*price,inv=d.i||0;
+    totalValue+=val;totalInvested+=inv;
+    var pnl=val-inv;if(pnl>=0)pnlPos+=pnl;else pnlNeg+=pnl;
+    var yld=ov.yld!==undefined?ov.yld:(base.yld||0);
+    var annDiv=val*yld/100;totalAnnualDiv+=annDiv;
+    var sec=base.sec||'portfolio';sectorMap[sec]=(sectorMap[sec]||0)+val;
+    if(annDiv>0)topDivArr.push({ticker:ticker,annDiv:annDiv});
+    if(yld<1)yldBuckets[0]++;else if(yld<2)yldBuckets[1]++;else if(yld<4)yldBuckets[2]++;else if(yld<6)yldBuckets[3]++;else yldBuckets[4]++;
+  });
+  topDivArr.sort(function(a,b){return b.annDiv-a.annDiv;});
+  var top10=topDivArr.slice(0,10);
+  var gain=totalValue-totalInvested;
+  var gainPct=totalInvested>0?(gain/totalInvested*100):0;
+  var yoc=totalInvested>0?(totalAnnualDiv/totalInvested*100):0;
+  var secEntries=Object.entries(sectorMap).sort(function(a,b){return b[1]-a[1];});
+  var SC=['#4ADE80','#22D3EE','#A78BFA','#F59E0B','#F97316','#F87171','#60A5FA','#34D399','#EC4899','#64748B'];
+  var monthlyDivs=calcMonthlyDivs();
+  var monthlyTotals=monthlyDivs.map(function(m){return +m.total.toFixed(2);});
+  var maxMonth=Math.max.apply(null,monthlyTotals),minMonth=Math.min.apply(null,monthlyTotals);
+  var maxIdx=monthlyTotals.indexOf(maxMonth),minIdx=monthlyTotals.indexOf(minMonth);
+  var gainColor=gain>=0?'#4ADE80':'#F87171',gainIcon=gain>=0?'\u25b2':'\u25bc';
+  var dfmt=function(n){return Math.abs(n).toLocaleString('es',{maximumFractionDigits:0});};
+  var dkpi=function(lbl,val,sub,c){return '<div class="dash-kpi"><div class="dash-kpi-lbl">'+lbl+'</div><div class="dash-kpi-val" style="color:'+(c||'#F1F5F9')+'">'+val+'</div><div class="dash-kpi-sub">'+sub+'</div></div>';};
+  var drow=function(lbl,val){return '<div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1A2235;padding:5px 0"><span style="font-size:10px;color:#475569;font-family:\'DM Mono\',monospace">'+lbl+'</span><span style="font-size:11px;font-weight:700;color:#94A3B8;font-family:\'DM Mono\',monospace">'+val+'</span></div>';};
+  // ── Calcular Yield actual (sobre valor de mercado) ──────────────
+  var yieldActual=totalValue>0?(totalAnnualDiv/totalValue*100):0;
+  var pnlColor=gain>=0?'#4ADE80':'#F87171';
+
+  el.innerHTML=
+    '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:22px">'
+    +dkpi2('💰 Valor cartera','$'+dfmt(totalValue),'Precio mercado actual','#22D3EE','💰')
+    +dkpi2('📥 Capital invertido','$'+dfmt(totalInvested),tickers.length+' posiciones activas','#94A3B8','📥')
+    +dkpi2('📈 P&L no realizado',(gain>=0?'+ ':'- ')+'$'+dfmt(Math.abs(gain)),(gainPct>=0?'+':'')+gainPct.toFixed(1)+'% · Ganancia/pérdida latente no vendida',pnlColor,'📈')
+    +dkpi2('🌾 Renta anual est.','$'+dfmt(totalAnnualDiv),'$'+(totalAnnualDiv/12).toFixed(0)+'/mes proyectado','#F59E0B','🌾')
+    +dkpi2('📊 Yield actual',yieldActual.toFixed(2)+'%','Yield / valor mercado hoy','#A78BFA','📊')
+    +dkpi2('🌱 Yield on Cost',yoc.toFixed(2)+'%','Renta / capital invertido · obj. 4%','#4ADE80','🌱')
+    +'</div>'
+    +'<div class="dash-sec-label">Composición e ingresos</div>'
+    +'<div class="dash-grid2">'
+    +'<div class="dash-card"><div class="dash-card-ttl">Top 10 · Renta anual por posición <span class="dash-card-badge" style="background:#4ADE8015;color:#4ADE80;border:1px solid #4ADE8033">$</span></div><div class="dash-chart-wrap-lg"><canvas id="dash-ch-top10"></canvas></div></div>'
+    +'<div class="dash-card"><div class="dash-card-ttl">Distribución sectorial <span class="dash-card-badge" style="background:#A78BFA15;color:#A78BFA;border:1px solid #A78BFA33">Valor</span></div><div class="dash-chart-wrap-lg"><canvas id="dash-ch-sector"></canvas></div></div>'
+    +'</div>'
+    +'<div class="dash-card" style="margin-bottom:14px"><div class="dash-card-ttl">Proyección de ingresos mensuales <span class="dash-card-badge" style="background:#F59E0B15;color:#F59E0B;border:1px solid #F59E0B33">12 meses</span></div><div class="dash-chart-wrap"><canvas id="dash-ch-monthly"></canvas></div></div>'
+    +'<div class="dash-sec-label">Rendimiento</div>'
+    +'<div class="dash-grid3">'
+    +'<div class="dash-card"><div class="dash-card-ttl">Ganancia/Pérdida latente <span class="dash-card-badge" style="background:#64748B15;color:#64748B;border:1px solid #64748B33">No realizada</span></div><div style="font-size:9px;color:#334155;font-family:DM Mono,monospace;margin-bottom:10px;line-height:1.5">Diferencia entre valor de mercado actual y lo que pagaste. No vendiste = no está realizada.</div><div class="dash-chart-wrap-sm"><canvas id="dash-ch-pnl"></canvas></div></div>'
+    +'<div class="dash-card"><div class="dash-card-ttl">Distribución yield actual</div><div class="dash-chart-wrap-sm"><canvas id="dash-ch-yield"></canvas></div></div>'
+    +'<div class="dash-card"><div class="dash-card-ttl">Resumen rápido</div>'
+    +drow('Posiciones activas',String(tickers.length))
+    +drow('Renta mensual media','$'+(totalAnnualDiv/12).toFixed(0))
+    +drow('Yield actual',yieldActual.toFixed(2)+'%')
+    +drow('Yield on Cost (YoC)',yoc.toFixed(2)+'%')
+    +drow('Mes más fuerte',MSHORT[maxIdx]+' · $'+maxMonth.toFixed(0))
+    +drow('Mes más débil',MSHORT[minIdx]+' · $'+minMonth.toFixed(0))
+    +drow('Ganancias latentes','<span style="color:#4ADE80">+$'+dfmt(pnlPos)+'</span>')
+    +drow('Pérdidas latentes','<span style="color:#F87171">-$'+dfmt(Math.abs(pnlNeg))+'</span>')
+    +'</div></div>';
+  var gridC='#1A2235',tickC='#475569';
+  var bOpts={responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{color:tickC,font:{size:10},boxWidth:10}}},
+    scales:{x:{ticks:{color:tickC,font:{size:10}},grid:{color:gridC}},y:{ticks:{color:tickC,font:{size:10}},grid:{color:gridC}}}};
+  if(top10.length>0){
+    _dashCharts.top10=new Chart(document.getElementById('dash-ch-top10'),{
+      type:'bar',
+      data:{labels:top10.map(function(d){return d.ticker;}),
+        datasets:[{label:'Renta anual ($)',data:top10.map(function(d){return +d.annDiv.toFixed(2);}),
+          backgroundColor:top10.map(function(_,i){return SC[i%SC.length]+'99';}),
+          borderColor:top10.map(function(_,i){return SC[i%SC.length];}),borderWidth:1,borderRadius:5}]},
+      options:Object.assign({},bOpts,{indexAxis:'y',plugins:{legend:{display:false}},
+        scales:{x:{ticks:{color:tickC,font:{size:10},callback:function(v){return '$'+v;}},grid:{color:gridC}},
+                y:{ticks:{color:'#F1F5F9',font:{size:10,weight:'600',family:'DM Mono'}},grid:{color:gridC}}}})
+    });
+  }
+  if(secEntries.length>0){
+    _dashCharts.sector=new Chart(document.getElementById('dash-ch-sector'),{
+      type:'doughnut',
+      data:{labels:secEntries.slice(0,8).map(function(e){var sm=SECTOR_META[e[0]]||{};return (sm.icon||'')+' '+(sm.name||e[0]);}),
+        datasets:[{data:secEntries.slice(0,8).map(function(e){return +e[1].toFixed(0);}),
+          backgroundColor:secEntries.slice(0,8).map(function(e){return (SECTOR_META[e[0]]||{}).color||SC[0];}),
+          borderColor:'#080C18',borderWidth:3}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:tickC,font:{size:10},boxWidth:10}}}}
+    });
+  }
+  _dashCharts.monthly=new Chart(document.getElementById('dash-ch-monthly'),{
+    type:'bar',
+    data:{labels:MSHORT,datasets:[{label:'Renta mensual ($)',data:monthlyTotals,
+      backgroundColor:monthlyTotals.map(function(v){return v===maxMonth?'#F59E0B':'#F59E0B55';}),
+      borderColor:'#F59E0B',borderWidth:1,borderRadius:5}]},
+    options:Object.assign({},bOpts,{plugins:{legend:{display:false}},
+      scales:{x:{ticks:{color:tickC,font:{size:10}},grid:{color:gridC}},
+              y:{ticks:{color:tickC,callback:function(v){return '$'+v;}},grid:{color:gridC}}}})
+  });
+  _dashCharts.pnl=new Chart(document.getElementById('dash-ch-pnl'),{
+    type:'doughnut',
+    data:{labels:['Ganancias','Pérdidas'],
+      datasets:[{data:[+pnlPos.toFixed(0),+Math.abs(pnlNeg).toFixed(0)],
+        backgroundColor:['#4ADE8066','#F8717166'],borderColor:['#4ADE80','#F87171'],borderWidth:2}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:tickC,font:{size:10},boxWidth:10}}}}
+  });
+  _dashCharts.yield=new Chart(document.getElementById('dash-ch-yield'),{
+    type:'bar',
+    data:{labels:['< 1%','1-2%','2-4%','4-6%','> 6%'],
+      datasets:[{label:'Posiciones',data:yldBuckets,
+        backgroundColor:['#22D3EE55','#4ADE8055','#4ADE8099','#F59E0B99','#F8717155'],
+        borderColor:['#22D3EE','#4ADE80','#4ADE80','#F59E0B','#F87171'],borderWidth:1,borderRadius:4}]},
+    options:Object.assign({},bOpts,{plugins:{legend:{display:false}},
+      scales:{x:{ticks:{color:tickC,font:{size:10}},grid:{color:gridC}},y:{ticks:{color:tickC,precision:0},grid:{color:gridC}}}})
+  });
+}
+
+// ═══════════════════════════════════════════
+// RECURSOS v1.8
+// ═══════════════════════════════════════════
+var _macroData=null;
+async function renderRecursos(){
+  var el=document.getElementById('view-recursos');if(!el)return;
+  el.innerHTML=_resMacroPanel(null,true)+_resLinks();
+  try{
+    var r=await fetch('https://suite-iq.pedicode-app.workers.dev/macro',{signal:AbortSignal.timeout(7000)});
+    if(r.ok){var j=await r.json();if(j.ok&&j.data){_macroData=j.data;el.innerHTML=_resMacroPanel(_macroData,false)+_resLinks();return;}}
+  }catch(e){}
+  el.innerHTML=_resMacroPanel(null,false)+_resLinks();
+}
+function _resMacroPanel(data,loading){
+  var ts=loading?'Cargando datos FRED...':'Actualizado · FRED Federal Reserve';
+  var fedVal=data&&data.fedFunds?data.fedFunds.value+'%':CURRENT_MACRO.fedRate+'%';
+  var fedTrend=data&&data.fedFunds?data.fedFunds.trend:'flat';
+  var t10yVal=data&&data.t10y?data.t10y.value+'%':'—';
+  var t10yTrend=data&&data.t10y?data.t10y.trend:'flat';
+  var cpiVal=data&&data.cpi?data.cpi.value:'—';
+  var eurusdVal=data&&data.eurusd?data.eurusd.value:'—';
+  var tarrow=function(t){return t==='up'?'<span style="color:#F87171">▲</span>':t==='down'?'<span style="color:#4ADE80">▼</span>':'<span style="color:#475569">●</span>';};
+  var mmet=function(lbl,val,sub,color,trend){
+    return '<div class="macro-metric"><div class="macro-metric-lbl">'+lbl+'</div>'
+      +'<div class="macro-metric-val" style="color:'+color+'">'+val+'</div>'
+      +'<div class="macro-metric-sub">'+sub+'</div>'
+      +'<div class="macro-metric-trend" style="background:'+color+'15;color:'+color+'">'+tarrow(trend)+' '+trend+'</div>'
+      +'</div>';};
+  return '<div class="macro-live">'
+    +'<div class="macro-live-hdr"><div class="macro-live-dot"></div>'
+    +'<span class="macro-live-ttl">Macro en Tiempo Real · FRED / Federal Reserve</span>'
+    +'<span class="macro-live-ts">'+ts+'</span></div>'
+    +'<div class="macro-metrics">'
+    +mmet('Fed Funds Rate',fedVal,CURRENT_MACRO.trend,'#22D3EE',fedTrend)
+    +mmet('10Y Treasury',t10yVal,'Referencia REITs / Utilities','#A78BFA',t10yTrend)
+    +mmet('CPI (nivel)',cpiVal,'Índice precios consumidor','#F59E0B','flat')
+    +mmet('EUR / USD',eurusdVal,'Tipo de cambio','#F97316','flat')
+    +'</div>'
+    +'<div style="margin-top:10px;font-size:10px;color:#334155;font-family:\'DM Mono\',monospace;line-height:1.7">'
+    +'💡 <strong style="color:#475569">Interpretación DGI:</strong> '
+    +'Tipos bajos → favorable para REITs (O, ADC, CTRE) y Utilities (NEE, DUK). '
+    +'CPI alto → empresas con pricing power (KO, PG, JNJ) protegen la renta real.'
+    +'</div></div>';
+}
+function _resLinks(){
+  var rc=function(url,icon,name,sub,desc,tags,auto){
+    var badge=auto
+      ?'<span class="res-card-badge" style="background:#1A2D1A;color:#4ADE80;border:1px solid #4ADE8033">✓ Auto</span>'
+      :'<span class="res-card-badge" style="background:#111827;color:#475569;border:1px solid #1A2235">Abrir</span>';
+    var open=url?'<a href="'+url+'" target="_blank" rel="noopener" class="res-card">':'<div class="res-card" style="cursor:default">';
+    var close=url?'</a>':'</div>';
+    return open+'<div class="res-card-hdr"><div class="res-card-icon">'+icon+'</div>'
+      +'<div><div class="res-card-name">'+name+'</div><div class="res-card-sub">'+sub+'</div></div>'+badge+'</div>'
+      +'<div class="res-card-desc">'+desc+'</div>'
+      +'<div>'+(tags||[]).map(function(t){return '<span class="res-tag">'+t+'</span>';}).join('')+'</div>'
+      +close;};
+  var rb=function(title,author,year,desc,tags){
+    return '<div class="res-card" style="cursor:default;border-left:3px solid #F59E0B44">'
+      +'<div class="res-card-hdr"><div class="res-card-icon">📖</div>'
+      +'<div><div class="res-card-name">'+title+'</div><div class="res-card-sub">'+author+' · '+year+'</div></div>'
+      +'<span class="res-card-badge" style="background:#F59E0B12;color:#F59E0B;border:1px solid #F59E0B33">Libro</span></div>'
+      +'<div class="res-card-desc">'+desc+'</div>'
+      +'<div>'+(tags||[]).map(function(t){return '<span class="res-tag">'+t+'</span>';}).join('')+'</div>'
+      +'</div>';};
+  return '<div class="res-section-ttl">Fuentes con Acceso Automático</div>'
+    +'<div class="res-section-sub">El worker accede a estas fuentes automáticamente al actualizar tus datos.</div>'
+    +'<div class="res-grid">'
+    +rc(null,'📡','Yahoo Finance','Via worker · Datos en tiempo real',
+      'Fuente de precio, yield, payout y capitalización. El worker llama a Yahoo automáticamente al hacer click en "Actualizar precios".',['Precios live','Yield TTM','Payout ratio'],true)
+    +rc(null,'🏛️','FRED — Federal Reserve','fred.stlouisfed.org · Macro',
+      'Panel de macro obtenido desde FRED vía el worker de Axios. Fed Funds Rate, CPI, 10Y Treasury y EUR/USD actualizados en cada visita a esta pestaña.',['Fed Funds Rate','CPI inflación','10Y Treasury'],true)
+    +rc(null,'📊','AXIOS·IQ — Suite IQ','Análisis fundamental integrado',
+      'Para profundizar en los fundamentales de cualquier empresa abre Axios·IQ desde el launcher. Scorecard 5 bloques, peers dinámicos y IA.',['Scorecard','Peers','DCF · Graham'],true)
+    +'</div>'
+    +'<div class="res-section-ttl">Herramientas para Consultar</div>'
+    +'<div class="res-section-sub">Plataformas gratuitas (o con tier gratuito) para complementar el análisis.</div>'
+    +'<div class="res-grid">'
+    +rc('https://simplywall.st','🛡️','Simply Wall St','simplywallst.com',
+      'Visualización intuitiva de fundamentales, deuda y dividendo. Los "snowflakes" permiten evaluar rápidamente la salud de una empresa.',['Gratis (limitado)','Fundamentales visual'],false)
+    +rc('https://www.macrotrends.net','📈','Macrotrends','macrotrends.net',
+      'Historial de dividendos, PER y FCF de cualquier empresa americana. Busca ticker + "dividend yield" para comparar vs media histórica.',['Gratis','Históricos 30+ años'],false)
+    +rc('https://stockanalysis.com','⚡','Stock Analysis','stockanalysis.com',
+      'FCF, márgenes, dilución e historial de dividendos. Una de las mejores alternativas gratuitas a Morningstar.',['Gratis','FCF · Márgenes'],false)
+    +rc('https://fred.stlouisfed.org','📉','FRED · Federal Reserve','fred.stlouisfed.org',
+      'Tipos de interés, inflación, curva de tipos. Si los tipos bajan, señal de entrada para REITs y Utilities.',['Gratis','Macro oficial'],false)
+    +rc('https://dividendhistory.org','📅','Dividend History','dividendhistory.org',
+      'Historial completo de pagos de dividendos. Verifica rachas de crecimiento, recortes pasados y fechas ex-dividend.',['Gratis','Historial completo'],false)
+    +rc('https://seekingalpha.com','🔍','Seeking Alpha','seekingalpha.com',
+      'Ratings Quant, análisis de dividendo y alertas de earnings. La exportación de cartera desde SA es compatible con el importador CSV de Harvest.',['Premium / Gratis','Ratings Quant'],false)
+    +rc('https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=10-K','📄','SEC EDGAR','sec.gov',
+      'Fuente oficial para 10-K, 10-Q y 8-K. Revisa Item 1A (factores de riesgo) de cualquier empresa de tu cartera.',['Gratis','10-K oficial'],false)
+    +rc('https://www.dividend.com','🌿','Dividend.com','dividend.com',
+      'Screener con filtros por yield, payout, racha y calificación de seguridad. Útil para encontrar ideas DGI fuera de tu cartera.',['Gratis','Screener DGI'],false)
+    +'</div>'
+    +'<div class="res-section-ttl">Bibliografía DGI Esencial</div>'
+    +'<div class="res-section-sub">Los tres libros con aplicación directa a la estrategia de dividendos crecientes.</div>'
+    +'<div class="res-grid">'
+    +rb('The Little Book of Big Dividends','Charles B. Carlson','2010',
+      'Fórmula BSD para identificar dividendos seguros. Criterios cuantificables aplicables directamente al universo DGI de Harvest.',['Principiante','Dividendos seguros'])
+    +rb("Dividends Still Don't Lie",'Kelley Wright','2010',
+      'Usa el yield histórico como termómetro de valoración. Ideal para identificar compras a precio de descuento.',['Intermedio','Valoración por yield'])
+    +rb('Get Rich with Dividends','Marc Lichtenfeld','2015',
+      'La estrategia 10-11-12: 10% de crecimiento anual del dividendo durante 11 años para alcanzar 12% de yield sobre coste. Marco conceptual de Harvest.',['Intermedio','YoC largo plazo'])
+    +'</div>'
+    +'<div style="background:#080C18;border:1px solid #1A2235;border-radius:9px;padding:12px 16px;font-size:10px;color:#334155;font-family:\'DM Mono\',monospace;line-height:1.8">'
+    +'Harvest-IQ es una herramienta educativa e informativa. Los datos y análisis NO constituyen asesoramiento financiero ni recomendaciones de inversión.'
+    +'</div>';
+}
+
+
+
+
+</script>
 
 
 <!-- HARVEST AI MODAL -->
@@ -4482,6 +4990,7 @@ function renderHarvestAI(a, langPref, ctx) {
   </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 </body>
 </html><div id="welcome-modal" style="display:none;position:fixed;inset:0;background:#000000CC;z-index:9999;align-items:center;justify-content:center">
   <div style="background:#0D1117;border:1px solid #1A2235;border-radius:16px;padding:32px;max-width:440px;width:90%;margin:auto;text-align:center">
