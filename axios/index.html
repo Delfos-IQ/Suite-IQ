@@ -2982,10 +2982,27 @@ function runValuation(state){
     const fp=cfg.pe_fair||15;
     fv=pe_raw*fp; fv_bear=pe_raw*(fp*0.75); fv_bull=pe_raw*(fp*1.30);
     method='P/FFO × '+fp+'x';
-  } else if(sector==='financial'&&pe_raw>0){
-    const tp=cfg.pe_fair||1.2;
-    fv=pe_raw*tp; fv_bear=pe_raw*(tp*0.70); fv_bull=pe_raw*(tp*1.45);
-    method='P/BV × '+tp+'x';
+  } else if(sector==='financial'){
+    // Correct P/BV valuation: FV = BookValuePerShare × target_PBV
+    // BookValuePerShare = currentPrice / currentPB
+    const tp = cfg.pe_fair || 1.3;  // target P/BV (1.3x for quality bank)
+    const pb_current = (window._afData && window._afData.pb && parseFloat(window._afData.pb) > 0)
+      ? parseFloat(window._afData.pb) : 0;
+    if (current_price > 0 && pb_current > 0) {
+      const bvps = current_price / pb_current;           // Book Value Per Share
+      fv      = Math.round(bvps * tp * 100) / 100;
+      fv_bear = Math.round(bvps * (tp * 0.70) * 100) / 100;
+      fv_bull = Math.round(bvps * (tp * 1.35) * 100) / 100;
+      method  = 'P/BV (' + pb_current.toFixed(1) + 'x → ' + tp + 'x objetivo)';
+    } else if (pe_raw > 0 && current_price > 0) {
+      // Fallback: no P/B data → use EPS × fair P/E
+      const eps_v = current_price / pe_raw;
+      const tpe = 14;  // fair P/E for diversified financials
+      fv      = Math.round(eps_v * tpe * 100) / 100;
+      fv_bear = Math.round(fv * 0.75 * 100) / 100;
+      fv_bull = Math.round(fv * 1.30 * 100) / 100;
+      method  = 'EPS × ' + tpe + 'x P/E justo';
+    }
   } else if(sector==='consumer_defensive'&&div_yield>0&&rev_growth>0){
     const ke=0.08; const g=clamp(rev_growth/100,0.01,0.05);
     fv=Math.round((div_yield*(1+g))/(ke-g)*100)/100;
@@ -5028,10 +5045,10 @@ function _afApply() {
   // Trigger AI qualitative fill for moat/management/governance/regulatory
   setTimeout(_afFillQualitative, 1500);
   // Store data for scorecard
-  window._afData = d;
+  window._afData = _afData;
   setTimeout(scUpdate, 200);
   // Phase 2: fetch real peer medians in background
-  scFetchPeers(d, sector);
+  scFetchPeers(_afData, state.sector || 'technology');
 }
 
 
