@@ -1939,6 +1939,11 @@ code, kbd, pre { font-family: 'IBM Plex Mono', monospace; }
   text-transform:uppercase;background:transparent;color:var(--tx3);transition:all .18s}
 .sc-mode-btn.active{background:var(--a1);color:var(--bg);font-weight:700}
 
+.sc-legend{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);margin-bottom:14px;font-size:10px;color:var(--tx3)}
+.sc-leg-item{display:flex;align-items:center;gap:5px;white-space:nowrap}
+.sc-leg-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.sc-leg-sep{width:1px;height:16px;background:var(--border);margin:0 4px}
+.sc-leg-info{font-size:9px;color:var(--tx4);line-height:1.5;max-width:320px}
 .sc-blocks{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
 @media(max-width:900px){.sc-blocks{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:580px){.sc-blocks{grid-template-columns:1fr 1fr}}
@@ -2213,6 +2218,17 @@ code, kbd, pre { font-family: 'IBM Plex Mono', monospace; }
               Personalizado
             </button>
           </div>
+        </div>
+
+        <!-- Leyenda explicativa -->
+        <div class="sc-legend">
+          <div class="sc-leg-item"><span class="sc-leg-dot" style="background:var(--green)"></span><span>5 — Excelente vs sector</span></div>
+          <div class="sc-leg-item"><span class="sc-leg-dot" style="background:#84cc16"></span><span>4 — Bueno</span></div>
+          <div class="sc-leg-item"><span class="sc-leg-dot" style="background:var(--yellow)"></span><span>3 — En línea con sector</span></div>
+          <div class="sc-leg-item"><span class="sc-leg-dot" style="background:#f97316"></span><span>2 — Por debajo</span></div>
+          <div class="sc-leg-item"><span class="sc-leg-dot" style="background:var(--red)"></span><span>1 — Señal negativa</span></div>
+          <div class="sc-leg-sep"></div>
+          <div class="sc-leg-info">Cada bloque pondera 20% en modo equiponderado. La puntuación final /5 refleja la calidad global relativa al sector — no es una recomendación de compra.</div>
         </div>
 
         <!-- 5 blocks -->
@@ -2973,7 +2989,13 @@ function runValuation(state){
   const pe_raw = _peMatch ? parseFloat(_peMatch[1]) : (parseFloat(_peStr) || 0);
   const eps_raw=parseFloat(inputs.eps_growth)||0; // growth %, NOT used as EPS anymore
   const fcf_raw=parseFloat(inputs.fcf)||0;
-  const rev_growth=Math.abs(parseFloat(inputs.rev_growth)||parseFloat(inputs.eps_growth)||5);
+  // Extract first number from formatted strings like "Rev: +11.1% | EPS: +9.3%"
+  function _parseGrowth(str) {
+    if (!str) return 0;
+    const m = String(str).match(/[+\-]?([\d.]+)%/);
+    return m ? parseFloat(m[1]) : (parseFloat(str) || 0);
+  }
+  const rev_growth = Math.abs(_parseGrowth(inputs.rev_growth) || _parseGrowth(inputs.eps_growth) || 5);
   const current_price=parseFloat(inputs.price)||state.price||0;
   const div_yield=parseFloat(inputs.dividend)||0;
   const clamp=(v,lo,hi)=>Math.min(Math.max(v,lo),hi);
@@ -6488,25 +6510,48 @@ async function _reportGenerate() {
     };
 
     if (_reportFile) {
+      payload.docName = _reportFile.name;
       if (_reportFile.isText) {
-        payload.docText = _reportFile.textContent.slice(0, 12000);
-        payload.docName = _reportFile.name;
+        // HTML/TXT — send as text, truncate to 14000 chars (~10 pages)
+        payload.docText = _reportFile.textContent.slice(0, 14000);
         payload.docMime = 'text';
       } else {
-        // PDF — send as base64 dataUrl
-        payload.docBase64 = _reportFile.dataUrl;
-        payload.docName   = _reportFile.name;
-        payload.docMime   = 'pdf';
+        // PDF — Cloudflare Workers have a 30s CPU limit.
+        // Large PDFs (>500 KB) time out. We strip readable text from the
+        // raw bytes using a regex on the base64-decoded content instead.
+        // This avoids sending megabytes of binary to the worker.
+        const MAX_B64_CHARS = 700000; // ~520 KB decoded — safe for worker
+        const raw = _reportFile.dataUrl || '';
+        const b64 = raw.split(',')[1] || raw;
+        if (b64.length <= MAX_B64_CHARS) {
+          payload.docBase64 = raw;
+          payload.docMime   = 'pdf';
+        } else {
+          // File too large for binary transfer — extract visible ASCII text
+          // from the dataUrl as a rough approximation (readable strings in PDF)
+          try {
+            const decoded = atob(b64.slice(0, MAX_B64_CHARS));
+            const visible = decoded.replace(/[^\x20-\x7E]/g, ' ')
+              .replace(/\s{3,}/g, ' ').trim().slice(0, 14000);
+            payload.docText = visible;
+            payload.docMime = 'text';
+            payload.docNote = 'PDF truncado por tamaño — texto extraído';
+          } catch(e) {
+            // If atob fails just skip the doc
+            payload.docText = '[PDF demasiado grande para procesar — análisis basado en datos Yahoo/FRED]';
+            payload.docMime = 'text';
+          }
+        }
       }
     }
 
-    _reportStatus('Generando informe IA... (puede tardar 20-40 segundos)', 'var(--a1)');
+    _reportStatus('Generando informe IA... (30-60 segundos)', 'var(--a1)');
 
     const res = await fetch(WORKER_URL + '/report', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify(payload),
-      signal:  AbortSignal.timeout(60000),
+      signal:  AbortSignal.timeout(90000),
     });
 
     if (!res.ok) {
