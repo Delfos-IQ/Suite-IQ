@@ -1,5 +1,5 @@
 /**
- * IQ Suite — Service Worker v1.0
+ * IQ Suite — Service Worker v1.1
  * Silent auto-update strategy:
  *   - Cache-first for all assets (fast loads)
  *   - On every fetch: revalidate in background
@@ -7,7 +7,7 @@
  *   - No banner, no interruption — next page load = new version
  */
 
-const CACHE_NAME = 'iq-suite-v2';
+const CACHE_NAME = 'iq-suite-v3';
 const VERSION_URL = '/version.json';
 
 // Assets to pre-cache on install
@@ -61,10 +61,12 @@ self.addEventListener('fetch', event => {
   if (req.method !== 'GET') return;
   if (!req.url.startsWith(self.location.origin)) return;
 
-  // Skip Cloudflare Workers and external APIs
+  // Skip external APIs and CDNs — never cache these
   if (req.url.includes('workers.dev') ||
       req.url.includes('yahoo.com') ||
       req.url.includes('groq.com') ||
+      req.url.includes('openai.com') ||
+      req.url.includes('fred.stlouisfed.org') ||
       req.url.includes('fonts.googleapis.com') ||
       req.url.includes('cdnjs.cloudflare.com')) {
     return;
@@ -91,7 +93,6 @@ self.addEventListener('fetch', event => {
 
       // Return cached immediately if available, else wait for network
       if (cached) {
-        // Trigger background revalidation without blocking
         networkFetch.catch(() => {});
         return cached;
       }
@@ -110,17 +111,15 @@ async function checkVersion(response) {
     if (!incoming) return;
 
     if (_currentVersion === null) {
-      // First load — just store version
       _currentVersion = incoming;
       return;
     }
 
     if (_currentVersion !== incoming) {
-      // New version detected — silently update all caches
       console.log(`[SW] New version: ${_currentVersion} → ${incoming}`);
       _currentVersion = incoming;
 
-      // Clear old cache and re-fetch all assets
+      // Re-fetch all assets silently
       const cache = await caches.open(CACHE_NAME);
       await Promise.allSettled(
         PRECACHE.map(url =>
@@ -130,7 +129,7 @@ async function checkVersion(response) {
         )
       );
 
-      // Tell all open clients to reload on next navigation
+      // Notify all open tabs → they reload on next navigation
       const clients = await self.clients.matchAll({ type: 'window' });
       clients.forEach(client => {
         client.postMessage({ type: 'SW_UPDATED', version: incoming });
