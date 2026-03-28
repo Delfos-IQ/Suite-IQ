@@ -183,15 +183,16 @@ export default {
         const authH = { ...BROWSER_HEADERS, 'Cookie':cookie, 'Referer':'https://finance.yahoo.com/' };
 
         // Summary + chart in parallel
-        const [summaryRes, chartRes] = await Promise.all([
+        const [summaryRes, chartRes, fredFF] = await Promise.all([
           fetch(
             `https://query2.finance.yahoo.com/v10/finance/quoteSummary/${ticker}?modules=${YF_MODULES}&crumb=${encodeURIComponent(crumb)}&formatted=false`,
             { headers: authH }
           ),
           fetch(
-            `https://query2.finance.yahoo.com/v8/finance/chart/${ticker}?interval=1d&range=3mo&crumb=${encodeURIComponent(crumb)}`,
+            `https://query2.finance.yahoo.com/v8/finance/chart/${ticker}?interval=1d&range=1y&crumb=${encodeURIComponent(crumb)}`,
             { headers: authH }
-          )
+          ),
+          fetchFRED('FEDFUNDS'),
         ]);
 
         if (!summaryRes.ok) {
@@ -315,6 +316,16 @@ export default {
           supportResistance:  null,
           volumeAnalysis:     null,
           relMomentum:        null,
+          // Risk & Momentum (added v5.1)
+          sharpeRatio:        null,
+          sortinoRatio:       null,
+          volatility:         null,
+          maxDrawdown:        null,
+          riskFreeRate:       null,
+          momentum1M:         null,
+          momentum3M:         null,
+          momentum6M:         null,
+          momentum12M:        null,
         };
 
         // Calculated
@@ -329,6 +340,60 @@ export default {
           if (range>0) payload.week52Position = +(((payload.price-payload.week52Low)/range)*100).toFixed(1);
         }
         if (closes.length > 15) payload.rsi14 = calculateRSI(closes);
+
+        // ── Risk & Momentum metrics ───────────────────────────────
+        if (closes.length > 30) {
+          const rfRate = fredFF ? fredFF.value : 4.5;  // FEDFUNDS annual %
+          const rfDaily = rfRate / 100 / 252;
+
+          // Daily returns
+          const rets = [];
+          for (let i = 1; i < closes.length; i++)
+            rets.push((closes[i] - closes[i-1]) / closes[i-1]);
+
+          const n = rets.length;
+          const meanRet = rets.reduce((a,b) => a+b, 0) / n;
+          const annRet  = meanRet * 252;
+          const variance = rets.reduce((a,b) => a + (b-meanRet)**2, 0) / n;
+          const annVol  = Math.sqrt(variance * 252);
+
+          // Sharpe ratio
+          const exRets   = rets.map(r => r - rfDaily);
+          const meanExc  = exRets.reduce((a,b) => a+b, 0) / n;
+          const excVar   = exRets.reduce((a,b) => a + (b-meanExc)**2, 0) / n;
+          const sharpe   = annVol > 0 ? (meanExc * 252) / Math.sqrt(excVar * 252) : null;
+
+          // Sortino ratio (downside deviation only)
+          const negRets  = rets.filter(r => r < rfDaily);
+          const ddVar    = negRets.length > 0
+            ? negRets.reduce((a,b) => a + (b - rfDaily)**2, 0) / n
+            : 0;
+          const ddDev    = Math.sqrt(ddVar * 252);
+          const sortino  = ddDev > 0 ? (annRet - rfRate/100) / ddDev : null;
+
+          // Max Drawdown
+          let peak = closes[0], maxDD = 0;
+          for (const c of closes) {
+            if (c > peak) peak = c;
+            const dd = (peak - c) / peak;
+            if (dd > maxDD) maxDD = dd;
+          }
+
+          // Momentum (trading days: 1M≈21, 3M≈63, 6M≈126, 12M≈252)
+          const cl = closes;
+          const len = cl.length;
+          const mom = (bars) => len > bars ? +((cl[len-1]/cl[len-1-bars]-1)*100).toFixed(1) : null;
+
+          payload.sharpeRatio   = sharpe   !== null ? +sharpe.toFixed(2)   : null;
+          payload.sortinoRatio  = sortino  !== null ? +sortino.toFixed(2)  : null;
+          payload.volatility    = +(annVol * 100).toFixed(1);
+          payload.maxDrawdown   = +(-maxDD * 100).toFixed(1);
+          payload.riskFreeRate  = rfRate;
+          payload.momentum1M    = mom(21);
+          payload.momentum3M    = mom(63);
+          payload.momentum6M    = mom(126);
+          payload.momentum12M   = mom(252);
+        }
         if (payload.revenueGrowth!==null && payload.freeCashflow && payload.revenue>0)
           payload.ruleOf40 = +(payload.revenueGrowth + (payload.freeCashflow/payload.revenue)*100).toFixed(1);
         if (closes.length > 10) payload.supportResistance = estimateSR(closes, highs, lows);
@@ -445,12 +510,14 @@ export default {
       }
     }
 
-    // ── /ai — Groq LLM analysis ───────────────────────────────
+    // ── /ai — OpenAI primary · Groq fallback ────────────────────
     if (url.pathname === '/ai') {
-      const GROQ_KEY = env.GROQ_API_KEY;
-      if (!GROQ_KEY) {
+      const OPENAI_KEY = env.OPENAI_API_KEY;
+      const GROQ_KEY   = env.GROQ_API_KEY;
+
+      if (!OPENAI_KEY && !GROQ_KEY) {
         return new Response(
-          JSON.stringify({ error: 'GROQ_API_KEY not configured in Worker env' }),
+          JSON.stringify({ error: 'No AI keys configured. Add OPENAI_API_KEY or GROQ_API_KEY in Worker secrets.' }),
           { status: 500, headers: CORS }
         );
       }
@@ -466,60 +533,125 @@ export default {
         return new Response(JSON.stringify({ error: 'Missing prompt' }), { status:400, headers:CORS });
       }
 
-      try {
-        const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Content-Type':  'application/json',
-            'Authorization': 'Bearer ' + GROQ_KEY,
-          },
-          body: JSON.stringify({
-            model:       'llama-3.3-70b-versatile',
-            max_tokens:  1200,
-            temperature: 0.3,
-            messages: [
-              {
-                role: 'system',
-                content: 'Eres un analista financiero experto. Respondes SIEMPRE en ' +
-                  (lang==='en'?'English':lang==='pt'?'Português':'Español') +
-                  '. Respondes SOLO con JSON válido, sin markdown, sin texto adicional.'
-              },
-              { role: 'user', content: prompt }
-            ],
-          }),
-        });
+      const langName = lang === 'en' ? 'English' : lang === 'pt' ? 'Português' : 'Español';
+      const systemMsg = 'Eres un analista financiero experto. Respondes SIEMPRE en ' + langName +
+        '. Respondes SOLO con JSON válido, sin markdown, sin texto adicional.';
 
-        if (!groqRes.ok) {
-          const errData = await groqRes.json().catch(() => ({}));
+      // ── Helper: call any OpenAI-compatible endpoint ────────────
+      async function callLLM(apiUrl, apiKey, model, useJsonMode) {
+        const reqBody = {
+          model,
+          max_tokens:  1200,
+          temperature: 0.3,
+          messages: [
+            { role: 'system', content: systemMsg },
+            { role: 'user',   content: prompt },
+          ],
+        };
+        // OpenAI supports response_format for guaranteed JSON — Groq does not
+        if (useJsonMode) reqBody.response_format = { type: 'json_object' };
+
+        const res = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
+          body: JSON.stringify(reqBody),
+        });
+        return res;
+      }
+
+      // ── Helper: parse JSON from response text ──────────────────
+      function parseAnalysis(raw) {
+        const cleaned = raw.replace(/```json|```/g, '').trim();
+        return JSON.parse(cleaned);
+      }
+
+      // ── 1. Try OpenAI (GPT-4.1-mini) ──────────────────────────
+      if (OPENAI_KEY) {
+        try {
+          const res = await callLLM(
+            'https://api.openai.com/v1/chat/completions',
+            OPENAI_KEY,
+            'gpt-4.1-mini',
+            true  // json_object mode
+          );
+
+          // Quota / billing exhausted → fall through to Groq
+          // 429 = rate-limit, 402 = payment required, 5xx = server error
+          const shouldFallback = res.status === 429 || res.status === 402 || res.status >= 500;
+
+          if (res.ok) {
+            const data = await res.json();
+            const raw  = data.choices?.[0]?.message?.content || '';
+            try {
+              const analysis = parseAnalysis(raw);
+              return new Response(
+                JSON.stringify({ ok: true, analysis, _provider: 'openai' }),
+                { status: 200, headers: CORS }
+              );
+            } catch(e) {
+              // JSON parse failed — fall through to Groq
+              console.warn('[AXIOS-AI] OpenAI JSON parse failed, falling back to Groq');
+            }
+          } else if (!shouldFallback) {
+            // 400 / 401 / 404 — hard error, no point retrying with Groq
+            const errData = await res.json().catch(() => ({}));
+            return new Response(
+              JSON.stringify({ error: errData.error?.message || 'OpenAI error ' + res.status }),
+              { status: 502, headers: CORS }
+            );
+          }
+          // else: shouldFallback = true → continue to Groq below
+        } catch(err) {
+          console.warn('[AXIOS-AI] OpenAI fetch error:', err.message);
+          // Network error → fall through to Groq
+        }
+      }
+
+      // ── 2. Groq fallback (llama-3.3-70b) ──────────────────────
+      if (!GROQ_KEY) {
+        return new Response(
+          JSON.stringify({ error: 'OpenAI unavailable and GROQ_API_KEY not configured.' }),
+          { status: 502, headers: CORS }
+        );
+      }
+
+      try {
+        const res = await callLLM(
+          'https://api.groq.com/openai/v1/chat/completions',
+          GROQ_KEY,
+          'llama-3.3-70b-versatile',
+          false  // Groq ignores response_format
+        );
+
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
           return new Response(
-            JSON.stringify({ error: errData.error?.message || 'Groq error ' + groqRes.status }),
+            JSON.stringify({ error: errData.error?.message || 'Groq error ' + res.status }),
             { status: 502, headers: CORS }
           );
         }
 
-        const groqData = await groqRes.json();
-        const raw = groqData.choices?.[0]?.message?.content || '';
+        const data = await res.json();
+        const raw  = data.choices?.[0]?.message?.content || '';
 
-        // Parse JSON from response
         let analysis;
         try {
-          const cleaned = raw.replace(/```json|```/g, '').trim();
-          analysis = JSON.parse(cleaned);
+          analysis = parseAnalysis(raw);
         } catch(e) {
           return new Response(
-            JSON.stringify({ error: 'AI response was not valid JSON', raw: raw.slice(0,200) }),
+            JSON.stringify({ error: 'Groq response was not valid JSON', raw: raw.slice(0, 200) }),
             { status: 502, headers: CORS }
           );
         }
 
         return new Response(
-          JSON.stringify({ ok: true, analysis }),
+          JSON.stringify({ ok: true, analysis, _provider: 'groq' }),
           { status: 200, headers: CORS }
         );
 
       } catch(err) {
         return new Response(
-          JSON.stringify({ error: err.message }),
+          JSON.stringify({ error: 'Both AI providers failed: ' + err.message }),
           { status: 500, headers: CORS }
         );
       }

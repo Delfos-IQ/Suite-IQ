@@ -2288,7 +2288,7 @@ let _tickerDBPromise = null;
 function _loadTickerDB(){
   if(_tickerDBReady) return Promise.resolve(TICKER_DB);
   if(_tickerDBPromise) return _tickerDBPromise;
-  _tickerDBPromise = fetch('tickers.json')
+  _tickerDBPromise = fetch('../tickers.json')
     .then(r=>{ if(!r.ok) throw new Error('tickers.json HTTP '+r.status); return r.json(); })
     .then(data=>{ TICKER_DB=data; _tickerDBReady=true; return data; })
     .catch(err=>{
@@ -2758,6 +2758,25 @@ const ITEMS = [
   red:{default:"Empresa bajo investigación regulatoria o antimonopolio activa. Sector en riesgo de legislación que impacta directamente el modelo de negocio. Dependencia de un único contrato o licencia gubernamental con riesgo de no renovación. Historial de multas regulatorias recurrentes."},
   watch:{default:"Cambio regulatorio potencial visible (elecciones, nueva legislación en proceso). Nuevas directivas europeas o americanas en consulta pública que afectan al sector."},
   link:"https://efts.sec.gov/LATEST/search-index?q=%22__TICKER__%22&forms=8-K",link_label:"Eventos regulatorios en SEC"},
+
+ // ── RISK METRICS (auto-filled desde worker v5.1) ─────────────
+ {id:"sharpe",cat:"technical",icon:"📉",
+  label:{default:"Sharpe · Sortino · Volatilidad"},
+  short:"Retorno ajustado a riesgo, volatilidad anualizada y máxima caída",
+  desc:{default:"El Sharpe Ratio mide la rentabilidad obtenida por unidad de riesgo asumido, usando la tasa libre de riesgo real (Fed Funds via FRED) como referencia. Sharpe >1 es bueno, >2 es excelente, <0 significa que no compensas el riesgo asumido. El Sortino es más preciso: solo penaliza la volatilidad a la baja, ignorando los días positivos. La volatilidad anualizada cuantifica la variabilidad del precio: <15% defensiva, 15-25% moderada, >30% agresiva. El Max Drawdown registra la peor caída pico→valle del último año — el dolor real que habrías vivido."},
+  pos:{default:"Sharpe >1.5 con Sortino >2. Volatilidad <20% (activo defensivo de calidad). Max Drawdown <15%. La divergencia positiva Sortino > Sharpe indica que las caídas son contenidas y los rallies son amplios — patrón de las mejores acciones de calidad."},
+  red:{default:"Sharpe <0 (el activo no compensa ni el riesgo ni la tasa libre de riesgo). Volatilidad >40% sin retorno proporcional — gambling, no inversión. Max Drawdown >40%: habrías perdido casi la mitad del capital en el peor momento del año."},
+  watch:{default:"Sharpe entre 0.5-1: retorno positivo pero ajuste a riesgo moderado. Volatilidad 20-30%. Max Drawdown 15-30%. Evaluar si el riesgo asumido está compensado por la expectativa de retorno futura."},
+  link:"https://finviz.com/quote.ashx?t=__TICKER__",link_label:"Volatilidad en Finviz"},
+
+ {id:"momentum",cat:"technical",icon:"⚡",
+  label:{default:"Momentum Multi-período (1M · 3M · 6M · 12M)"},
+  short:"Retorno del precio en 4 horizontes temporales usando precios reales",
+  desc:{default:"El momentum es uno de los factores con mayor respaldo empírico en finanzas: las acciones que han subido más en 6-12 meses tienden a seguir superando al mercado en los meses siguientes (efecto momentum, documentado desde Jegadeesh & Titman 1993). Los 4 períodos complementan: 12M capta la tendencia estructural, 6M la tendencia intermedia, 3M el impulso reciente, 1M la aceleración o agotamiento inmediato. La consistencia entre períodos es la clave: momentum positivo en todos indica acción en tendencia sana. Divergencia (buen 12M pero 1M negativo) puede señalar agotamiento."},
+  pos:{default:"Momentum positivo en los 4 períodos con aceleración (retornos crecientes a medida que acortas el horizonte: 12M>6M>3M>1M en términos de rendimiento anualizado). Outperformance consistente vs S&P 500 en períodos largos."},
+  red:{default:"Momentum negativo en 12M con pérdida acelerando en períodos cortos (1M y 3M peores que 6M y 12M). Underperformance del -20%+ en 12M vs mercado. Divergencia bajista: momentum 12M positivo pero 1M y 3M profundamente negativos."},
+  watch:{default:"Momentum mixto: buenos períodos largos pero cortos negativos (posible consolidación o giro). Momentum positivo pero moderado en todos los períodos — tendencia sana sin sobreextensión."},
+  link:"https://finviz.com/quote.ashx?t=__TICKER__",link_label:"Momentum en Finviz"},
 ];
 
 const ACADEMIA = [
@@ -4778,6 +4797,38 @@ function _afBuildMap(d, sector) {
       else if (d.relMomentum<-15 && mark!=='ok') mark='bad';
     }
     if (val) push('rsi', val, mark);
+  }
+
+  // ── sharpe: Sharpe + Sortino + Volatilidad + MaxDD ──────────
+  if (d.sharpeRatio !== null || d.volatility !== null) {
+    let val = '', mark = 'watch';
+    if (d.sharpeRatio !== null) {
+      val += 'Sharpe: ' + d.sharpeRatio.toFixed(2);
+      mark = d.sharpeRatio > 1.5 ? 'ok' : d.sharpeRatio > 0.5 ? 'watch' : 'bad';
+    }
+    if (d.sortinoRatio !== null) val += (val ? ' | ' : '') + 'Sortino: ' + d.sortinoRatio.toFixed(2);
+    if (d.volatility !== null) {
+      val += (val ? ' | ' : '') + 'Vola: ' + d.volatility.toFixed(1) + '%';
+      if (d.volatility < 20 && mark !== 'bad') mark = 'ok';
+      else if (d.volatility > 40) mark = 'bad';
+    }
+    if (d.maxDrawdown !== null) val += (val ? ' | ' : '') + 'MaxDD: ' + d.maxDrawdown.toFixed(1) + '%';
+    if (d.riskFreeRate !== null) val += (val ? ' | ' : '') + 'Rf: ' + d.riskFreeRate.toFixed(2) + '%';
+    if (val) push('sharpe', val, mark);
+  }
+
+  // ── momentum: Momentum multi-período ─────────────────────────
+  if (d.momentum1M !== null || d.momentum3M !== null || d.momentum6M !== null || d.momentum12M !== null) {
+    const pct = v => (v > 0 ? '+' : '') + v.toFixed(1) + '%';
+    let val = '', mark = 'watch';
+    if (d.momentum1M  !== null) val += '1M: '  + pct(d.momentum1M);
+    if (d.momentum3M  !== null) val += (val ? ' | ' : '') + '3M: '  + pct(d.momentum3M);
+    if (d.momentum6M  !== null) val += (val ? ' | ' : '') + '6M: '  + pct(d.momentum6M);
+    if (d.momentum12M !== null) val += (val ? ' | ' : '') + '12M: ' + pct(d.momentum12M);
+    const periods = [d.momentum1M, d.momentum3M, d.momentum6M, d.momentum12M].filter(v => v !== null);
+    const pos = periods.filter(v => v > 0).length;
+    mark = pos >= 3 ? 'ok' : pos <= 1 ? 'bad' : 'watch';
+    if (val) push('momentum', val, mark);
   }
 
   // ── support: Soporte/Resistencia + Volumen ────────────────
