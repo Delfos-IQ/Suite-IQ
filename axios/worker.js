@@ -657,6 +657,265 @@ export default {
       }
     }
 
+
+    // ── /report — Informe completo con IA ────────────────────────
+    if (url.pathname === '/report') {
+      const OPENAI_KEY = env.OPENAI_API_KEY;
+      const GROQ_KEY   = env.GROQ_API_KEY;
+
+      if (!OPENAI_KEY && !GROQ_KEY) {
+        return new Response(
+          JSON.stringify({ error: 'No AI keys configured.' }),
+          { status: 500, headers: CORS }
+        );
+      }
+
+      let body;
+      try { body = await request.json(); } catch(e) {
+        return new Response(JSON.stringify({ error: 'Invalid JSON' }), { status: 400, headers: CORS });
+      }
+
+      const { ticker, name, sector, lang, yahooData, macroData, docText, docBase64, docName, docMime } = body;
+      if (!ticker) {
+        return new Response(JSON.stringify({ error: 'Missing ticker' }), { status: 400, headers: CORS });
+      }
+
+      const langName = lang === 'en' ? 'English' : lang === 'pt' ? 'Português' : 'Español';
+
+      // ── Build data context ─────────────────────────────────────
+      const d = yahooData || {};
+      const m = macroData || {};
+      const fmt = (v, dec=1) => v != null ? v.toFixed(dec) : 'N/A';
+      const fmtM = (v) => v >= 1e9 ? (v/1e9).toFixed(2)+'B' : v >= 1e6 ? (v/1e6).toFixed(1)+'M' : String(v);
+
+      const dataCtx = `
+DATOS CUANTITATIVOS (Yahoo Finance):
+- Ticker: ${ticker} | Nombre: ${name} | Sector: ${sector} | Divisa: ${d.currency||'USD'}
+- Precio actual: ${fmt(d.price,2)} | Market Cap: ${d.marketCap ? fmtM(d.marketCap) : 'N/A'}
+- P/E trailing: ${fmt(d.pe)} | P/E fwd: ${fmt(d.forwardPE)} | P/B: ${fmt(d.pb||d.pb)} | PEG: ${fmt(d.peg)}
+- EV/EBITDA: ${fmt(d.evEbitda)} | EV/Revenue: ${fmt(d.evRevenue)} | FCF Yield: ${fmt(d.fcfYield)}%
+- Revenue: ${d.revenue ? fmtM(d.revenue) : 'N/A'} | Revenue growth: ${fmt(d.revenueGrowth)}% | EPS growth: ${fmt(d.earningsGrowth)}%
+- Gross margin: ${fmt(d.grossMargin)}% | Operating margin: ${fmt(d.operatingMargin)}% | Net margin: ${fmt(d.netMargin)}%
+- ROE: ${fmt(d.roe)}% | ROA: ${fmt(d.roa)}% | FCF: ${d.freeCashflow ? fmtM(d.freeCashflow) : 'N/A'}
+- D/E: ${d.debtToEquity != null ? (d.debtToEquity/100).toFixed(1)+'x' : 'N/A'} | Current ratio: ${fmt(d.currentRatio)} | Total debt: ${d.totalDebt ? fmtM(d.totalDebt) : 'N/A'}
+- Dividend yield: ${fmt(d.dividendYield)}% | Div rate: ${fmt(d.dividendRate,2)} | Payout: ${fmt(d.payoutRatio)}% | 5y avg yield: ${fmt(d.fiveYearAvgDivYield)}%
+- Beta: ${fmt(d.beta,2)} | Insiders: ${fmt(d.heldByInsiders)}% | Institutions: ${fmt(d.heldByInstitutions)}%
+- Short %: ${fmt(d.shortPercent)}% | Shares change: ${fmt(d.sharesChange)}%/año
+- 52w position: ${fmt(d.week52Position)}% | vs MA200: ${fmt(d.priceVsMa200)}% | vs MA50: ${fmt(d.priceVsMa50)}%
+- RSI(14): ${fmt(d.rsi14)} | Rel momentum vs S&P: ${fmt(d.relMomentum)}%
+- Sharpe: ${fmt(d.sharpeRatio,2)} | Sortino: ${fmt(d.sortinoRatio,2)} | Volatilidad: ${fmt(d.volatility)}% | Max DD: ${fmt(d.maxDrawdown)}%
+- Momentum 1M: ${d.momentum1M != null ? d.momentum1M+'%' : 'N/A'} | 3M: ${d.momentum3M != null ? d.momentum3M+'%' : 'N/A'} | 6M: ${d.momentum6M != null ? d.momentum6M+'%' : 'N/A'} | 12M: ${d.momentum12M != null ? d.momentum12M+'%' : 'N/A'}
+- Analyst consensus: ${fmt(d.recommendMean)} | Target price: ${fmt(d.targetMeanPrice,2)} | # analysts: ${d.numberOfAnalysts||'N/A'}
+
+DATOS MACRO (FRED):
+- Fed Funds Rate: ${m.fedFunds?.value ?? 'N/A'}% (${m.fedFunds?.trend||''})
+- 10Y Treasury: ${m.t10y?.value ?? 'N/A'}%
+- EUR/USD: ${m.eurusd?.value ?? 'N/A'}
+`.trim();
+
+      const CSS_TEMPLATE = `:root{--bg:#0d1117;--card:#161b22;--card2:#1c2128;--border:#30363d;--text:#e6edf3;--muted:#8b949e;--green:#3fb950;--red:#f85149;--yellow:#d29922;--blue:#58a6ff;--purple:#bc8cff;--orange:#f0883e;--accent:#1f6feb}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Georgia',serif;font-size:16px;line-height:1.75}
+.page{max-width:820px;margin:0 auto;padding:48px 32px}
+h1{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:8px}
+h2{font-size:22px;font-weight:700;margin:40px 0 12px;color:var(--text);padding-bottom:8px;border-bottom:1px solid var(--border)}
+h3{font-size:17px;font-weight:700;margin:24px 0 10px;color:var(--blue)}
+h4{font-size:15px;font-weight:700;margin:18px 0 6px;color:var(--yellow)}
+p{margin-bottom:14px;color:#c9d1d9}ul,ol{padding-left:22px;margin-bottom:14px}
+li{margin-bottom:6px;color:#c9d1d9}strong{color:var(--text)}em{color:var(--muted);font-style:italic}
+.src{display:inline-flex;align-items:center;gap:5px;background:#0d2137;border:1px solid var(--blue);border-radius:4px;padding:2px 8px;font-size:11px;font-family:sans-serif;color:var(--blue);margin-left:8px}
+.doc-header{background:linear-gradient(135deg,#0d2137 0%,#0d1117 100%);border:1px solid var(--blue);border-radius:14px;padding:32px;margin-bottom:40px}
+.doc-header .series{font-family:sans-serif;font-size:12px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px}
+.doc-header h1{font-size:34px;margin-bottom:6px}
+.doc-header .subtitle{color:var(--muted);font-size:16px;margin-bottom:20px}
+.meta{display:flex;gap:16px;flex-wrap:wrap}
+.mi{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;padding:8px 14px;text-align:center}
+.mi .val{font-size:18px;font-weight:700;color:var(--text);font-family:sans-serif}
+.mi .lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-family:sans-serif}
+.callout{border-radius:10px;padding:18px 22px;margin:20px 0;border-left:4px solid}
+.callout-blue{background:#0d1525;border-color:var(--blue)}.callout-green{background:#0d1f0d;border-color:var(--green)}
+.callout-yellow{background:#1f1a0d;border-color:var(--yellow)}.callout-red{background:#1f0d0d;border-color:var(--red)}
+.callout h4{margin-top:0;margin-bottom:8px;font-family:sans-serif}.callout p,.callout li{font-size:14px;line-height:1.65}
+.mg{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;margin:20px 0}
+.mb{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.mb .ml{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;font-family:sans-serif}
+.mb .mv{font-size:22px;font-weight:700;font-family:sans-serif}.mb .ms{font-size:11px;color:var(--muted);margin-top:3px;font-family:sans-serif}
+.sh{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 22px;margin:32px 0 18px}
+.sn{width:44px;height:44px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;flex-shrink:0;font-family:sans-serif}
+.sh h2{border:none;margin:0;padding:0;font-size:19px}
+.dh{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin:16px 0}
+.dh table{width:100%;border-collapse:collapse;font-family:sans-serif;font-size:13px}
+.dh th{padding:10px 14px;text-align:left;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--border);background:rgba(0,0,0,.2)}
+.dh td{padding:9px 14px;border-bottom:1px solid #21262d;color:#c9d1d9}.dh tr:last-child td{border-bottom:none}
+.pos{color:var(--green)}.neg{color:var(--red)}.neu{color:var(--muted)}
+blockquote{border-left:3px solid var(--yellow);padding:12px 20px;margin:20px 0;background:var(--card);border-radius:0 8px 8px 0}
+blockquote p{margin:0;font-style:italic;color:var(--muted);font-size:15px}
+blockquote cite{display:block;margin-top:8px;font-size:12px;color:var(--muted);font-style:normal;font-family:sans-serif}
+.veredicto{background:linear-gradient(135deg,#0a2000,#0d1117);border:2px solid var(--green);border-radius:16px;padding:28px;margin:32px 0;text-align:center}
+.veredicto .vd-label{font-family:sans-serif;font-size:12px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px}
+.veredicto .vd-titulo{font-size:36px;font-weight:800;color:var(--green);margin-bottom:12px}
+.veredicto .vd-sub{color:var(--muted);font-size:15px}
+.score-bar{margin:8px 0}.score-bar .sb-label{font-family:sans-serif;font-size:12px;color:var(--muted);margin-bottom:4px}
+.score-bar .sb-track{height:20px;background:#21262d;border-radius:4px;overflow:hidden}
+.score-bar .sb-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:700;color:#fff;font-family:sans-serif}
+.filtro-box{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin:12px 0}
+.filtro-box .fb-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.filtro-box .fb-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.filtro-box .fb-title{font-family:sans-serif;font-size:13px;font-weight:700}
+.filtro-box .fb-result{font-family:sans-serif;font-size:12px;font-weight:700;margin-left:auto;padding:3px 10px;border-radius:10px}
+.fr-pass{background:#0d2500;color:var(--green)}.fr-warn{background:#2d2006;color:var(--yellow)}.fr-fail{background:#3d1010;color:var(--red)}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pros{background:rgba(61,176,80,0.08);border:1px solid var(--green);border-radius:8px;padding:14px}
+.cons{background:rgba(248,81,73,0.06);border:1px solid #30363d;border-radius:8px;padding:14px}
+.df{margin-top:60px;padding-top:20px;border-top:1px solid var(--border);font-family:sans-serif;font-size:12px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+@media(max-width:600px){.page{padding:24px 16px}.meta{flex-direction:column}.mg{grid-template-columns:1fr 1fr}.twocol{grid-template-columns:1fr}}`;
+
+      // ── Prompt ─────────────────────────────────────────────────
+      const systemMsg = `Eres un analista financiero DGI de primer nivel. Generas informes de inversión completos y detallados en HTML puro.
+REGLAS:
+- Genera SOLO HTML válido, completo, con <!DOCTYPE html>, <html>, <head> con <style>, y <body>
+- Usa EXACTAMENTE las clases CSS del template (doc-header, veredicto, mg, mb, sh, sn, dh, callout, filtro-box, score-bar, twocol, pros, cons, df, pos, neg, neu)
+- Usa datos reales del ticker, sé específico y cuantitativo
+- Idioma: ${langName}
+- Análisis profundo, no genérico. Mínimo 1200 palabras de contenido.
+- Sin markdown, sin backticks, solo HTML puro`;
+
+      const todayStr = new Date().toLocaleDateString('es-ES', {month:'long',year:'numeric'});
+
+      let userContent = `${dataCtx}
+
+${docText ? `DOCUMENTO ADICIONAL ADJUNTO — "${docName}":\n${docText}\n\n` : ''}
+
+Genera un INFORME DE INVERSIÓN COMPLETO en HTML para ${ticker} (${name}) con este CSS en el <head>:
+<style>
+${CSS_TEMPLATE}
+</style>
+
+ESTRUCTURA OBLIGATORIA (7 pasos con el formato .sh .sn):
+
+1. CABECERA .doc-header: serie "📊 Análisis de Inversión — ${todayStr}", título con ticker, subtítulo con fuentes usadas, .meta con precio/EPS estimado/yield/P/E/veredicto
+
+2. VEREDICTO ANTICIPADO .veredicto: decisión COMPRAR/ACUMULAR/VIGILAR/EVITAR con justificación en 2-3 líneas
+
+3. .sh n°1 EL NEGOCIO: descripción del modelo de ingresos, segmentos, por qué es defensivo o no. Usa .mg .mb para KPIs clave (revenue, FCF, retención, margen). Incluye un .callout-blue con la ventaja competitiva clave.
+
+4. .sh n°2 LOS NÚMEROS: tabla .dh con P&L histórica (estimada si no tienes datos exactos), tabla de historial de dividendo si existe. KPIs de retorno al accionista (.mg .mb). .callout-green si hay algo destacable.
+
+5. .sh n°3 LOS 3 FILTROS: tres .filtro-box con .fb-header .fb-icon .fb-title .fb-result (.fr-pass/.fr-warn/.fr-fail):
+   - Filtro Wright/Weiss: ¿yield históricamente alto? Compara yield actual vs media 5 años
+   - Filtro Dorsey: ¿Foso económico? (network effects, switching costs, intangibles, coste, escala)
+   - Filtro Graham: ¿Margen de seguridad? P/E vs sector, P/B, target vs precio
+
+6. .sh n°4 ANÁLISIS DGI (solo si tiene dividendo): YoC proyectado a 5/10/15 años, .dh tabla comparativa vs 2-3 peers
+
+7. .sh n°5 VEREDICTO FINAL: tres .score-bar con puntuación 0-100, .twocol con .pros y .cons, plan de acción en <ol>, blockquote con cita relevante, .df footer con fuentes
+
+Usa todos los datos cuantitativos proporcionados. Sé específico: menciona el Sharpe, el momentum, la valoración real.`;
+
+      // Add PDF doc to OpenAI if provided
+      let openAIUserContent;
+      if (docBase64 && OPENAI_KEY) {
+        openAIUserContent = [
+          { type: 'text', text: userContent },
+          {
+            type: 'file',
+            file: { filename: docName || 'document.pdf', file_data: docBase64 },
+          }
+        ];
+      } else {
+        openAIUserContent = userContent;
+      }
+
+      // ── Try OpenAI first ───────────────────────────────────────
+      if (OPENAI_KEY) {
+        try {
+          const res = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + OPENAI_KEY },
+            body: JSON.stringify({
+              model: 'gpt-4.1-mini',
+              max_tokens: 6000,
+              temperature: 0.4,
+              messages: [
+                { role: 'system', content: systemMsg },
+                { role: 'user',   content: openAIUserContent },
+              ],
+            }),
+          });
+
+          const shouldFallback = res.status === 429 || res.status === 402 || res.status >= 500;
+
+          if (res.ok) {
+            const data = await res.json();
+            const html = (data.choices?.[0]?.message?.content || '').trim();
+            if (html.length > 500) {
+              return new Response(
+                JSON.stringify({ ok: true, html, _provider: 'openai' }),
+                { status: 200, headers: CORS }
+              );
+            }
+          } else if (!shouldFallback) {
+            const errData = await res.json().catch(() => ({}));
+            return new Response(
+              JSON.stringify({ error: errData.error?.message || 'OpenAI error ' + res.status }),
+              { status: 502, headers: CORS }
+            );
+          }
+        } catch(err) {
+          console.warn('[REPORT] OpenAI error:', err.message);
+        }
+      }
+
+      // ── Groq fallback ──────────────────────────────────────────
+      if (!GROQ_KEY) {
+        return new Response(
+          JSON.stringify({ error: 'OpenAI unavailable and no GROQ_API_KEY.' }),
+          { status: 502, headers: CORS }
+        );
+      }
+
+      try {
+        const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + GROQ_KEY },
+          body: JSON.stringify({
+            model: 'llama-3.3-70b-versatile',
+            max_tokens: 6000,
+            temperature: 0.4,
+            messages: [
+              { role: 'system', content: systemMsg },
+              // Groq: text only, no PDF support
+              { role: 'user', content: typeof userContent === 'string' ? userContent : userContent },
+            ],
+          }),
+        });
+
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          return new Response(
+            JSON.stringify({ error: errData.error?.message || 'Groq error ' + res.status }),
+            { status: 502, headers: CORS }
+          );
+        }
+
+        const data = await res.json();
+        const html = (data.choices?.[0]?.message?.content || '').trim();
+        if (!html) throw new Error('Empty response from Groq');
+
+        return new Response(
+          JSON.stringify({ ok: true, html, _provider: 'groq' }),
+          { status: 200, headers: CORS }
+        );
+
+      } catch(err) {
+        return new Response(
+          JSON.stringify({ error: 'Both providers failed: ' + err.message }),
+          { status: 500, headers: CORS }
+        );
+      }
+    }
+
+
     return new Response(
       JSON.stringify({ error:'Use /yahoo?ticker=AAPL or /macro' }),
       { status:404, headers:CORS }
