@@ -2672,6 +2672,15 @@ const ITEMS = [
   link:"https://stockanalysis.com/stocks/__TICKER__/",link_label:"Estadísticas del sector"},
 
  // ───────────────── TECHNICAL (3) ─────────────────────────────
+ {id:"ma200",cat:"technical",icon:"〰️",
+  label:{default:"Media Móvil 200 sesiones"},
+  short:"Proximidad del precio a la MA200 — la línea más vigilada por institucionales",
+  desc:{default:"La MA200 (media móvil de 200 sesiones, ~10 meses de trading) es la línea técnica más seguida por gestores institucionales y fondos de todo el mundo. Cuando el precio cotiza por encima de la MA200, la tendencia estructural es alcista y el mercado está en modo 'riesgo activado'. Por debajo de la MA200, la tendencia es bajista y los institucionales tienden a reducir exposición. Los niveles más relevantes: +5-10% sobre MA200 es sano sin sobreextensión; ±2% es la zona de decisión donde el precio puede rebotar o romper definitivamente; -10% o más señala tendencia bajista confirmada. El 'golden cross' (MA50 cruza MA200 al alza) ha generado retornos medios del +15% en los 12 meses siguientes históricamente."},
+  pos:{default:"Precio >5% sobre MA200 con MA200 en pendiente positiva. Separación de +5 a +15% es la zona ideal: suficientemente alcista sin sobreextensión. MA50 > MA200 (golden cross activo). El precio lleva varios meses sobre la MA200 sin haber retrocedido — fuerza institucional continuada."},
+  red:{default:"Precio >10% bajo MA200 (death cross confirmado). MA200 con pendiente negativa (tendencia bajista estructural). El precio rebotó hacia la MA200 pero fue rechazado — señal de que los vendedores superan a los compradores en ese nivel de precio."},
+  watch:{default:"Precio en zona ±5% de la MA200. Esta es la zona de máxima incertidumbre técnica: el precio puede rebotar al alza (soporte) o romper a la baja. El volumen en el cruce determina la convicción del movimiento. Esperar confirmación en el cierre semanal."},
+  link:"https://finviz.com/quote.ashx?t=__TICKER__",link_label:"MA200 en Finviz"},
+
  {id:"trend",cat:"technical",icon:"📐",
   label:{default:"Tendencia y Medias Móviles"},
   short:"Dirección del precio, MA50/200 y posición en rango 52 semanas",
@@ -2915,10 +2924,15 @@ function runValuation(state){
   const div_yield=parseFloat(inputs.dividend)||0;
   const clamp=(v,lo,hi)=>Math.min(Math.max(v,lo),hi);
 
-  if(sector==='reit'&&pe_raw>0){
-    const fp=cfg.pe_fair||15;
-    fv=pe_raw*fp; fv_bear=pe_raw*(fp*0.75); fv_bull=pe_raw*(fp*1.30);
-    method='P/FFO × '+fp+'x';
+  if(sector==='reit' && pe_raw>0 && current_price>0){
+    // FV = FFO_per_share × target_P/FFO
+    // FFO/share = current_price / current_P/FFO
+    const fp = cfg.pe_fair || 15;  // target P/FFO multiple
+    const ffops = current_price / pe_raw;
+    fv      = Math.round(ffops * fp * 100) / 100;
+    fv_bear = Math.round(ffops * (fp * 0.75) * 100) / 100;
+    fv_bull = Math.round(ffops * (fp * 1.30) * 100) / 100;
+    method  = 'P/FFO (' + pe_raw.toFixed(1) + 'x → ' + fp + 'x objetivo)';
   } else if(sector==='financial'){
     // Correct P/BV valuation: FV = BookValuePerShare × target_PBV
     // BookValuePerShare = currentPrice / currentPB
@@ -2940,15 +2954,32 @@ function runValuation(state){
       fv_bull = Math.round(fv * 1.30 * 100) / 100;
       method  = 'EPS × ' + tpe + 'x P/E justo';
     }
-  } else if(sector==='consumer_defensive'&&div_yield>0&&rev_growth>0){
-    const ke=0.08; const g=clamp(rev_growth/100,0.01,0.05);
-    fv=Math.round((div_yield*(1+g))/(ke-g)*100)/100;
-    fv_bear=Math.round(fv*0.75*100)/100; fv_bull=Math.round(fv*1.25*100)/100;
-    method='DDM (Gordon Growth)';
-  } else if((sector==='energy'||sector==='industrial'||sector==='telecom'||sector==='utilities')&&fcf_raw>0){
-    const fm={energy:8,industrial:14,telecom:10,utilities:14}[sector]||12;
-    fv=fcf_raw*fm; fv_bear=fcf_raw*(fm*0.70); fv_bull=fcf_raw*(fm*1.35);
-    method='FCF × '+fm+'x ('+cfg.label+')';
+  } else if(sector==='consumer_defensive' && div_yield>0 && current_price>0 && rev_growth>0){
+    // Gordon Growth Model: FV = D1 / (ke - g)
+    // D0 = absolute annual dividend = price × yield/100
+    // D1 = D0 × (1+g) — next year dividend
+    const ke  = 0.08;
+    const g   = clamp(rev_growth/100, 0.01, 0.05);
+    const D0  = current_price * div_yield / 100;   // absolute $/€ dividend
+    const D1  = D0 * (1 + g);
+    fv      = Math.round(D1 / (ke - g) * 100) / 100;
+    fv_bear = Math.round(fv * 0.80 * 100) / 100;
+    fv_bull = Math.round(fv * 1.20 * 100) / 100;
+    method  = 'DDM Gordon Growth (D0=' + D0.toFixed(2) + ', ke=8%, g=' + (g*100).toFixed(1) + '%)';
+  } else if(sector==='energy'||sector==='industrial'||sector==='telecom'||sector==='utilities'){
+    // Parse FCF yield from auto-fill string "FCF Yield: 5.2% | ROA: ..."
+    // Then derive absolute FCF/share = price × fcf_yield/100
+    const _fcfStr = inputs.fcf || '';
+    const _fcfMatch = _fcfStr.match(/FCF\s*Yield[:\s]*([\d.]+)%/i);
+    const fcf_yield = _fcfMatch ? parseFloat(_fcfMatch[1]) : (fcf_raw > 0 && fcf_raw < 30 ? fcf_raw : 0);
+    const fm = {energy:8, industrial:14, telecom:10, utilities:14}[sector] || 12;
+    if (fcf_yield > 0 && current_price > 0) {
+      const fcf_abs = current_price * fcf_yield / 100;  // FCF per share (absolute)
+      fv      = Math.round(fcf_abs * fm * 100) / 100;
+      fv_bear = Math.round(fv * 0.70 * 100) / 100;
+      fv_bull = Math.round(fv * 1.35 * 100) / 100;
+      method  = 'FCF × ' + fm + 'x (yield=' + fcf_yield.toFixed(1) + '%, ' + cfg.label + ')';
+    }
   } else {
     // ── EPS real = precio / P/E  (mucho más preciso que usar % de crecimiento) ──
     // Intentamos obtener EPS de tres fuentes en orden de precisión:
@@ -2973,14 +3004,28 @@ function runValuation(state){
     const g = clamp(rev_growth, 0, 25); // cap 25% — más conservador
 
     if (epsVal > 0) {
-      const graham  = epsVal * (8.5 + 2 * g) * (4.4 / 4.8);
-      const ke      = 0.09, g_term = 0.03;
-      const eps5    = epsVal * Math.pow(1 + g / 100, 5);
-      const dcf     = eps5 * (1 + g_term) / (ke - g_term);
-      fv      = Math.round((dcf * 0.6 + graham * 0.4) * 100) / 100;
-      fv_bear = Math.round(fv * 0.70 * 100) / 100;
-      fv_bull = Math.round(fv * 1.35 * 100) / 100;
-      method  = 'DCF/Graham blend (EPS=' + epsVal.toFixed(2) + ', g=' + g + '%)';
+      // Graham Formula (Benjamin Graham, Security Analysis):
+      //   IV = EPS × (8.5 + 2g) × (4.4/Y)  where Y ≈ AAA bond yield (4.8% current)
+      const graham = epsVal * (8.5 + 2 * g) * (4.4 / 4.8);
+
+      // DCF — 2-stage: explicit 5Y growth, then terminal value discounted to present
+      //   Stage 1: EPS grows at g% for 5 years
+      //   Stage 2: Terminal value at perpetual g_term=3%
+      //   Both stages discounted at ke=9%
+      const ke = 0.09, g_term = 0.03;
+      let pv_stage1 = 0;
+      for (let yr = 1; yr <= 5; yr++) {
+        pv_stage1 += epsVal * Math.pow(1 + g/100, yr) / Math.pow(1 + ke, yr);
+      }
+      const eps5     = epsVal * Math.pow(1 + g/100, 5);
+      const tv       = eps5 * (1 + g_term) / (ke - g_term);   // terminal value at yr5
+      const pv_tv    = tv / Math.pow(1 + ke, 5);               // discount to present
+      const dcf      = pv_stage1 + pv_tv;
+
+      fv      = Math.round((dcf * 0.55 + graham * 0.45) * 100) / 100;
+      fv_bear = Math.round(fv * 0.72 * 100) / 100;
+      fv_bull = Math.round(fv * 1.30 * 100) / 100;
+      method  = 'DCF/Graham blend (EPS=' + epsVal.toFixed(2) + ', g=' + g + '%, ke=9%)';
     }
   }
 
@@ -4898,6 +4943,31 @@ function _afBuildMap(d, sector) {
     if (val) push('trend', val, mark);
   }
 
+  // ── ma200: MA200 proximity chip (only from autofill data) ─────────────────
+  if (d.priceVsMa200 !== null && d.price !== null && d.ma200 !== null) {
+    const pct200 = d.priceVsMa200;
+    let ma200Mark = 'watch';
+    let ma200State = '';
+    if (pct200 >= 10) {
+      ma200Mark = 'ok';
+      ma200State = '↑ ' + pct200.toFixed(1) + '% sobre MA200 — tendencia alcista confirmada';
+    } else if (pct200 >= 2) {
+      ma200Mark = 'ok';
+      ma200State = '↑ ' + pct200.toFixed(1) + '% sobre MA200 — precio sano';
+    } else if (pct200 >= -2) {
+      ma200Mark = 'watch';
+      ma200State = '≈ MA200 (±' + Math.abs(pct200).toFixed(1) + '%) — zona de decisión clave';
+    } else if (pct200 >= -8) {
+      ma200Mark = 'watch';
+      ma200State = '↓ ' + Math.abs(pct200).toFixed(1) + '% bajo MA200 — presión bajista';
+    } else {
+      ma200Mark = 'bad';
+      ma200State = '↓ ' + Math.abs(pct200).toFixed(1) + '% bajo MA200 — tendencia bajista';
+    }
+    const ma200Abs = d.ma200.toFixed(2);
+    push('ma200', 'MA200: ' + ma200Abs + ' | ' + ma200State, ma200Mark);
+  }
+
   // ── rsi: Momentum + RSI ───────────────────────────────────
   if (d.rsi14 !== null || d.relMomentum !== null) {
     let val = '';
@@ -6074,9 +6144,9 @@ function scBuildData(d, sector) {
       : avg5 < dy ? _scScore(dy - avg5, [2,1,0.5,0.1]) // yield growing
       : _scScoreInv(avg5 - dy, [3,2,1,0.5]))            // yield shrinking
     : NA;
-  // Payout: ideal 30-65% (safety + room to grow)
-  const poScore = po !== null
-    ? (po <= 0 ? 1 : po <= 30 ? 4 : po <= 65 ? 5 : po <= 80 ? 3 : po <= 95 ? 2 : 1)
+  // Payout: ideal 30-65%. 0% = no dividend → NA (not penalized)
+  const poScore = (po !== null && po > 0 && dy !== null && dy > 0)
+    ? (po <= 30 ? 4 : po <= 65 ? 5 : po <= 80 ? 3 : po <= 95 ? 2 : 1)
     : NA;
   // Buybacks: sc < 0 = buybacks (good), sc > 0 = dilution (bad)
   const bbScore = sc !== null ? _scScoreInv(sc, [-3, -1, 1, 4]) : NA;
