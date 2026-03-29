@@ -39,41 +39,6 @@ body{background:var(--bg);color:var(--tx);font-family:'IBM Plex Mono',monospace;
 /* LANG */
 
 /* ── INFORME IA CARD ─────────────────────────────────────── */
-.report-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:24px 28px;margin-top:28px;display:none}
-.report-card.visible{display:block}
-.report-card-hdr{display:flex;align-items:center;gap:12px;margin-bottom:18px}
-.report-card-icon{width:38px;height:38px;border-radius:8px;background:linear-gradient(135deg,rgba(0,212,170,.18),rgba(59,130,246,.12));border:1px solid rgba(0,212,170,.25);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.report-card-title{font-family:'Bebas Neue';font-size:17px;letter-spacing:2px;color:var(--tx)}
-.report-card-sub{font-size:10px;color:var(--tx3);letter-spacing:1px;margin-top:2px}
-.report-sources{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
-.report-src-badge{font-size:9px;letter-spacing:1px;padding:3px 9px;border-radius:3px;font-family:'IBM Plex Mono';font-weight:700;background:rgba(0,212,170,.08);color:var(--a1);border:1px solid rgba(0,212,170,.2)}
-.report-src-badge.opt{background:rgba(59,130,246,.08);color:var(--a3);border-color:rgba(59,130,246,.2)}
-.report-dropzone{border:1.5px dashed var(--border);border-radius:var(--r);padding:20px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:16px;background:var(--bg3);position:relative}
-.report-dropzone:hover,.report-dropzone.drag-over{border-color:var(--a1);background:rgba(0,212,170,.04)}
-.report-dropzone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.report-dz-icon{font-size:28px;margin-bottom:8px}
-.report-dz-title{font-size:12px;font-weight:700;color:var(--tx);margin-bottom:4px}
-.report-dz-hint{font-size:10px;color:var(--tx3)}
-.report-file-preview{display:none;background:rgba(0,212,170,.06);border:1px solid rgba(0,212,170,.2);border-radius:6px;padding:10px 14px;margin-bottom:16px;font-size:11px;color:var(--a1);font-family:'IBM Plex Mono'}
-.report-file-preview.has-file{display:flex;align-items:center;gap:10px}
-.report-gen-btn{background:linear-gradient(135deg,var(--a1),#3b82f6);color:var(--bg);border:none;border-radius:4px;padding:12px 28px;font-family:'IBM Plex Mono';font-size:11px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:all .2s;text-transform:uppercase;width:100%}
-.report-gen-btn:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 4px 20px rgba(0,212,170,.35)}
-.report-gen-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
-.report-status{margin-top:12px;font-size:11px;color:var(--tx3);font-family:'IBM Plex Mono';min-height:16px;text-align:center}
-
-/* ── REPORT MODAL ────────────────────────────────────────── */
-.report-modal-overlay{display:none;position:fixed;inset:0;z-index:9000;background:rgba(7,10,14,.92);backdrop-filter:blur(4px)}
-.report-modal-overlay.open{display:flex;flex-direction:column}
-.report-modal-bar{display:flex;align-items:center;gap:12px;padding:12px 20px;background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0}
-.report-modal-ticker{font-family:'Bebas Neue';font-size:20px;letter-spacing:3px;color:var(--a1)}
-.report-modal-title{font-size:11px;color:var(--tx3);letter-spacing:1px}
-.report-modal-spacer{flex:1}
-.report-modal-btn{background:none;border:1px solid var(--border);color:var(--tx2);border-radius:4px;padding:7px 14px;font-family:'IBM Plex Mono';font-size:10px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all .2s}
-.report-modal-btn:hover{border-color:var(--a1);color:var(--a1)}
-.report-modal-btn.primary{background:var(--a1);color:var(--bg);border-color:var(--a1)}
-.report-modal-btn.primary:hover{background:#00f5c0}
-.report-modal-iframe-wrap{flex:1;overflow:hidden}
-.report-modal-iframe-wrap iframe{width:100%;height:100%;border:none;background:#fff}
 
 .lang-sw{display:flex;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
 .lang-btn{background:none;border:none;border-right:1px solid var(--border);cursor:pointer;padding:6px 10px;font-size:18px;transition:all .2s;opacity:.4;line-height:1;display:flex;align-items:center;gap:5px}
@@ -1925,8 +1890,7 @@ code, kbd, pre { font-family: 'IBM Plex Mono', monospace; }
 /* ═══════════════════════════════════════════════════════════════
    SCORECARD — VALORACIÓN POR BLOQUES (Fase 1)
 ═══════════════════════════════════════════════════════════════ */
-.scorecard-section{margin-top:32px;display:none}
-.scorecard-section.visible{display:block}
+.scorecard-section{margin-top:24px}
 
 .sc-hdr{display:flex;align-items:center;justify-content:space-between;
   flex-wrap:wrap;gap:10px;margin-bottom:20px}
@@ -2183,10 +2147,36 @@ code, kbd, pre { font-family: 'IBM Plex Mono', monospace; }
         </div>
         <div class="res-narrative" id="res-narrative"></div>
         <div class="res-flags" id="res-flags"></div>
+
+        <!-- SCORECARD DE VALORACIÓN — dentro del panel de resultados -->
+        <div class="scorecard-section" id="scorecard-section" style="margin-top:24px">
+          <div class="sc-hdr">
+            <div>
+              <div class="sc-title" id="sc-title">SCORECARD DE VALORACIÓN</div>
+              <div class="sc-subtitle" id="sc-subtitle">5 bloques · Puntuación 1–5 · Relativo al sector</div>
+            </div>
+            <div class="sc-mode-wrap">
+              <button class="sc-mode-btn active" id="sc-mode-eq" onclick="scSetMode('eq')">Equiponderado</button>
+              <button class="sc-mode-btn" id="sc-mode-cu" onclick="scSetMode('custom')">Personalizado</button>
+            </div>
+          </div>
+          <div class="sc-legend">
+            <div class="sc-leg-item"><span class="sc-leg-dot" style="background:var(--green)"></span><span>5 — Excelente vs sector</span></div>
+            <div class="sc-leg-item"><span class="sc-leg-dot" style="background:#84cc16"></span><span>4 — Bueno</span></div>
+            <div class="sc-leg-item"><span class="sc-leg-dot" style="background:var(--yellow)"></span><span>3 — En línea</span></div>
+            <div class="sc-leg-item"><span class="sc-leg-dot" style="background:#f97316"></span><span>2 — Por debajo</span></div>
+            <div class="sc-leg-item"><span class="sc-leg-dot" style="background:var(--red)"></span><span>1 — Negativo</span></div>
+            <div class="sc-leg-sep"></div>
+            <div class="sc-leg-info">Compara la empresa con la mediana del sector. 20% por bloque en modo equiponderado. Orientativo — no es recomendación de compra.</div>
+          </div>
+          <div class="sc-blocks" id="sc-blocks"></div>
+          <div class="sc-totals-row" id="sc-totals-row"></div>
+        </div>
+
         <div class="ai-section" id="ai-section">
-          <div class="ai-section-title">✦ Análisis Inteligente</div>
+          <div class="ai-section-title">✦ Análisis Completo con IA</div>
           <button class="ai-btn" id="ai-btn" onclick="triggerAIAnalysis()">
-            <span>🤖</span><span id="ai-btn-txt">Generar análisis IA — Macro · Fundamental · Técnico · Precio de entrada</span>
+            <span>🤖</span><span id="ai-btn-txt">Generar análisis IA — Tesis · Moat · Riesgo/Retorno · Macro · Técnico · Entrada · Proyecciones</span>
           </button>
           <div id="ai-loading" style="display:none" class="ai-loading">
             <div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div>
@@ -2200,83 +2190,8 @@ code, kbd, pre { font-family: 'IBM Plex Mono', monospace; }
         </div>
       </div>
 
-      <!-- ═══════════════════════════════════════════════════════
-           SCORECARD — 5 BLOQUES DE VALORACIÓN
-      ═══════════════════════════════════════════════════════════ -->
-      <div class="scorecard-section" id="scorecard-section">
-
-        <div class="sc-hdr">
-          <div>
-            <div class="sc-title" id="sc-title">SCORECARD DE VALORACIÓN</div>
-            <div class="sc-subtitle" id="sc-subtitle">5 bloques · Puntuación 1–5 por métrica</div>
-          </div>
-          <div class="sc-mode-wrap">
-            <button class="sc-mode-btn active" id="sc-mode-eq" onclick="scSetMode('eq')">
-              Equiponderado
-            </button>
-            <button class="sc-mode-btn" id="sc-mode-cu" onclick="scSetMode('custom')">
-              Personalizado
-            </button>
-          </div>
-        </div>
-
-        <!-- Leyenda explicativa -->
-        <div class="sc-legend">
-          <div class="sc-leg-item"><span class="sc-leg-dot" style="background:var(--green)"></span><span>5 — Excelente vs sector</span></div>
-          <div class="sc-leg-item"><span class="sc-leg-dot" style="background:#84cc16"></span><span>4 — Bueno</span></div>
-          <div class="sc-leg-item"><span class="sc-leg-dot" style="background:var(--yellow)"></span><span>3 — En línea con sector</span></div>
-          <div class="sc-leg-item"><span class="sc-leg-dot" style="background:#f97316"></span><span>2 — Por debajo</span></div>
-          <div class="sc-leg-item"><span class="sc-leg-dot" style="background:var(--red)"></span><span>1 — Señal negativa</span></div>
-          <div class="sc-leg-sep"></div>
-          <div class="sc-leg-info">Cada bloque pondera 20% en modo equiponderado. La puntuación final /5 refleja la calidad global relativa al sector — no es una recomendación de compra.</div>
-        </div>
-
-        <!-- 5 blocks -->
-        <div class="sc-blocks" id="sc-blocks"></div>
-
-        <!-- Totals row -->
-        <div class="sc-totals-row" id="sc-totals-row"></div>
-
-      </div>
 
 
-
-      <!-- INFORME IA — Análisis completo con IA -->
-      <div class="report-card" id="report-card">
-        <div class="report-card-hdr">
-          <div class="report-card-icon">📋</div>
-          <div>
-            <div class="report-card-title">INFORME DE ANÁLISIS COMPLETO</div>
-            <div class="report-card-sub">OpenAI GPT-4.1 · Groq Fallback · PDF exportable</div>
-          </div>
-        </div>
-        <div class="report-sources">
-          <span class="report-src-badge">✓ Yahoo Finance</span>
-          <span class="report-src-badge">✓ FRED Macro</span>
-          <span class="report-src-badge">✓ Sharpe · Sortino · Momentum</span>
-          <span class="report-src-badge opt">+ Doc opcional</span>
-          <span class="report-src-badge opt">+ SEC EDGAR</span>
-        </div>
-        <div class="report-dropzone" id="report-dropzone"
-          ondragover="event.preventDefault();this.classList.add('drag-over')"
-          ondragleave="this.classList.remove('drag-over')"
-          ondrop="event.preventDefault();this.classList.remove('drag-over');_reportHandleFile(event.dataTransfer.files[0])">
-          <input type="file" id="report-file-input" accept=".pdf,.html,.htm,.txt"
-            onchange="_reportHandleFile(this.files[0])"/>
-          <div class="report-dz-icon">📂</div>
-          <div class="report-dz-title">Arrastra o haz clic para subir un documento (opcional)</div>
-          <div class="report-dz-hint">Earnings call · Annual report · Investor presentation · 10-K · PDF / HTML / TXT</div>
-        </div>
-        <div class="report-file-preview" id="report-file-preview">
-          <span id="report-file-icon">📄</span>
-          <span id="report-file-name"></span>
-          <span style="margin-left:auto;cursor:pointer;color:var(--tx3)" onclick="_reportClearFile()">✕</span>
-        </div>
-        <button class="report-gen-btn" id="report-gen-btn" onclick="_reportGenerate()">
-          ⚡ GENERAR INFORME COMPLETO CON IA
-        </button>
-        <div class="report-status" id="report-status"></div>
-      </div>
 
     </div><!-- /analyzer-content -->
 
@@ -3430,6 +3345,79 @@ function getItemLabel(item){
 // ══════════════════════════════════════════════════════════════
 // RENDER GRID  (full render, called on new ticker or lang change)
 // ══════════════════════════════════════════════════════════════
+function _renderRichMetricCard(item, val, mark, cc, mc, mi, label) {
+  function parseKV(str) {
+    var out = {};
+    str.split('|').forEach(function(part) {
+      var colon = part.indexOf(':');
+      if(colon > -1) {
+        var k = part.slice(0, colon).trim().toLowerCase().replace(/\s+/g,'_');
+        var v = part.slice(colon+1).trim();
+        out[k] = v;
+      }
+    });
+    return out;
+  }
+  var kv = parseKV(val);
+  var kpis = '';
+
+  if(item.id === 'sharpe') {
+    var sharpeVal = kv['sharpe'] || '—';
+    var sortinoVal = kv['sortino'] || '—';
+    var volaVal = kv['vola'] || '—';
+    var ddVal = kv['maxdd'] || '—';
+    var rfVal = kv['rf'] || '';
+    var sharpeN = parseFloat(sharpeVal);
+    var sc = isNaN(sharpeN)?'var(--tx2)':sharpeN>=1.5?'var(--green)':sharpeN>=0.5?'var(--yellow)':'var(--red)';
+    kpis = '<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin:8px 0">'
+      + '<div style="background:var(--bg3);border-radius:4px;padding:7px 10px"><div style="font-size:9px;color:var(--tx3);letter-spacing:.08em;margin-bottom:3px">SHARPE</div>'
+      + '<div style="font-size:18px;font-weight:700;color:'+sc+'">'+sharpeVal+'</div>'
+      + '<div style="font-size:9px;color:var(--tx3)">retorno/riesgo total</div></div>'
+      + '<div style="background:var(--bg3);border-radius:4px;padding:7px 10px"><div style="font-size:9px;color:var(--tx3);letter-spacing:.08em;margin-bottom:3px">SORTINO</div>'
+      + '<div style="font-size:18px;font-weight:700;color:var(--a1)">'+sortinoVal+'</div>'
+      + '<div style="font-size:9px;color:var(--tx3)">solo vol. bajista</div></div>'
+      + '<div style="background:var(--bg3);border-radius:4px;padding:7px 10px"><div style="font-size:9px;color:var(--tx3);letter-spacing:.08em;margin-bottom:3px">VOLATILIDAD</div>'
+      + '<div style="font-size:18px;font-weight:700;color:var(--tx2)">'+volaVal+'</div>'
+      + '<div style="font-size:9px;color:var(--tx3)">anualizada 1A</div></div>'
+      + '<div style="background:var(--bg3);border-radius:4px;padding:7px 10px"><div style="font-size:9px;color:var(--tx3);letter-spacing:.08em;margin-bottom:3px">MAX DRAWDOWN</div>'
+      + '<div style="font-size:18px;font-weight:700;color:var(--red)">'+ddVal+'</div>'
+      + '<div style="font-size:9px;color:var(--tx3)">peor caída 1A</div></div>'
+      + '</div>';
+    if(rfVal) kpis += '<div style="font-size:9px;color:var(--tx3);margin-bottom:5px">Tasa libre de riesgo (FRED Fed Funds): '+rfVal+'</div>';
+    kpis += '<div style="font-size:9px;color:var(--tx3);line-height:1.55;padding:6px 8px;background:var(--bg3);border-radius:4px">'
+      + '<strong style="color:var(--tx2)">Sharpe</strong> = (Retorno anual − Rf) ÷ Volatilidad &nbsp;·&nbsp; '
+      + '<strong style="color:var(--tx2)">Sortino</strong> = (Retorno − Rf) ÷ Desviación bajista. '
+      + 'Sharpe &gt;1 es bueno · &gt;2 excelente · &lt;0 no compensa el riesgo asumido.</div>';
+  }
+
+  if(item.id === 'momentum') {
+    function momCell(period, vRaw) {
+      if(!vRaw || vRaw === '—') return '<div style="background:var(--bg3);border-radius:4px;padding:7px 10px"><div style="font-size:9px;color:var(--tx3);letter-spacing:.08em;margin-bottom:3px">'+period+'</div><div style="font-size:18px;font-weight:700;color:var(--tx3)">—</div><div style="font-size:9px;color:var(--tx3)">sin datos</div></div>';
+      var n = parseFloat(vRaw);
+      var col = isNaN(n)?'var(--tx2)':n>10?'var(--green)':n>2?'#84cc16':n>0?'var(--yellow)':n>-5?'#f97316':'var(--red)';
+      return '<div style="background:var(--bg3);border-radius:4px;padding:7px 10px"><div style="font-size:9px;color:var(--tx3);letter-spacing:.08em;margin-bottom:3px">'+period+'</div>'
+        +'<div style="font-size:18px;font-weight:700;color:'+col+'">'+(n>0?'+':'')+vRaw+'</div>'
+        +'<div style="font-size:9px;color:var(--tx3)">retorno precio</div></div>';
+    }
+    kpis = '<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin:8px 0">'
+      + momCell('1 MES',   kv['1m'])
+      + momCell('3 MESES', kv['3m'])
+      + momCell('6 MESES', kv['6m'])
+      + momCell('12 MESES',kv['12m'])
+      + '</div>';
+    kpis += '<div style="font-size:9px;color:var(--tx3);line-height:1.55;padding:6px 8px;background:var(--bg3);border-radius:4px">'
+      + 'Momentum = retorno real del precio de cierre en cada período. '
+      + 'Positivo en todos los horizontes = tendencia sana. '
+      + 'Divergencia 12M+ pero 1M-3M negativo = posible agotamiento o corrección.</div>';
+  }
+
+  return '<div class="'+cc+' item-card-rich" onclick="openItem(\''+item.id+'\')" style="grid-column:1/-1">'
+    + '<div class="item-card-top" style="margin-bottom:4px"><span class="item-name">'+item.icon+' '+label+'</span><span class="'+mc+'">'+mi+'</span></div>'
+    + kpis
+    + '<div class="item-explore" style="margin-top:6px">Ver explicación completa →</div>'
+    + '</div>';
+}
+
 function renderGrid(){
   const grid=document.getElementById('analysis-grid');
   const cats=[
@@ -3462,6 +3450,10 @@ function renderGrid(){
       const cc='item-card'+(mark==='ok'?' marked-ok':mark==='bad'?' marked-bad':mark==='watch'?' marked-watch':'');
       const mi=mark==='ok'?'✓':mark==='bad'?'✗':mark==='watch'?'⚠':'·';
       const mc='item-mark'+(mark==='ok'?' ok':mark==='bad'?' bad':mark==='watch'?' watch':'');
+      if((item.id==='sharpe'||item.id==='momentum') && val) {
+        html += _renderRichMetricCard(item, val, mark, cc, mc, mi, label);
+        return;
+      }
       html+=`<div class="${cc}" onclick="openItem('${item.id}')">
         <div class="item-card-top"><span class="item-name">${label}</span><span class="${mc}">${mi}</span></div>
         <div class="${val?'item-value':'item-value-empty'}">${val||tr('notFilled')}</div>
@@ -3841,7 +3833,10 @@ function _renderAI(a,cp){
   // Macro + Fundamental + Technical
   if(a.macro)       out += blk('🌍', L.macro, '<p style="font-size:12px;line-height:1.65;color:var(--tx2)">'+a.macro+'</p>', 'var(--a2)');
   if(a.fundamental) out += blk('📊', L.fund, '<p style="font-size:12px;line-height:1.65;color:var(--tx2)">'+a.fundamental+'</p>', 'var(--a1)');
-  if(a.technical)   out += blk('📐', L.tech, '<p style="font-size:12px;line-height:1.65;color:var(--tx2)">'+a.technical+'</p>', 'var(--a3)');
+  if(a.moat)           out += blk('🏰', L.moat,      '<p style="font-size:12px;line-height:1.65;color:var(--tx2)">'+a.moat+'</p>',           '#f59e0b');
+  if(a.riesgo_retorno) out += blk('📊', L.riskret,   '<p style="font-size:12px;line-height:1.65;color:var(--tx2)">'+a.riesgo_retorno+'</p>',  '#3b82f6');
+  if(a.dividendo)      out += blk('💎', L.dividendo,  '<p style="font-size:12px;line-height:1.65;color:var(--tx2)">'+a.dividendo+'</p>',       '#4ade80');
+  if(a.technical)      out += blk('📐', L.tech,       '<p style="font-size:12px;line-height:1.65;color:var(--tx2)">'+a.technical+'</p>',       'var(--a3)');
 
   // Catalysts
   if(a.catalysts && a.catalysts.length) {
@@ -4089,10 +4084,6 @@ function resetAnalysis(){
   document.getElementById('manual-box').style.display='none';
   document.getElementById('analysis-grid').innerHTML='';
   document.getElementById('results-panel').classList.remove('visible');
-  var rc = document.getElementById('report-card');
-  if (rc) { rc.classList.remove('visible'); }
-  _reportClearFile();
-  _reportStatus('');
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -6356,8 +6347,7 @@ function scUpdate() {
     section.classList.remove('visible');
   }
   // Show report card when data is available
-  const rc = document.getElementById('report-card');
-  if (rc && state && state.ticker) rc.classList.add('visible');
+
 }
 
 
@@ -6441,189 +6431,11 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('../sw.js', { scope: '../' }).catch(function(){});
 }
 
-// ══════════════════════════════════════════════════════════════════
-// INFORME IA — File handling + Report generation
-// ══════════════════════════════════════════════════════════════════
-let _reportFile = null;  // { name, type, dataUrl, textContent }
-
-function _reportHandleFile(file) {
-  if (!file) return;
-  const preview = document.getElementById('report-file-preview');
-  const nameEl  = document.getElementById('report-file-name');
-  const iconEl  = document.getElementById('report-file-icon');
-  const dz      = document.getElementById('report-dropzone');
-  if (!preview || !nameEl) return;
-
-  const isPDF  = file.type === 'application/pdf' || file.name.endsWith('.pdf');
-  const isHTML = file.type.includes('html') || file.name.endsWith('.html') || file.name.endsWith('.htm');
-
-  iconEl.textContent = isPDF ? '📑' : isHTML ? '🌐' : '📄';
-  nameEl.textContent = file.name + ' (' + (file.size / 1024).toFixed(0) + ' KB)';
-  preview.classList.add('has-file');
-  dz.style.display = 'none';
-
-  const reader = new FileReader();
-  if (isPDF) {
-    reader.onload = function(e) {
-      _reportFile = { name: file.name, mime: 'application/pdf', dataUrl: e.target.result, isText: false };
-    };
-    reader.readAsDataURL(file);
-  } else {
-    reader.onload = function(e) {
-      _reportFile = { name: file.name, mime: file.type || 'text/plain', textContent: e.target.result, isText: true };
-    };
-    reader.readAsText(file, 'UTF-8');
-  }
-}
-
-function _reportClearFile() {
-  _reportFile = null;
-  const preview = document.getElementById('report-file-preview');
-  const dz = document.getElementById('report-dropzone');
-  const fi = document.getElementById('report-file-input');
-  if (preview) preview.classList.remove('has-file');
-  if (dz) dz.style.display = '';
-  if (fi) fi.value = '';
-}
-
-function _reportStatus(msg, color) {
-  const el = document.getElementById('report-status');
-  if (!el) return;
-  el.textContent = msg;
-  el.style.color = color || 'var(--tx3)';
-}
-
-async function _reportGenerate() {
-  if (!state.ticker) return;
-  const btn = document.getElementById('report-gen-btn');
-  if (btn) btn.disabled = true;
-  _reportStatus('Conectando con IA...', 'var(--yellow)');
-
-  try {
-    const payload = {
-      ticker:     state.ticker,
-      name:       state.name || state.ticker,
-      sector:     state.sector || 'technology',
-      lang:       lang || 'es',
-      yahooData:  window._afData || null,
-      macroData:  window._macroCache || null,
-    };
-
-    if (_reportFile) {
-      payload.docName = _reportFile.name;
-      if (_reportFile.isText) {
-        // HTML/TXT — send as text, truncate to 14000 chars (~10 pages)
-        payload.docText = _reportFile.textContent.slice(0, 14000);
-        payload.docMime = 'text';
-      } else {
-        // PDF — Cloudflare Workers have a 30s CPU limit.
-        // Large PDFs (>500 KB) time out. We strip readable text from the
-        // raw bytes using a regex on the base64-decoded content instead.
-        // This avoids sending megabytes of binary to the worker.
-        const MAX_B64_CHARS = 700000; // ~520 KB decoded — safe for worker
-        const raw = _reportFile.dataUrl || '';
-        const b64 = raw.split(',')[1] || raw;
-        if (b64.length <= MAX_B64_CHARS) {
-          payload.docBase64 = raw;
-          payload.docMime   = 'pdf';
-        } else {
-          // File too large for binary transfer — extract visible ASCII text
-          // from the dataUrl as a rough approximation (readable strings in PDF)
-          try {
-            const decoded = atob(b64.slice(0, MAX_B64_CHARS));
-            const visible = decoded.replace(/[^\x20-\x7E]/g, ' ')
-              .replace(/\s{3,}/g, ' ').trim().slice(0, 14000);
-            payload.docText = visible;
-            payload.docMime = 'text';
-            payload.docNote = 'PDF truncado por tamaño — texto extraído';
-          } catch(e) {
-            // If atob fails just skip the doc
-            payload.docText = '[PDF demasiado grande para procesar — análisis basado en datos Yahoo/FRED]';
-            payload.docMime = 'text';
-          }
-        }
-      }
-    }
-
-    _reportStatus('Generando informe IA... (30-60 segundos)', 'var(--a1)');
-
-    const res = await fetch(WORKER_URL + '/report', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify(payload),
-      signal:  AbortSignal.timeout(90000),
-    });
-
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.error || 'HTTP ' + res.status);
-    }
-
-    const data = await res.json();
-    if (!data.ok || !data.html) throw new Error(data.error || 'Sin contenido en la respuesta');
-
-    _reportStatus('✅ Informe generado (' + (data._provider || 'ai') + ')', 'var(--green)');
-    _reportShowModal(data.html);
-
-  } catch(err) {
-    _reportStatus('❌ ' + err.message, 'var(--red)');
-  } finally {
-    if (btn) btn.disabled = false;
-  }
-}
-
-function _reportShowModal(html) {
-  const overlay = document.getElementById('report-modal-overlay');
-  const iframe  = document.getElementById('report-modal-iframe');
-  const ticker  = document.getElementById('report-modal-ticker');
-  if (!overlay || !iframe) return;
-  if (ticker) ticker.textContent = state.ticker || '';
-  // Write HTML into iframe
-  iframe.srcdoc = html;
-  overlay.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function _reportCloseModal() {
-  const overlay = document.getElementById('report-modal-overlay');
-  if (overlay) overlay.classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-function _reportPrint() {
-  const iframe = document.getElementById('report-modal-iframe');
-  if (iframe && iframe.contentWindow) {
-    iframe.contentWindow.focus();
-    iframe.contentWindow.print();
-  }
-}
-
-// Close modal on Escape
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') {
-    const o = document.getElementById('report-modal-overlay');
-    if (o && o.classList.contains('open')) _reportCloseModal();
-  }
-});
 
 </script>
 
 
-  <!-- INFORME MODAL -->
-  <div class="report-modal-overlay" id="report-modal-overlay">
-    <div class="report-modal-bar">
-      <span class="report-modal-ticker" id="report-modal-ticker"></span>
-      <span class="report-modal-title" id="report-modal-title">Informe de Análisis Completo</span>
-      <span class="report-modal-spacer"></span>
-      <button class="report-modal-btn primary" onclick="_reportPrint()">🖨 Imprimir / PDF</button>
-      <button class="report-modal-btn" onclick="_reportCloseModal()">✕ Cerrar</button>
-    </div>
-    <div class="report-modal-iframe-wrap">
-      <iframe id="report-modal-iframe" title="Informe de análisis"></iframe>
-    </div>
-  </div>
-
-  <!-- GLOBAL SEARCH MODAL -->
+    <!-- GLOBAL SEARCH MODAL -->
   <div class="gs-overlay" id="gs-overlay" onclick="if(event.target===this)closeGlobalSearch()">
     <div class="gs-modal" id="gs-modal">
       <div class="gs-top">
