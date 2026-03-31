@@ -1,12 +1,12 @@
 {
-  "suite": "2.2.1",
-  "axios": "2.2.0",
+  "suite": "2.3.0",
+  "axios": "2.3.0",
   "harvest": "1.7.0",
   "delfos": "2.1.0",
-  "updated": "2026-03-28",
+  "updated": "2026-03-31",
   "notes": {
-    "suite": "SW v3 — openai.com excluido de caché; CACHE_NAME bump a iq-suite-v3",
-    "axios": "v2.2 — Sharpe · Sortino · Momentum · Informe IA completo · pushState fix",
+    "suite": "AXIOS·IQ v2.3 — Fase 0 completa",
+    "axios": "ke CAPM dinámico · Graham yield dinámico · ETF detection · Disclaimer legal · AbortSignal AI",
     "harvest": "v1.7 modular + Service Worker",
     "delfos": "v2.1 — Oracle, curso y aviso legal completo"
   }
