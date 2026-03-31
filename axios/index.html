@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- AXIOS-IQ · v2.2 · Sharpe · Sortino · Momentum · Informe IA · ἄξιος — "of just value" -->
+<!-- AXIOS-IQ · v2.3 · Fase 0: ke CAPM · ETF · Disclaimer · AI timeout · ἄξιος — "of just value" -->
 <html lang="es">
 <head>
 <meta charset="UTF-8"/>
@@ -2132,6 +2132,10 @@ code, kbd, pre { font-family: 'IBM Plex Mono', monospace; }
             <span class="co-tag tag-sector" id="co-tag-sector"></span>
             <span class="co-tag tag-country" id="co-tag-country"></span>
           </div>
+          <div id="co-etf-warn" style="display:none;align-items:center;gap:8px;margin-top:10px;padding:8px 14px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);border-radius:6px;font-size:11px;color:var(--yellow);font-family:'IBM Plex Mono',monospace">
+            <span style="font-size:14px">⚠</span>
+            <span>ETF/Fondo detectado — la valoración DCF/Graham no aplica. Evalúa comisiones (TER), tracking error y política de distribución.</span>
+          </div>
         </div>
         <div class="co-progress">
           <div class="progress-ring" id="progress-ring">0%</div>
@@ -2319,6 +2323,20 @@ function _loadTickerDB(){
 // Pre-carga en background al abrir la app
 _loadTickerDB();
 
+
+const KNOWN_ETF_TICKERS = new Set([
+  'SPY','IVV','VOO','QQQ','VTI','IWM','EEM','GLD','SLV','TLT','HYG','LQD',
+  'XLF','XLK','XLE','XLV','XLI','XLU','XLP','XLY','XLB','XLRE',
+  'VNQ','VIG','VYM','VEA','VWO','IEFA','IEMG','ACWI','EFA','AGG','BND',
+  'ARKK','ARKG','ARKW','ARKF','ARKQ','ARKX',
+  'SQQQ','TQQQ','SPXU','SPXS','SPXL','UPRO',
+  'DIA','MDY','IJH','IJR','IWB','IWF','IWD',
+  'USO','UNG','DBA','DBB','DBC','PDBC',
+  'BNDX','EMB','MUB','SHY','IEF','TIP','SCHD','DGRO',
+  'VXUS','IXUS','SPDW','SPEM','FXI','EWJ','EWZ','EWG','EWU',
+  'JEPI','JEPQ','NUSI','QYLD','RYLD','XYLD',
+  'MSCI','URTH','VT','VOOG','VOOV',
+]);
 
 const SECTORS = {
   technology:{label:"Tecnología",emoji:"💻",color:"#3b82f6",
@@ -2989,7 +3007,12 @@ function runValuation(state){
       // Primary: DCF/Graham (same engine as default — works for any profitable company)
       const epsV = current_price / pe_raw;
       const g2   = clamp(rev_growth, 0, 20);
-      const ke2  = 0.09, g_t2 = 0.03;
+      const _t10y2 = (window._macroCache && window._macroCache.t10y && window._macroCache.t10y.value > 0)
+        ? window._macroCache.t10y.value / 100 : 0.045;
+      const _beta2 = (window._afData && window._afData.beta && window._afData.beta > 0.3 && window._afData.beta < 3)
+        ? window._afData.beta : 1.0;
+      const ke2  = Math.min(Math.max(_t10y2 + _beta2 * 0.055, 0.07), 0.14);
+      const g_t2 = 0.03;
       let pv1 = 0;
       for (let yr = 1; yr <= 5; yr++) pv1 += epsV * Math.pow(1+g2/100,yr) / Math.pow(1+ke2,yr);
       const eps5b = epsV * Math.pow(1+g2/100, 5);
@@ -3046,13 +3069,25 @@ function runValuation(state){
     if (epsVal > 0) {
       // Graham Formula (Benjamin Graham, Security Analysis):
       //   IV = EPS × (8.5 + 2g) × (4.4/Y)  where Y ≈ AAA bond yield (4.8% current)
-      const graham = epsVal * (8.5 + 2 * g) * (4.4 / 4.8);
+      // Graham formula: IV = EPS × (8.5 + 2g) × (4.4/Y)
+      // Y = current AAA bond yield ≈ T10Y + 0.5% spread; min 3%, max 8%
+      const _gY    = (window._macroCache && window._macroCache.t10y && window._macroCache.t10y.value > 0)
+        ? Math.min(Math.max(window._macroCache.t10y.value + 0.5, 3), 8) : 4.8;
+      const graham = epsVal * (8.5 + 2 * g) * (4.4 / _gY);
 
       // DCF — 2-stage: explicit 5Y growth, then terminal value discounted to present
       //   Stage 1: EPS grows at g% for 5 years
       //   Stage 2: Terminal value at perpetual g_term=3%
       //   Both stages discounted at ke=9%
-      const ke = 0.09, g_term = 0.03;
+      // CAPM: ke = Rf + beta × equity_risk_premium
+      // Rf from FRED T10Y (already in _macroCache), fallback 4.5%
+      // ERP historical US average: 5.5%
+      const _t10y  = (window._macroCache && window._macroCache.t10y && window._macroCache.t10y.value > 0)
+        ? window._macroCache.t10y.value / 100 : 0.045;
+      const _beta  = (window._afData && window._afData.beta && window._afData.beta > 0.3 && window._afData.beta < 3)
+        ? window._afData.beta : 1.0;
+      const ke     = Math.min(Math.max(_t10y + _beta * 0.055, 0.07), 0.14);  // clamp 7-14%
+      const g_term = 0.03;
       let pv_stage1 = 0;
       for (let yr = 1; yr <= 5; yr++) {
         pv_stage1 += epsVal * Math.pow(1 + g/100, yr) / Math.pow(1 + ke, yr);
@@ -3397,6 +3432,12 @@ function showCompanyHeader(){
     starBtn.id = 'wl-star-btn';
     starBtn.className = 'wl-star-btn';
     starBtn.onclick = function(e){ e.stopPropagation(); _toggleWatchlist(); };
+    // ETF warning chip
+    var etfWarnEl = document.getElementById('co-etf-warn');
+    if (etfWarnEl) {
+      var isEtf = KNOWN_ETF_TICKERS.has((state.ticker||'').toUpperCase());
+      etfWarnEl.style.display = isEtf ? 'flex' : 'none';
+    }
     const hdr = document.getElementById('co-header');
     hdr.appendChild(starBtn);
   }
@@ -3865,7 +3906,8 @@ Responde SOLO en ${pLang} con este JSON (sin markdown, sin texto fuera del JSON)
     const r=await fetch(WORKER_URL+'/ai',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({prompt,lang})
+      body:JSON.stringify({prompt,lang}),
+      signal:AbortSignal.timeout(35000)
     });
     if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.error||'HTTP '+r.status);}
     const d=await r.json();
@@ -4070,6 +4112,11 @@ function renderAboutAxios(){
   ];
 
   var changelog = [
+    ['v2.3','2026-03',
+     en?'v2.3 — Phase 0: ke CAPM · ETF detection · Disclaimer · AI timeout':(pt?'v2.3 — Fase 0: ke CAPM · Detecção ETF · Aviso Legal · Timeout IA':'v2.3 — Fase 0: ke CAPM dinámico · Detección ETF · Disclaimer legal · Timeout IA'),
+     en?'Dynamic ke via CAPM (T10Y FRED + beta) · Graham bond yield dynamic · ETF detection chip · Complete legal disclaimer (5 sections, trilingual) · AbortSignal 35s on AI fetch · Valuation fix: industrial/energy now uses DCF/Graham primary'
+       :(pt?'ke dinâmico via CAPM (T10Y FRED + beta) · Yield Graham dinâmico · Chip deteção ETF · Aviso legal completo (5 secções, trilingue) · AbortSignal 35s no fetch IA · Correção valorização: industrial/energia usa DCF/Graham primário'
+           :'ke dinámico via CAPM (T10Y FRED + beta) · Yield Graham dinámico · Chip detección ETF · Aviso legal completo (5 secciones, trilingüe) · AbortSignal 35s en fetch IA · Corrección valoración: industrial/energía usa DCF/Graham primario')],
     ['v2.2','2026-03',
      en?'v2.2 — Sharpe · Sortino · Momentum · AI Full Report':(pt?'v2.2 — Sharpe · Sortino · Momentum · Relatório IA Completo':'v2.2 — Sharpe · Sortino · Momentum · Informe IA Completo'),
      en?'Sharpe & Sortino ratio (dynamic risk-free rate via FRED) · Annualized volatility · Max Drawdown 1Y · Multi-period momentum (1M/3M/6M/12M) · OpenAI GPT-4.1-mini primary + Groq fallback · Full PDF investment report generator with optional document upload · tickers.json path fix · Worker chart extended to 1Y'
@@ -4150,6 +4197,65 @@ function renderAboutAxios(){
     + '<div style="font-family:monospace;font-size:10px;color:var(--a1);letter-spacing:.2em;margin-bottom:16px">' + clTitle + '</div>'
     + '<div id="axios-cl" style="display:flex;flex-direction:column;gap:6px"></div>'
     + '</div></div>';
+
+  // DISCLAIMER SECTION
+  out += '<div id="axios-disclaimer" style="padding:32px 24px 0">'
+    + '<div style="font-family:monospace;font-size:10px;color:var(--a1);letter-spacing:.2em;margin-bottom:14px">'
+    + (en ? 'LEGAL DISCLAIMER' : pt ? 'AVISO LEGAL' : 'AVISO LEGAL · DISCLAIMER')
+    + '</div>'
+    + '<div style="background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.25);border-radius:10px;overflow:hidden">'
+
+    // Header alert box
+    + '<div style="background:rgba(239,68,68,.1);border-bottom:1px solid rgba(239,68,68,.2);padding:14px 20px;display:flex;align-items:center;gap:12px">'
+    + '<span style="font-size:20px">⚠️</span>'
+    + '<div style="font-family:monospace;font-size:11px;font-weight:700;color:#ef4444;letter-spacing:.05em">'
+    + (en ? 'IMPORTANT NOTICE — READ BEFORE USE' : pt ? 'AVISO IMPORTANTE — LEIA ANTES DE USAR' : 'AVISO IMPORTANTE — LEA ANTES DE USAR')
+    + '</div></div>'
+
+    // 5 sections
+    + '<div style="padding:20px 24px;display:flex;flex-direction:column;gap:16px">'
+
+    + '<div><div style="font-family:monospace;font-size:10px;font-weight:700;color:#ef4444;letter-spacing:.1em;margin-bottom:6px">'
+    + (en ? '1. NATURE OF CONTENT' : pt ? '1. NATUREZA DO CONTEÚDO' : '1. NATURALEZA DEL CONTENIDO')
+    + '</div><p style="font-size:12px;color:var(--tx2);line-height:1.7;margin:0">'
+    + (en ? 'AXIOS·IQ is an exclusively educational and informational tool. The analyses, scores, valuations, projections and any other content provided by this application do NOT constitute financial advice, buy or sell recommendations, or investment advice of any kind.'
+         : pt ? 'AXIOS·IQ é uma ferramenta exclusivamente educativa e informativa. As análises, pontuações, valorizações, projeções e qualquer outro conteúdo fornecido por esta aplicação NÃO constituem aconselhamento financeiro, recomendações de compra ou venda, ou conselho de investimento de qualquer tipo.'
+               : 'AXIOS·IQ es una herramienta exclusivamente educativa e informativa. Los análisis, puntuaciones, valoraciones, proyecciones y cualquier otro contenido proporcionado por esta aplicación NO constituyen asesoramiento financiero, recomendaciones de compra o venta de valores, ni consejo de inversión de ningún tipo.')
+    + '</p></div>'
+
+    + '<div><div style="font-family:monospace;font-size:10px;font-weight:700;color:#ef4444;letter-spacing:.1em;margin-bottom:6px">'
+    + (en ? '2. INVESTMENT RISK' : pt ? '2. RISCO DE INVESTIMENTO' : '2. RIESGOS DE INVERSIÓN')
+    + '</div><p style="font-size:12px;color:var(--tx2);line-height:1.7;margin:0">'
+    + (en ? 'Investing in financial markets involves significant risk of capital loss, including the possibility of losing all invested capital. Past performance does not guarantee future results. Valuations produced by this tool are estimates based on mathematical models and public data — they are not predictions.'
+         : pt ? 'Investir em mercados financeiros implica um risco significativo de perda de capital, incluindo a possibilidade de perder todo o capital investido. O desempenho passado não garante resultados futuros. As valorizações produzidas por esta ferramenta são estimativas baseadas em modelos matemáticos e dados públicos — não são previsões.'
+               : 'La inversión en mercados financieros conlleva un riesgo significativo de pérdida de capital, incluyendo la posibilidad de perder la totalidad del capital invertido. El rendimiento pasado no garantiza resultados futuros. Las valoraciones producidas por esta herramienta son estimaciones basadas en modelos matemáticos y datos públicos — no son predicciones.')
+    + '</p></div>'
+
+    + '<div><div style="font-family:monospace;font-size:10px;font-weight:700;color:#ef4444;letter-spacing:.1em;margin-bottom:6px">'
+    + (en ? '3. INDIVIDUAL RESPONSIBILITY' : pt ? '3. RESPONSABILIDADE INDIVIDUAL' : '3. RESPONSABILIDAD INDIVIDUAL')
+    + '</div><p style="font-size:12px;color:var(--tx2);line-height:1.7;margin:0">'
+    + (en ? 'Before making any investment decision, consult a regulated professional financial advisor. The user is solely responsible for their investment decisions. The authors of AXIOS·IQ accept no liability for any financial losses derived from use of this tool.'
+         : pt ? 'Antes de tomar qualquer decisão de investimento, consulte um consultor financeiro profissional regulamentado. O utilizador é o único responsável pelas suas decisões de investimento. Os autores da AXIOS·IQ não aceitam qualquer responsabilidade por perdas financeiras derivadas do uso desta ferramenta.'
+               : 'Antes de tomar cualquier decisión de inversión, consulte a un asesor financiero profesional regulado. El usuario es el único responsable de sus decisiones de inversión. Los autores de AXIOS·IQ no aceptan ninguna responsabilidad por pérdidas financieras derivadas del uso de esta herramienta.')
+    + '</p></div>'
+
+    + '<div><div style="font-family:monospace;font-size:10px;font-weight:700;color:#ef4444;letter-spacing:.1em;margin-bottom:6px">'
+    + (en ? '4. DATA & INFORMATION' : pt ? '4. DADOS E INFORMAÇÃO' : '4. DATOS E INFORMACIÓN')
+    + '</div><p style="font-size:12px;color:var(--tx2);line-height:1.7;margin:0">'
+    + (en ? 'Market data is sourced from Yahoo Finance and FRED (Federal Reserve). This data may be delayed, incomplete or inaccurate. AXIOS·IQ makes no warranty as to the accuracy, completeness or timeliness of this information. Always verify data against official company filings and regulated financial sources.'
+         : pt ? 'Os dados de mercado provêm do Yahoo Finance e do FRED (Reserva Federal). Estes dados podem estar atrasados, incompletos ou imprecisos. A AXIOS·IQ não oferece garantias sobre a precisão, integridade ou atualidade desta informação. Verifique sempre os dados nas declarações oficiais da empresa e em fontes financeiras regulamentadas.'
+               : 'Los datos de mercado provienen de Yahoo Finance y FRED (Reserva Federal). Estos datos pueden estar retrasados, incompletos o ser imprecisos. AXIOS·IQ no ofrece garantías sobre la exactitud, integridad o actualidad de esta información. Verifique siempre los datos en los informes oficiales de la empresa y en fuentes financieras reguladas.')
+    + '</p></div>'
+
+    + '<div><div style="font-family:monospace;font-size:10px;font-weight:700;color:#ef4444;letter-spacing:.1em;margin-bottom:6px">'
+    + (en ? '5. AI-GENERATED CONTENT' : pt ? '5. CONTEÚDO GERADO POR IA' : '5. CONTENIDO GENERADO POR IA')
+    + '</div><p style="font-size:12px;color:var(--tx2);line-height:1.7;margin:0">'
+    + (en ? 'AI analyses are generated by large language models (OpenAI GPT-4.1-mini and Groq Llama) and may contain errors, hallucinations or outdated information. They are provided for educational context only and should never be the sole basis for any financial decision.'
+         : pt ? 'As análises de IA são geradas por modelos de linguagem de grande escala (OpenAI GPT-4.1-mini e Groq Llama) e podem conter erros, alucinações ou informações desatualizadas. São fornecidas apenas para contexto educativo e nunca devem ser a única base para qualquer decisão financeira.'
+               : 'Los análisis de IA son generados por modelos de lenguaje de gran escala (OpenAI GPT-4.1-mini y Groq Llama) y pueden contener errores, alucinaciones o información desactualizada. Se proporcionan únicamente con fines educativos y nunca deben ser la única base para ninguna decisión financiera.')
+    + '</p></div>'
+
+    + '</div></div></div>';
 
   el.innerHTML = out;
 
