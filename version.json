@@ -1,12 +1,12 @@
 {
-  "suite": "2.3.0",
-  "axios": "2.3.0",
+  "suite": "2.4.0",
+  "axios": "2.4.0",
   "harvest": "1.7.0",
   "delfos": "2.1.0",
   "updated": "2026-03-31",
   "notes": {
-    "suite": "AXIOS·IQ v2.3 — Fase 0 completa",
-    "axios": "ke CAPM dinámico · Graham yield dinámico · ETF detection · Disclaimer legal · AbortSignal AI",
+    "suite": "AXIOS·IQ v2.4 — Fase 1 completa",
+    "axios": "Academia chips · Scorecard +4 métricas · Caché Yahoo 10min · Print CSS completo",
     "harvest": "v1.7 modular + Service Worker",
     "delfos": "v2.1 — Oracle, curso y aviso legal completo"
   }
