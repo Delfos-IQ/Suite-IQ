@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- AXIOS-IQ · v2.3 · Fase 0: ke CAPM · ETF · Disclaimer · AI timeout · ἄξιος — "of just value" -->
+<!-- AXIOS-IQ · v2.4 · Fase 1: Academia chips · Scorecard ampliado · Caché · Print CSS · ἄξιος -->
 <html lang="es">
 <head>
 <meta charset="UTF-8"/>
@@ -222,10 +222,49 @@ body{background:var(--bg);color:var(--tx);font-family:'IBM Plex Mono',monospace;
   .items-grid{grid-template-columns:1fr}
 }
 @media print{
-  .hdr,.nav-tabs,.search-box,.analysis-section,.analyze-btn-wrap,.co-header .co-progress{display:none!important}
-  .results-panel{display:block!important;border:none;padding:0}
-  body{background:white;color:#111}
-  .res-card,.scenario-card,.res-narrative{border:1px solid #ccc;background:#f9f9f9}
+  /* Hide interactive chrome */
+  .hdr,.nav-tabs,.search-box,.analysis-section,.analyze-btn-wrap,
+  .co-header .co-progress,.autofill-bar,.ai-btn,.ai-loading,
+  .export-btn,.reset-btn,.overlay,.detail-panel,
+  .gs-overlay,.acad-modal,.dp-marks,.dp-actions,
+  .score-bar-wrap,.sc-mode-wrap,.sc-legend,
+  button:not(.dp-mark-btn) { display:none!important }
+
+  /* Show analysis results */
+  .co-header { display:flex!important }
+  .results-panel,.scorecard-section,.ai-section,.ai-result { display:block!important }
+  .results-panel { border:none; padding:0; box-shadow:none }
+
+  /* Light background for readability */
+  body { background:#fff!important; color:#111!important; font-size:11pt }
+  :root {
+    --bg:#fff; --bg2:#f8f8f8; --bg3:#f2f2f2; --bg4:#ebebeb;
+    --tx:#111; --tx2:#333; --tx3:#666; --border:#ddd;
+    --a1:#007a60; --green:#1a7a3a; --red:#b52222; --yellow:#a05c00;
+  }
+
+  /* Scorecard */
+  .sc-blocks { grid-template-columns: repeat(5,1fr)!important }
+  .sc-block { break-inside:avoid }
+
+  /* AI result */
+  .ai-result { margin-top:16pt }
+  .ai-block { break-inside:avoid; border-left-width:3px!important }
+  .ai-block-hdr { font-size:10pt!important }
+  .ai-block-body { font-size:9pt!important }
+
+  /* Print header */
+  .results-panel::before {
+    content: "AXIOS·IQ — " attr(data-ticker) " · " attr(data-date);
+    display: block; font-size: 8pt; color:#666;
+    border-bottom:1px solid #ccc; padding-bottom:6pt; margin-bottom:12pt;
+  }
+
+  /* Ensure page breaks don't cut cards */
+  .res-charts-row,.res-scenario,.sc-totals-row { break-inside:avoid }
+
+  /* Disclaimer footer on last page */
+  .ai-disclaimer { break-before:avoid }
 }
 
 
@@ -1875,6 +1914,17 @@ code, kbd, pre { font-family: 'IBM Plex Mono', monospace; }
   color: var(--tx);
   font-family: 'IBM Plex Mono', monospace;
 }
+.item-learn-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  margin-top: 7px; padding: 4px 10px;
+  background: rgba(0,212,170,.07); border: 1px solid rgba(0,212,170,.2);
+  border-radius: 4px; font-size: 9px; letter-spacing: .1em;
+  font-family: 'IBM Plex Mono', monospace; color: var(--a1);
+  cursor: pointer; transition: all .15s; text-transform: uppercase; font-weight: 700;
+}
+.item-learn-btn:hover { background: rgba(0,212,170,.14); border-color: var(--a1); }
+.item-learn-btn.soon { color: var(--tx3); border-color: var(--border);
+  background: transparent; cursor: default; }
 .item-val-row:not(:last-child) {
   border-bottom: 1px solid rgba(255,255,255,.05);
   padding-bottom: 3px;
@@ -3589,6 +3639,9 @@ function renderGrid(){
         <div class="item-card-top"><span class="item-name">${label}</span><span class="${mc}">${mi}</span></div>
         <div class="${val?'item-value item-value-v':'item-value-empty'}">${_valHtml}</div>
         <div class="item-desc-short">${item.short}</div>
+        <button class="item-learn-btn soon" title="${lang==='en'?'Coming soon — AXIOS Academy':'Próximamente — Academia AXIOS'}">
+          📚 ${lang==='en'?'Learn more':'Aprender más'} →
+        </button>
         <div class="item-explore">${item.icon} ${tr('exploreBtn')} →</div>
       </div>`;
     });
@@ -3661,11 +3714,22 @@ function openItem(id){
   });
   // Academia button links to matching article
   const acad=ACADEMIA_FULL ? (ACADEMIA_FULL.find(a=>a.id===id)||ACADEMIA_FULL.find(a=>a.cat===item.cat)) : null;
-  document.getElementById('dp-academia-btn').textContent = tr('academiaBtn');
-  document.getElementById('dp-academia-btn').onclick=()=>{
-    // ALWAYS open as modal on top — NEVER navigate away from the current item panel
-    openAcadModal(acad ? acad.id : null, item.cat);
-  };
+  const acadBtn = document.getElementById('dp-academia-btn');
+  if (acad) {
+    // Article exists in the embedded academia
+    acadBtn.textContent = '📚 ' + (lang==='en'?'Open in Academy':'Abrir en Academia');
+    acadBtn.title = '';
+    acadBtn.style.opacity = '1';
+    acadBtn.onclick = () => openAcadModal(acad.id, item.cat);
+  } else {
+    // No article yet — coming soon placeholder
+    acadBtn.textContent = '📚 ' + (lang==='en'?'Academy — Coming soon':'Academia — Próximamente');
+    acadBtn.title = lang==='en'
+      ? 'Full course on this topic coming to AXIOS Academy'
+      : 'Curso completo sobre este tema en preparación';
+    acadBtn.style.opacity = '0.5';
+    acadBtn.onclick = () => {};
+  }
   // Primary external link
   const extLink=document.getElementById('dp-ext-link');
   extLink.textContent=(item.link_label ? '🔗 '+item.link_label : tr('source1Lbl'));
@@ -3790,8 +3854,11 @@ document.getElementById('res-scenario').innerHTML=`
   document.getElementById('res-flags').innerHTML=res.flags.slice(0,14).map(f=>`<div class="flag-item"><span class="flag-icon">${f.icon}</span><span>${f.text}</span></div>`).join('');
   document.getElementById('export-btn').textContent=tr('exportBtn');
   document.getElementById('reset-btn').textContent =tr('resetBtn');
-  document.getElementById('results-panel').classList.add('visible');
-  document.getElementById('results-panel').scrollIntoView({behavior:'smooth',block:'start'});
+  const _rp = document.getElementById('results-panel');
+  _rp.classList.add('visible');
+  _rp.dataset.ticker = state.ticker || '';
+  _rp.dataset.date   = new Date().toLocaleDateString(lang==='en'?'en-US':'es-ES', {day:'numeric',month:'short',year:'numeric'});
+  _rp.scrollIntoView({behavior:'smooth',block:'start'});
   // ── SCORECARD ──────────────────────────────────────────────
   scUpdate();
   drawSpiderChart(res.spiderScores);
@@ -4112,6 +4179,13 @@ function renderAboutAxios(){
   ];
 
   var changelog = [
+    ['v2.4','2026-03',
+     en?'v2.4 — Phase 1: Academy chips · Extended Scorecard · 10min cache · Full print CSS'
+       :(pt?'v2.4 — Fase 1: Chips Academia · Scorecard ampliado · Caché 10min · CSS impressão'
+           :'v2.4 — Fase 1: Chips Academia · Scorecard ampliado · Caché Yahoo 10min · CSS impresión completo'),
+     en?'Academy "Learn more" chip on every item card + detail panel upgrade · Scorecard +4 metrics: ROE, Op.Margin, Current Ratio, Net Cash · SC_BENCH extended with roe/opm/cr · 10-min sessionStorage cache for Yahoo data + retry with backoff · Complete print CSS (Scorecard + AI analysis + header with ticker and date)'
+       :(pt?'Chip "Saber mais" em cada cartão + upgrade painel de detalhe · Scorecard +4 métricas: ROE, Margem Op., Rácio Corrente, Caixa Líquida · SC_BENCH com roe/opm/cr · Cache sessionStorage 10min para Yahoo + retry · CSS impressão completo'
+           :'Chip "Aprender más" en cada tarjeta + upgrade panel de detalle · Scorecard +4 métricas: ROE, Margen Op., Ratio Corriente, Caja Neta · SC_BENCH extendido con roe/opm/cr · Caché sessionStorage 10min para Yahoo + retry con backoff · CSS impresión completo (Scorecard + análisis IA + cabecera con ticker y fecha)')],
     ['v2.3','2026-03',
      en?'v2.3 — Phase 0: ke CAPM · ETF detection · Disclaimer · AI timeout':(pt?'v2.3 — Fase 0: ke CAPM · Detecção ETF · Aviso Legal · Timeout IA':'v2.3 — Fase 0: ke CAPM dinámico · Detección ETF · Disclaimer legal · Timeout IA'),
      en?'Dynamic ke via CAPM (T10Y FRED + beta) · Graham bond yield dynamic · ETF detection chip · Complete legal disclaimer (5 sections, trilingual) · AbortSignal 35s on AI fetch · Valuation fix: industrial/energy now uses DCF/Graham primary'
@@ -4872,11 +4946,49 @@ async function _afFetch(ticker) {
 
   bar.className = 'autofill-bar visible loading';
   icon.innerHTML = '<div class="af-spinner"></div>';
-  txt.innerHTML  = 'Buscando datos de mercado para <strong>' + ticker + '</strong>...';
+  txt.innerHTML  = 'Buscando datos de mercado para <strong>' + ticker.replace(/[<>&"']/g,'') + '</strong>...';
   btn.style.display = 'none';
 
+  // ── 10-min session cache ──────────────────────────────────────
+  const cacheKey = 'axq_yf_' + ticker;
   try {
-    const res  = await fetch(WORKER_URL + '/yahoo?ticker=' + encodeURIComponent(ticker));
+    const cached = sessionStorage.getItem(cacheKey);
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      if (Date.now() - parsed.ts < 10 * 60 * 1000) {
+        _afData = parsed.data;
+        const count = _afCountFillable(_afData);
+        bar.className = 'autofill-bar visible';
+        icon.textContent = '⚡';
+        txt.innerHTML = '<strong>Datos en caché</strong> — <span class="af-count">' + count + '</span> campos · '
+          + '<span style="color:var(--tx3);font-size:10px">actualizado hace ' + Math.round((Date.now()-parsed.ts)/60000) + 'min</span>';
+        btn.textContent = 'Aplicar datos';
+        btn.style.display = 'inline-block';
+        return;
+      }
+    }
+  } catch(e) { /* cache miss or parse error — proceed to fetch */ }
+
+  // ── Fetch with 1x retry on network error / 5xx ───────────────
+  async function _fetchWithRetry(url, attempt) {
+    try {
+      const r = await fetch(url, { signal: AbortSignal.timeout(12000) });
+      if (!r.ok && r.status >= 500 && attempt === 1) {
+        await new Promise(res => setTimeout(res, 1500));
+        return _fetchWithRetry(url, 2);
+      }
+      return r;
+    } catch(e) {
+      if (attempt === 1 && e.name !== 'AbortError') {
+        await new Promise(res => setTimeout(res, 1500));
+        return _fetchWithRetry(url, 2);
+      }
+      throw e;
+    }
+  }
+
+  try {
+    const res  = await _fetchWithRetry(WORKER_URL + '/yahoo?ticker=' + encodeURIComponent(ticker), 1);
     const json = await res.json();
 
     if (!json.ok || !json.data) {
@@ -4885,6 +4997,8 @@ async function _afFetch(ticker) {
     }
 
     _afData = json.data;
+    // Save to 10-min cache
+    try { sessionStorage.setItem(cacheKey, JSON.stringify({ data: _afData, ts: Date.now() })); } catch(e) {}
     const count = _afCountFillable(_afData);
     const t = {
       es: { ready:'Datos disponibles', items:'campos rellenables', apply:'Aplicar datos', price:'Precio' },
@@ -6224,17 +6338,19 @@ Responde SOLO en ${pLang} con este JSON (sin markdown):
 // pe=PER median sector, pb=P/B, gm=Gross Margin %, rg=Rev Growth % YoY,
 // de=Debt/Equity (ratio), dy=Dividend Yield %
 const SC_BENCH = {
-  technology:        {pe:30, pb:6,   gm:60, rg:15, de:0.5, dy:0.5},
-  healthcare:        {pe:25, pb:4,   gm:55, rg:10, de:0.8, dy:1.5},
-  consumer_cyclical: {pe:22, pb:3,   gm:35, rg: 8, de:1.2, dy:1.5},
-  consumer_defensive:{pe:20, pb:4,   gm:40, rg: 5, de:0.8, dy:2.5},
-  financial:         {pe:14, pb:1.5, gm:50, rg: 8, de:3.0, dy:3.0},
-  reit:              {pe:18, pb:1.5, gm:65, rg: 5, de:2.5, dy:4.0},
-  energy:            {pe:16, pb:2,   gm:30, rg: 8, de:1.0, dy:3.5},
-  industrial:        {pe:20, pb:3,   gm:35, rg: 8, de:1.2, dy:1.8},
-  utilities:         {pe:18, pb:2,   gm:45, rg: 4, de:1.5, dy:3.5},
-  telecom:           {pe:16, pb:2,   gm:50, rg: 4, de:1.8, dy:4.0},
-  default:           {pe:20, pb:3,   gm:40, rg: 8, de:1.0, dy:2.0},
+  // pe=P/E fair, pb=P/B fair, gm=gross margin %, rg=revenue growth %,
+  // de=debt/equity ratio, dy=dividend yield %, roe=ROE %, opm=op.margin %, cr=current ratio
+  technology:        {pe:30, pb:6,   gm:60, rg:15, de:0.5, dy:0.5,  roe:18, opm:22, cr:2.0},
+  healthcare:        {pe:25, pb:4,   gm:55, rg:10, de:0.8, dy:1.5,  roe:15, opm:18, cr:2.0},
+  consumer_cyclical: {pe:22, pb:3,   gm:35, rg: 8, de:1.2, dy:1.5,  roe:14, opm:10, cr:1.5},
+  consumer_defensive:{pe:20, pb:4,   gm:40, rg: 5, de:0.8, dy:2.5,  roe:18, opm:14, cr:1.5},
+  financial:         {pe:14, pb:1.5, gm:50, rg: 8, de:3.0, dy:3.0,  roe:12, opm:30, cr:1.0},
+  reit:              {pe:18, pb:1.5, gm:65, rg: 5, de:2.5, dy:4.0,  roe: 8, opm:40, cr:1.0},
+  energy:            {pe:16, pb:2,   gm:30, rg: 8, de:1.0, dy:3.5,  roe:12, opm:14, cr:1.5},
+  industrial:        {pe:20, pb:3,   gm:35, rg: 8, de:1.2, dy:1.8,  roe:15, opm:12, cr:1.5},
+  utilities:         {pe:18, pb:2,   gm:45, rg: 4, de:1.5, dy:3.5,  roe:10, opm:18, cr:1.0},
+  telecom:           {pe:16, pb:2,   gm:50, rg: 4, de:1.8, dy:4.0,  roe:10, opm:18, cr:1.0},
+  default:           {pe:20, pb:3,   gm:40, rg: 8, de:1.0, dy:2.0,  roe:14, opm:14, cr:1.5},
 };
 
 // ── Score 1-5 helpers ─────────────────────────────────────────────────────────
@@ -6315,9 +6431,15 @@ function scBuildData(d, sector) {
   const bbScore = sc !== null ? _scScoreInv(sc, [-3, -1, 1, 4]) : NA;
 
   // ── BLOQUE 3: MÁRGENES ───────────────────────────────────────────────────
-  const gm = d.grossMargin;
-  const gmScore   = gm !== null ? _scScore(gm, [b.gm*1.4, b.gm*1.1, b.gm*0.8, b.gm*0.5]) : NA;
-  const gmVsScore = vsScore(gm, b.gm, true);
+  const gm  = d.grossMargin;
+  const opm = d.operatingMargin;  // operating margin %
+  const roe = d.roe;              // return on equity %
+  const gmScore   = gm  !== null ? _scScore(gm,  [b.gm*1.4,  b.gm*1.1,  b.gm*0.8,  b.gm*0.5])  : NA;
+  const gmVsScore = vsScore(gm,  b.gm,  true);
+  const opmScore  = opm !== null ? _scScore(opm, [b.opm*1.5, b.opm*1.1, b.opm*0.75, b.opm*0.4]) : NA;
+  const opmVsScore= vsScore(opm, b.opm, true);
+  const roeScore  = roe !== null ? _scScore(roe, [b.roe*1.5, b.roe*1.1, b.roe*0.75, b.roe*0.4]) : NA;
+  const roeVsScore= vsScore(roe, b.roe, true);
 
   // ── BLOQUE 4: CRECIMIENTO ────────────────────────────────────────────────
   const rg  = d.revenueGrowth;   // % YoY
@@ -6329,8 +6451,20 @@ function scBuildData(d, sector) {
 
   // ── BLOQUE 5: FORTALEZA FINANCIERA ───────────────────────────────────────
   const de = d.debtToEquity !== null ? d.debtToEquity / 100 : null;
+  const cr = d.currentRatio;   // current ratio (higher=better, >1.5 ideal)
+  // Net cash: positive = net cash, negative = net debt (both in raw $)
+  const tc = d.totalCash, td = d.totalDebt;
+  const netCash = (tc !== null && td !== null) ? tc - td : null;
+  // Net cash score relative to market cap: >10% outstanding cash = excellent
+  const mc = d.marketCap;
+  const ncRatio = (netCash !== null && mc && mc > 0) ? netCash / mc : null;
   const deScore   = de !== null ? _scScoreInv(de, [b.de*0.4, b.de*0.7, b.de*1.0, b.de*1.5]) : NA;
   const deVsScore = vsScore(de, b.de, false);
+  const crScore   = cr !== null ? _scScore(cr, [3.0, 2.0, 1.5, 1.0]) : NA;
+  // Net cash: >10% mktcap = 5, >5% = 4, 0 to 5% = 3, -10% to 0 = 2, <-10% = 1
+  const ncScore   = ncRatio !== null
+    ? (ncRatio >= 0.10 ? 5 : ncRatio >= 0.05 ? 4 : ncRatio >= 0 ? 3 : ncRatio >= -0.10 ? 2 : 1)
+    : NA;
 
   // Format helpers
   const fmt = (v, dec, suf) => v !== null ? v.toFixed(dec) + (suf||'') : null;
@@ -6362,8 +6496,12 @@ function scBuildData(d, sector) {
       id:'margenes', color:'#f59e0b',
       label:{es:'MÁRGENES', en:'MARGINS'},
       metrics:[
-        {id:'gm_abs',    label:{es:'Margen Bruto',      en:'Gross Margin'},  val:fmt(gm,1,'%'),          score:gmScore},
-        {id:'gm_vs',     label:{es:'Margen vs sector',  en:'Margin vs sector'}, val:fmt(gm,1,'%'),       score:gmVsScore},
+        {id:'gm_abs',    label:{es:'Margen Bruto',      en:'Gross Margin'},     val:fmt(gm,1,'%'),    score:gmScore},
+        {id:'gm_vs',     label:{es:'Margen vs sector',  en:'Margin vs sector'}, val:fmt(gm,1,'%'),    score:gmVsScore},
+        {id:'opm_abs',   label:{es:'Margen Operativo',  en:'Op. Margin'},       val:fmt(opm,1,'%'),   score:opmScore},
+        {id:'opm_vs',    label:{es:'Op. vs sector',     en:'Op. vs sector'},    val:fmt(opm,1,'%'),   score:opmVsScore},
+        {id:'roe_abs',   label:{es:'ROE',                en:'ROE'},             val:fmt(roe,1,'%'),   score:roeScore},
+        {id:'roe_vs',    label:{es:'ROE vs sector',      en:'ROE vs sector'},   val:fmt(roe,1,'%'),   score:roeVsScore},
       ]
     },
     {
@@ -6380,8 +6518,12 @@ function scBuildData(d, sector) {
       id:'fortaleza', color:'#ef4444',
       label:{es:'FORTALEZA', en:'STRENGTH'},
       metrics:[
-        {id:'de_abs',    label:{es:'Deuda/Fondos Propios', en:'Debt/Equity'},  val:fmt(de,2,'x'),         score:deScore},
-        {id:'de_vs',     label:{es:'D/FP vs sector',     en:'D/E vs sector'},  val:fmt(de,2,'x'),         score:deVsScore},
+        {id:'de_abs',    label:{es:'Deuda/Fondos Propios', en:'Debt/Equity'},   val:fmt(de,2,'x'),   score:deScore},
+        {id:'de_vs',     label:{es:'D/FP vs sector',       en:'D/E vs sector'}, val:fmt(de,2,'x'),   score:deVsScore},
+        {id:'cr_abs',    label:{es:'Ratio Corriente',      en:'Current Ratio'},  val:fmt(cr,1,'x'),   score:crScore},
+        {id:'nc_abs',    label:{es:'Caja Neta / Cap.',     en:'Net Cash / Mkt'},
+          val: ncRatio !== null ? (ncRatio >= 0 ? '+' : '') + (ncRatio*100).toFixed(1) + '% mkt' : null,
+          score:ncScore},
       ]
     },
   ];
