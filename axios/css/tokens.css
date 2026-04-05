@@ -1,0 +1,137 @@
+/* ═══════════════════════════════════════════════════════════
+   AXIOS·IQ — Design Tokens & Theme System
+   v3.0 — Dark / Light themes via data-theme attribute
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── 1. Shared accents (theme-independent) ─────────────────── */
+:root {
+  --a1: #00d4aa;   /* primary teal */
+  --a2: #f59e0b;   /* amber */
+  --a3: #3b82f6;   /* blue */
+  --a4: #a78bfa;   /* violet */
+  --a5: #f472b6;   /* pink */
+  --red:    #ef4444;
+  --green:  #22c55e;
+  --yellow: #f59e0b;
+
+  /* Layout */
+  --r:     6px;
+  --r-sm:  4px;
+  --r-lg:  10px;
+  --r-xl:  14px;
+
+  /* Transitions */
+  --trans: 150ms cubic-bezier(.4,0,.2,1);
+  --trans-slow: 300ms cubic-bezier(.4,0,.2,1);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.12);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,.16);
+}
+
+/* ── 2. Dark theme (default) ───────────────────────────────── */
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg:  #070a0e;
+  --bg2: #0d1117;
+  --bg3: #111820;
+  --bg4: #161f2b;
+  --bg5: #1a2535;
+
+  --border:  #1e2d3d;
+  --border2: #253445;
+  --border3: #2d3f52;
+
+  --tx:  #e2e8f0;
+  --tx2: #94a3b8;
+  --tx3: #475569;
+  --tx4: #2d3f52;
+
+  --glow: 0 0 20px rgba(0,212,170,.15);
+  --glow-sm: 0 0 10px rgba(0,212,170,.1);
+
+  --grid-line: rgba(0,212,170,.025);
+
+  /* Component-specific */
+  --card-bg:      var(--bg2);
+  --card-border:  var(--border);
+  --input-bg:     var(--bg3);
+  --modal-bg:     var(--bg2);
+  --overlay-bg:   rgba(0,0,0,.7);
+  --badge-bg:     var(--bg3);
+
+  /* Score colors */
+  --score-high:   #22c55e;
+  --score-mid:    #f59e0b;
+  --score-low:    #ef4444;
+}
+
+/* ── 3. Light theme ────────────────────────────────────────── */
+[data-theme="light"] {
+  color-scheme: light;
+
+  --bg:  #f8fafc;
+  --bg2: #ffffff;
+  --bg3: #f1f5f9;
+  --bg4: #e8edf4;
+  --bg5: #dde4ee;
+
+  --border:  #e2e8f0;
+  --border2: #cbd5e1;
+  --border3: #b8c4d4;
+
+  --tx:  #0f172a;
+  --tx2: #334155;
+  --tx3: #64748b;
+  --tx4: #94a3b8;
+
+  --glow: 0 0 20px rgba(0,180,140,.1);
+  --glow-sm: 0 0 10px rgba(0,180,140,.08);
+
+  --grid-line: rgba(0,180,140,.04);
+
+  --card-bg:      var(--bg2);
+  --card-border:  var(--border);
+  --input-bg:     var(--bg3);
+  --modal-bg:     var(--bg2);
+  --overlay-bg:   rgba(0,0,0,.45);
+  --badge-bg:     var(--bg3);
+
+  --score-high:   #16a34a;
+  --score-mid:    #d97706;
+  --score-low:    #dc2626;
+}
+
+/* ── 4. System preference auto-detection ───────────────────── */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+    --bg:  #f8fafc;
+    --bg2: #ffffff;
+    --bg3: #f1f5f9;
+    --bg4: #e8edf4;
+    --bg5: #dde4ee;
+    --border:  #e2e8f0;
+    --border2: #cbd5e1;
+    --border3: #b8c4d4;
+    --tx:  #0f172a;
+    --tx2: #334155;
+    --tx3: #64748b;
+    --tx4: #94a3b8;
+    --glow: 0 0 20px rgba(0,180,140,.1);
+    --glow-sm: 0 0 10px rgba(0,180,140,.08);
+    --grid-line: rgba(0,180,140,.04);
+    --card-bg:     var(--bg2);
+    --card-border: var(--border);
+    --input-bg:    var(--bg3);
+    --modal-bg:    var(--bg2);
+    --overlay-bg:  rgba(0,0,0,.45);
+    --badge-bg:    var(--bg3);
+    --score-high:  #16a34a;
+    --score-mid:   #d97706;
+    --score-low:   #dc2626;
+  }
+}
