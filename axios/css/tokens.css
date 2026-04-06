@@ -1,137 +1,124 @@
 /* ═══════════════════════════════════════════════════════════
-   AXIOS·IQ — Design Tokens & Theme System
-   v3.0 — Dark / Light themes via data-theme attribute
+   AXIOS·IQ — Design Tokens & Theme System  v3.0
    ═══════════════════════════════════════════════════════════ */
 
-/* ── 1. Shared accents (theme-independent) ─────────────────── */
+/* ── 1. Shared (theme-independent) ────────────────────────── */
 :root {
-  --a1: #00d4aa;   /* primary teal */
-  --a2: #f59e0b;   /* amber */
-  --a3: #3b82f6;   /* blue */
-  --a4: #a78bfa;   /* violet */
-  --a5: #f472b6;   /* pink */
+  --a1: #00d4aa;
+  --a2: #f59e0b;
+  --a3: #3b82f6;
+  --a4: #a78bfa;
+  --a5: #f472b6;
   --red:    #ef4444;
   --green:  #22c55e;
   --yellow: #f59e0b;
 
-  /* Layout */
-  --r:     6px;
-  --r-sm:  4px;
-  --r-lg:  10px;
-  --r-xl:  14px;
+  /* Radii */
+  --r:    6px;
+  --r-sm: 4px;
+  --r-lg: 10px;
+  --r-xl: 14px;
 
-  /* Transitions */
-  --trans: 150ms cubic-bezier(.4,0,.2,1);
+  /* Motion */
+  --trans:      150ms cubic-bezier(.4,0,.2,1);
   --trans-slow: 300ms cubic-bezier(.4,0,.2,1);
 
   /* Shadows */
-  --shadow-sm: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.08);
   --shadow-md: 0 4px 12px rgba(0,0,0,.12);
   --shadow-lg: 0 8px 24px rgba(0,0,0,.16);
+
+  /* Font scale — 16px base */
+  --fs-2xs: 10px;
+  --fs-xs:  12px;
+  --fs-sm:  14px;
+  --fs-base:16px;
+  --fs-md:  17px;
+  --fs-lg:  20px;
+  --fs-xl:  24px;
+  --fs-2xl: 30px;
 }
 
 /* ── 2. Dark theme (default) ───────────────────────────────── */
 :root,
 [data-theme="dark"] {
   color-scheme: dark;
-
   --bg:  #070a0e;
   --bg2: #0d1117;
   --bg3: #111820;
   --bg4: #161f2b;
   --bg5: #1a2535;
-
   --border:  #1e2d3d;
   --border2: #253445;
   --border3: #2d3f52;
-
   --tx:  #e2e8f0;
   --tx2: #94a3b8;
   --tx3: #475569;
   --tx4: #2d3f52;
-
-  --glow: 0 0 20px rgba(0,212,170,.15);
+  --glow:    0 0 20px rgba(0,212,170,.15);
   --glow-sm: 0 0 10px rgba(0,212,170,.1);
-
   --grid-line: rgba(0,212,170,.025);
-
-  /* Component-specific */
-  --card-bg:      var(--bg2);
-  --card-border:  var(--border);
-  --input-bg:     var(--bg3);
-  --modal-bg:     var(--bg2);
-  --overlay-bg:   rgba(0,0,0,.7);
-  --badge-bg:     var(--bg3);
-
-  /* Score colors */
-  --score-high:   #22c55e;
-  --score-mid:    #f59e0b;
-  --score-low:    #ef4444;
+  --card-bg:    var(--bg2);
+  --card-border:var(--border);
+  --input-bg:   var(--bg3);
+  --modal-bg:   var(--bg2);
+  --overlay-bg: rgba(0,0,0,.7);
+  --score-high: #22c55e;
+  --score-mid:  #f59e0b;
+  --score-low:  #ef4444;
 }
 
 /* ── 3. Light theme ────────────────────────────────────────── */
 [data-theme="light"] {
   color-scheme: light;
-
   --bg:  #f8fafc;
   --bg2: #ffffff;
   --bg3: #f1f5f9;
   --bg4: #e8edf4;
   --bg5: #dde4ee;
-
   --border:  #e2e8f0;
   --border2: #cbd5e1;
   --border3: #b8c4d4;
-
   --tx:  #0f172a;
   --tx2: #334155;
   --tx3: #64748b;
   --tx4: #94a3b8;
-
-  --glow: 0 0 20px rgba(0,180,140,.1);
+  --glow:    0 0 20px rgba(0,180,140,.1);
   --glow-sm: 0 0 10px rgba(0,180,140,.08);
-
   --grid-line: rgba(0,180,140,.04);
+  --card-bg:    var(--bg2);
+  --card-border:var(--border);
+  --input-bg:   var(--bg3);
+  --modal-bg:   var(--bg2);
+  --overlay-bg: rgba(0,0,0,.45);
+  --score-high: #15803d;
+  --score-mid:  #b45309;
+  --score-low:  #b91c1c;
 
-  --card-bg:      var(--bg2);
-  --card-border:  var(--border);
-  --input-bg:     var(--bg3);
-  --modal-bg:     var(--bg2);
-  --overlay-bg:   rgba(0,0,0,.45);
-  --badge-bg:     var(--bg3);
-
-  --score-high:   #16a34a;
-  --score-mid:    #d97706;
-  --score-low:    #dc2626;
+  /* High-contrast accents for white backgrounds */
+  --a1:    #00957a;
+  --a2:    #c27600;
+  --a3:    #1d4ed8;
+  --a4:    #6d28d9;
+  --a5:    #be185d;
+  --red:   #b91c1c;
+  --green: #15803d;
+  --yellow:#b45309;
 }
 
-/* ── 4. System preference auto-detection ───────────────────── */
+/* ── 4. System preference auto-detect ─────────────────────── */
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) {
     color-scheme: light;
-    --bg:  #f8fafc;
-    --bg2: #ffffff;
-    --bg3: #f1f5f9;
-    --bg4: #e8edf4;
-    --bg5: #dde4ee;
-    --border:  #e2e8f0;
-    --border2: #cbd5e1;
-    --border3: #b8c4d4;
-    --tx:  #0f172a;
-    --tx2: #334155;
-    --tx3: #64748b;
-    --tx4: #94a3b8;
-    --glow: 0 0 20px rgba(0,180,140,.1);
-    --glow-sm: 0 0 10px rgba(0,180,140,.08);
-    --grid-line: rgba(0,180,140,.04);
-    --card-bg:     var(--bg2);
-    --card-border: var(--border);
-    --input-bg:    var(--bg3);
-    --modal-bg:    var(--bg2);
-    --overlay-bg:  rgba(0,0,0,.45);
-    --badge-bg:    var(--bg3);
-    --score-high:  #16a34a;
-    --score-mid:   #d97706;
-    --score-low:   #dc2626;
+    --bg:#f8fafc; --bg2:#ffffff; --bg3:#f1f5f9; --bg4:#e8edf4; --bg5:#dde4ee;
+    --border:#e2e8f0; --border2:#cbd5e1; --border3:#b8c4d4;
+    --tx:#0f172a; --tx2:#334155; --tx3:#64748b; --tx4:#94a3b8;
+    --glow:0 0 20px rgba(0,180,140,.1);
+    --grid-line:rgba(0,180,140,.04);
+    --card-bg:var(--bg2); --card-border:var(--border);
+    --input-bg:var(--bg3); --modal-bg:var(--bg2); --overlay-bg:rgba(0,0,0,.45);
+    --score-high:#15803d; --score-mid:#b45309; --score-low:#b91c1c;
+    --a1:#00957a; --a2:#c27600; --a3:#1d4ed8; --a4:#6d28d9; --a5:#be185d;
+    --red:#b91c1c; --green:#15803d; --yellow:#b45309;
   }
 }
