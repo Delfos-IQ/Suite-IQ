@@ -411,8 +411,19 @@ function drawSpiderChart(scores){
     options:{
       responsive:false,
       animation:{duration:700,easing:'easeOutQuart'},
-      scales:{r:{min:0,max:100,ticks:{stepSize:25,display:false},grid:{color:'rgba(255,255,255,0.06)'},angleLines:{color:'rgba(255,255,255,0.08)'},pointLabels:{color:'rgba(200,210,220,0.65)',font:{size:10,family:"'IBM Plex Mono',monospace"}}}},
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.parsed.r}%`}}}
+      scales:{r:{min:0,max:100,
+        ticks:{stepSize:25,display:false},
+        grid:{color: document.documentElement.getAttribute('data-theme')==='light'
+          ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.06)'},
+        angleLines:{color: document.documentElement.getAttribute('data-theme')==='light'
+          ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.08)'},
+        pointLabels:{
+          color: document.documentElement.getAttribute('data-theme')==='light'
+            ? '#334155' : 'rgba(200,210,220,0.75)',
+          font:{size:11,family:"'IBM Plex Mono',monospace"}
+        }
+      }},
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){ return ' '+c.parsed.r+'%'; }}}}
     }
   });
 }

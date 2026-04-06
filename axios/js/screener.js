@@ -1,252 +1,327 @@
-// AXIOS·IQ — screener.js — Stock Screener (static filter + dynamic scoring)
+// AXIOS·IQ — screener.js — Stock Screener (fixed: no hang, lazy load)
 
-// ── Screener state ─────────────────────────────────────────
-var _scrFilters = {
-  sector:  'all',
-  country: 'all',
-  minYield: 0,
-  maxPE:    0,
-  verdict:  'all',
-};
+var _scrFilters = { sector:'all', country:'all', minYield:0, maxPE:0 };
 var _scrResults  = [];
-var _scrScoring  = false;
 var _scrPage     = 0;
+var _scrInited   = false;    // guard: only build filter UI once
 var SCR_PAGE_SIZE = 30;
 
-// ── Render screener tab ────────────────────────────────────
+var _secColors = {
+  technology:'#3b82f6', healthcare:'#06b6d4',
+  consumer_defensive:'#f59e0b', consumer_cyclical:'#ec4899',
+  financial:'#10b981', reit:'#a78bfa', energy:'#f97316',
+  industrial:'#8b5cf6', utilities:'#06b6d4', telecom:'#3b82f6',
+};
+
+// ── Entry point called by showTab ─────────────────────────
 function renderScreener() {
   var el = document.getElementById('screener-content');
   if (!el) return;
 
-  // Sector options
-  var sectors = ['all','technology','healthcare','consumer_defensive','consumer_cyclical',
-                 'financial','reit','energy','industrial','utilities','telecom'];
-  var secLabels = {all:'Todos', technology:'Tecnología', healthcare:'Salud',
-    consumer_defensive:'Cons. Defensivo', consumer_cyclical:'Cons. Cíclico',
-    financial:'Financiero', reit:'REIT', energy:'Energía',
-    industrial:'Industrial', utilities:'Utilities', telecom:'Telecom'};
-
-  // Country options from tickers
-  var countries = ['all'];
-  if (window.TICKER_DB) {
-    var flags = {};
-    Object.values(TICKER_DB).forEach(function(v){ if(v[2]) flags[v[2]] = true; });
-    countries = ['all'].concat(Object.keys(flags).sort());
+  // Only build the shell once
+  if (!_scrInited) {
+    _scrInited = true;
+    _buildScreenerShell(el);
   }
-
-  var html = '<div class="scr-wrap">'
-    // Header
-    + '<div class="scr-header">'
-    + '<div class="scr-title">🔍 ' + (lang==='en'?'Stock Screener':'Screener de Acciones') + '</div>'
-    + '<div class="scr-sub">' + (lang==='en'?'Filter by sector, country and metrics. Score up to 20 companies dynamically.':'Filtra por sector, país y métricas. Puntúa hasta 20 empresas dinámicamente.') + '</div>'
-    + '</div>'
-
-    // Filters row
-    + '<div class="scr-filters">'
-    + '<div class="scr-filter-group">'
-    + '<label class="scr-filter-lbl">' + (lang==='en'?'Sector':'Sector') + '</label>'
-    + '<select class="scr-select" id="scr-sector" onchange="scrApplyFilters()">'
-    + sectors.map(function(s){ return '<option value="'+s+'"'+(s===_scrFilters.sector?' selected':'')+'>'+secLabels[s]+'</option>'; }).join('')
-    + '</select></div>'
-
-    + '<div class="scr-filter-group">'
-    + '<label class="scr-filter-lbl">' + (lang==='en'?'Country':'País') + '</label>'
-    + '<select class="scr-select" id="scr-country" onchange="scrApplyFilters()">'
-    + '<option value="all">' + (lang==='en'?'All':'Todos') + '</option>'
-    + '<option value="🇺🇸">🇺🇸 USA</option>'
-    + '<option value="🇬🇧">🇬🇧 UK</option>'
-    + '<option value="🇩🇪">🇩🇪 Germany</option>'
-    + '<option value="🇫🇷">🇫🇷 France</option>'
-    + '<option value="🇪🇸">🇪🇸 Spain</option>'
-    + '<option value="🇮🇹">🇮🇹 Italy</option>'
-    + '<option value="🇨🇦">🇨🇦 Canada</option>'
-    + '<option value="🇦🇺">🇦🇺 Australia</option>'
-    + '<option value="🇯🇵">🇯🇵 Japan</option>'
-    + '<option value="🇭🇰">🇭🇰 Hong Kong</option>'
-    + '<option value="🇧🇷">🇧🇷 Brazil</option>'
-    + '</select></div>'
-
-    + '<div class="scr-filter-group">'
-    + '<label class="scr-filter-lbl">Min Yield %</label>'
-    + '<input type="number" class="scr-input" id="scr-yield" min="0" max="20" step="0.5" value="'+ (_scrFilters.minYield||0) +'" placeholder="0" onchange="scrApplyFilters()">'
-    + '</div>'
-
-    + '<div class="scr-filter-group">'
-    + '<label class="scr-filter-lbl">Max P/E</label>'
-    + '<input type="number" class="scr-input" id="scr-pe" min="0" max="200" step="1" value="'+ (_scrFilters.maxPE||'') +'" placeholder="—" onchange="scrApplyFilters()">'
-    + '</div>'
-
-    + '<button class="scr-btn-score" id="scr-score-btn" onclick="scrScoreSelected()" style="display:none">'
-    + '⚡ ' + (lang==='en'?'Score selected':'Puntuar seleccionadas')
-    + '</button>'
-    + '</div>' // end filters
-
-    // Results table
-    + '<div class="scr-results" id="scr-results"><div class="scr-empty">Aplica filtros para ver resultados</div></div>'
-    + '<div class="scr-pagination" id="scr-pagination"></div>'
-    + '</div>';
-
-  el.innerHTML = html;
-  scrApplyFilters();
+  // Ensure it's visible (showTab handles display:block, but just in case)
 }
 
+function _buildScreenerShell(el) {
+  var en = lang === 'en';
+
+  el.innerHTML = [
+    '<div class="scr-wrap">',
+    '<div class="scr-header">',
+    '<div class="scr-title">🔍 ' + (en ? 'Stock Screener' : 'Screener de Acciones') + '</div>',
+    '<div class="scr-sub">' + (en
+      ? 'Filter by sector and country, then score up to 20 companies.'
+      : 'Filtra por sector y país, luego puntúa hasta 20 empresas dinámicamente.') + '</div>',
+    '</div>',
+
+    // Filters
+    '<div class="scr-filters">',
+    '<div class="scr-filter-group">',
+    '<label class="scr-filter-lbl">Sector</label>',
+    '<select class="scr-select" id="scr-sector">',
+    _sectorOptions(en),
+    '</select></div>',
+
+    '<div class="scr-filter-group">',
+    '<label class="scr-filter-lbl">' + (en ? 'Country' : 'País') + '</label>',
+    '<select class="scr-select" id="scr-country">',
+    '<option value="all">' + (en ? 'All markets' : 'Todos los mercados') + '</option>',
+    '<option value="us">🇺🇸 USA (NYSE/NASDAQ)</option>',
+    '<option value="eu">🇪🇺 Europa</option>',
+    '<option value="uk">🇬🇧 UK (LSE)</option>',
+    '<option value="ca">🇨🇦 Canadá (TSX)</option>',
+    '<option value="au">🇦🇺 Australia (ASX)</option>',
+    '<option value="jp">🇯🇵 Japón</option>',
+    '<option value="hk">🇭🇰 Hong Kong</option>',
+    '<option value="in">🇮🇳 India (NSE)</option>',
+    '</select></div>',
+
+    '<div class="scr-filter-group">',
+    '<label class="scr-filter-lbl">Min Yield %</label>',
+    '<input type="number" class="scr-input" id="scr-yield" min="0" max="20" step="0.5" value="0" placeholder="0">',
+    '</div>',
+
+    '<div class="scr-filter-group">',
+    '<label class="scr-filter-lbl">Max P/E</label>',
+    '<input type="number" class="scr-input" id="scr-pe" min="0" max="200" step="1" value="" placeholder="—">',
+    '</div>',
+
+    '<button class="scr-btn-apply" onclick="scrApplyFilters()">',
+    (en ? '🔍 Search' : '🔍 Buscar'),
+    '</button>',
+
+    '<button class="scr-btn-score" id="scr-score-btn" style="display:none" onclick="scrScoreSelected()">',
+    '⚡ ' + (en ? 'Score selected' : 'Puntuar selección'),
+    '</button>',
+
+    '</div>', // end filters
+
+    '<div id="scr-status" class="scr-status-msg">' +
+      (en ? 'Apply filters to see results' : 'Aplica filtros para ver resultados') +
+    '</div>',
+    '<div id="scr-results"></div>',
+    '<div id="scr-pagination"></div>',
+    '</div>'
+  ].join('');
+
+  // Attach events AFTER innerHTML set (avoid inline onchange)
+  document.getElementById('scr-sector').addEventListener('change', function(){ /* manual only */ });
+  document.getElementById('scr-country').addEventListener('change', function(){ /* manual only */ });
+}
+
+function _sectorOptions(en) {
+  var pairs = [
+    ['all', en?'All sectors':'Todos los sectores'],
+    ['technology', en?'Technology':'Tecnología'],
+    ['healthcare', en?'Healthcare':'Salud'],
+    ['consumer_defensive', en?'Consumer Defensive':'Cons. Defensivo'],
+    ['consumer_cyclical', en?'Consumer Cyclical':'Cons. Cíclico'],
+    ['financial', en?'Financial':'Financiero'],
+    ['reit', 'REIT'],
+    ['energy', en?'Energy':'Energía'],
+    ['industrial', en?'Industrial':'Industrial'],
+    ['utilities', 'Utilities'],
+    ['telecom', 'Telecom'],
+  ];
+  return pairs.map(function(p){
+    return '<option value="'+p[0]+'">'+p[1]+'</option>';
+  }).join('');
+}
+
+// ── Apply filters (called only on button click) ───────────
 function scrApplyFilters() {
-  if (!window.TICKER_DB) { _loadTickerDB().then(scrApplyFilters); return; }
-
-  _scrFilters.sector  = (document.getElementById('scr-sector')  || {}).value || 'all';
-  _scrFilters.country = (document.getElementById('scr-country') || {}).value || 'all';
-  _scrFilters.minYield= parseFloat((document.getElementById('scr-yield') || {}).value) || 0;
-  _scrFilters.maxPE   = parseFloat((document.getElementById('scr-pe')    || {}).value) || 0;
-
-  _scrResults = [];
-  Object.entries(TICKER_DB).forEach(function(entry) {
-    var ticker = entry[0], v = entry[1];
-    var name   = v[0], sector = v[1], flag = v[2], desc = v[3];
-    if (_scrFilters.sector !== 'all' && sector !== _scrFilters.sector) return;
-    if (_scrFilters.country !== 'all' && flag !== _scrFilters.country) return;
-    _scrResults.push({ ticker: ticker, name: name, sector: sector, flag: flag, desc: desc });
-  });
-
-  _scrPage = 0;
-  scrRenderResults();
-}
-
-function scrRenderResults() {
-  var el = document.getElementById('scr-results');
-  var pagEl = document.getElementById('scr-pagination');
-  if (!el) return;
-
-  var total = _scrResults.length;
-  var pages = Math.ceil(total / SCR_PAGE_SIZE);
-  var slice = _scrResults.slice(_scrPage * SCR_PAGE_SIZE, (_scrPage+1) * SCR_PAGE_SIZE);
-
-  if (!total) {
-    el.innerHTML = '<div class="scr-empty">Sin resultados para estos filtros</div>';
-    if (pagEl) pagEl.innerHTML = '';
+  if (!window.TICKER_DB) {
+    var status = document.getElementById('scr-status');
+    if (status) status.textContent = '⏳ Cargando base de datos...';
+    _loadTickerDB().then(function() {
+      setTimeout(scrApplyFilters, 0);
+    }).catch(function() {
+      var s = document.getElementById('scr-status');
+      if (s) s.textContent = '❌ Error al cargar tickers';
+    });
     return;
   }
 
-  var secColors = { technology:'#3b82f6', healthcare:'#06b6d4', consumer_defensive:'#f59e0b',
-    consumer_cyclical:'#ec4899', financial:'#10b981', reit:'#a78bfa', energy:'#f97316',
-    industrial:'#8b5cf6', utilities:'#06b6d4', telecom:'#3b82f6', default:'#64748b' };
+  var secEl = document.getElementById('scr-sector');
+  var cntEl = document.getElementById('scr-country');
+  var yldEl = document.getElementById('scr-yield');
+  var peEl  = document.getElementById('scr-pe');
 
-  var html = '<div class="scr-count">' + total + ' ' + (lang==='en'?'companies found':'empresas encontradas') + '</div>'
-    + '<table class="scr-table">'
-    + '<thead><tr>'
-    + '<th><input type="checkbox" id="scr-check-all" onchange="scrToggleAll(this.checked)" title="Seleccionar todo"></th>'
-    + '<th>' + (lang==='en'?'Company':'Empresa') + '</th>'
-    + '<th>' + (lang==='en'?'Sector':'Sector') + '</th>'
-    + '<th>' + (lang==='en'?'Market':'Mercado') + '</th>'
-    + '<th>Score</th>'
-    + '<th>P/E</th>'
-    + '<th>Yield</th>'
-    + '<th>Márgenes</th>'
-    + '<th>Crec.</th>'
-    + '<th>Fortaleza</th>'
-    + '</tr></thead><tbody>';
+  _scrFilters.sector   = secEl ? secEl.value : 'all';
+  _scrFilters.country  = cntEl ? cntEl.value : 'all';
+  _scrFilters.minYield = yldEl ? (parseFloat(yldEl.value) || 0) : 0;
+  _scrFilters.maxPE    = peEl  ? (parseFloat(peEl.value)  || 0) : 0;
 
-  slice.forEach(function(r) {
-    var sc  = secColors[r.sector] || secColors.default;
-    var scored = r._score || null;
-    html += '<tr class="scr-row">'
-      + '<td><input type="checkbox" class="scr-check" data-ticker="'+r.ticker+'" onchange="scrUpdateScoreBtn()"></td>'
-      + '<td class="scr-company"><span class="scr-ticker">'+r.ticker+'</span> <span class="scr-name">'+r.name+'</span></td>'
-      + '<td><span class="scr-sector-tag" style="background:'+sc+'18;color:'+sc+';border:1px solid '+sc+'33">'+r.sector+'</span></td>'
-      + '<td class="scr-flag">'+r.flag+'</td>'
-      + (scored
-        ? '<td class="scr-score-cell"><span style="color:'+(scored.total>=70?'var(--green)':scored.total>=45?'var(--yellow)':'var(--red)')+'">'+scored.total+'</span></td>'
-          + '<td class="scr-metric">'+(scored.pe||'—')+'</td>'
-          + '<td class="scr-metric">'+(scored.yield||'—')+'</td>'
-          + '<td class="scr-block-bar" data-val="'+(scored.margenes||0)+'">'+scrMiniBar(scored.margenes)+'</td>'
-          + '<td class="scr-block-bar" data-val="'+(scored.crec||0)+'">'+scrMiniBar(scored.crec)+'</td>'
-          + '<td class="scr-block-bar" data-val="'+(scored.fortaleza||0)+'">'+scrMiniBar(scored.fortaleza)+'</td>'
-        : '<td colspan="6" class="scr-unscoredcell"><span class="scr-unscoredtxt">'+(lang==='en'?'Select + score':'Selecciona + puntuar')+'</span></td>')
-      + '</tr>';
-  });
+  // Map country filter to flag/suffix pattern
+  var countryFlag = {
+    us: '🇺🇸', eu: null, uk: '🇬🇧', ca: '🇨🇦',
+    au: '🇦🇺', jp: '🇯🇵', hk: '🇭🇰', in: '🇮🇳',
+  };
+  var euFlags = ['🇩🇪','🇫🇷','🇪🇸','🇮🇹','🇳🇱','🇧🇪','🇵🇹','🇨🇭','🇦🇹','🇸🇪','🇩🇰','🇳🇴','🇫🇮'];
+  var targetFlag = countryFlag[_scrFilters.country];
 
-  html += '</tbody></table>';
-  el.innerHTML = html;
+  var prevScores = {};
+  _scrResults.forEach(function(r){ if(r._score) prevScores[r.ticker] = r._score; });
 
-  // Pagination
-  if (pagEl && pages > 1) {
-    var pag = '<div class="scr-pag-row">';
-    for (var i=0; i<pages; i++) {
-      pag += '<button class="scr-pag-btn'+(i===_scrPage?' active':'')+'" onclick="scrGoPage('+i+')">'+(i+1)+'</button>';
+  _scrResults = [];
+  var keys = Object.keys(TICKER_DB);
+  for (var i = 0; i < keys.length; i++) {
+    var ticker = keys[i];
+    var v = TICKER_DB[ticker];
+    if (!v) continue;
+    var name   = v[0] || '';
+    var sector = v[1] || '';
+    var flag   = v[2] || '';
+
+    // Sector filter
+    if (_scrFilters.sector !== 'all' && sector !== _scrFilters.sector) continue;
+
+    // Country filter
+    if (_scrFilters.country !== 'all') {
+      if (_scrFilters.country === 'eu') {
+        if (euFlags.indexOf(flag) < 0) continue;
+      } else if (targetFlag && flag !== targetFlag) {
+        continue;
+      }
     }
-    pag += '</div>';
-    pagEl.innerHTML = pag;
-  } else if (pagEl) { pagEl.innerHTML = ''; }
+
+    _scrResults.push({
+      ticker: ticker, name: name, sector: sector, flag: flag,
+      _score: prevScores[ticker] || null,
+    });
+  }
+
+  _scrPage = 0;
+  // Defer render to next frame to keep UI responsive
+  var status = document.getElementById('scr-status');
+  if (status) status.textContent = '';
+  requestAnimationFrame(scrRenderResults);
 }
 
-function scrMiniBar(val) {
-  if (!val && val !== 0) return '<span class="scr-na">—</span>';
-  var pct = Math.min(100, Math.max(0, (val/5)*100));
-  var col = val >= 4 ? 'var(--green)' : val >= 3 ? 'var(--yellow)' : 'var(--red)';
-  return '<div class="scr-mini-bar"><div class="scr-mini-fill" style="width:'+pct+'%;background:'+col+'"></div></div>'
-    + '<span style="font-size:10px;color:'+col+';font-family:monospace">'+val.toFixed(1)+'</span>';
+function scrRenderResults() {
+  var el    = document.getElementById('scr-results');
+  var pagEl = document.getElementById('scr-pagination');
+  var en    = lang === 'en';
+  if (!el) return;
+
+  var total = _scrResults.length;
+  var status = document.getElementById('scr-status');
+
+  if (!total) {
+    el.innerHTML = '';
+    if (status) status.textContent = en ? 'No results for this filter.' : 'Sin resultados para estos filtros.';
+    if (pagEl) pagEl.innerHTML = '';
+    _updateScoreBtn();
+    return;
+  }
+
+  if (status) status.textContent = total + (en ? ' companies found' : ' empresas encontradas');
+
+  var pages = Math.ceil(total / SCR_PAGE_SIZE);
+  var slice = _scrResults.slice(_scrPage * SCR_PAGE_SIZE, (_scrPage + 1) * SCR_PAGE_SIZE);
+
+  var rows = slice.map(function(r) {
+    var sc    = _secColors[r.sector] || '#64748b';
+    var scored = r._score;
+    var scoreCell = scored
+      ? ('<td class="scr-score-cell" style="color:'+(scored.total>=70?'var(--green)':scored.total>=45?'var(--yellow)':'var(--red)')+'">'+scored.total+'</td>'
+        + '<td class="scr-metric">'+(scored.pe||'—')+'</td>'
+        + '<td class="scr-metric">'+(scored.yield||'—')+'</td>'
+        + '<td class="scr-metric">'+(scored.marg||'—')+'</td>'
+        + '<td class="scr-metric">'+(scored.crec||'—')+'</td>')
+      : '<td colspan="5" class="scr-unscoredcell">'+(en?'Select + score':'Selecciona + puntuar')+'</td>';
+
+    return '<tr class="scr-row">'
+      + '<td><input type="checkbox" class="scr-check" data-ticker="'+r.ticker+'"></td>'
+      + '<td class="scr-company"><b class="scr-ticker">'+r.ticker+'</b> <span class="scr-name">'+r.name+'</span></td>'
+      + '<td><span class="scr-sector-tag" style="background:'+sc+'18;color:'+sc+'">'+r.sector+'</span></td>'
+      + '<td>'+r.flag+'</td>'
+      + scoreCell
+      + '</tr>';
+  }).join('');
+
+  el.innerHTML = '<table class="scr-table"><thead><tr>'
+    + '<th><input type="checkbox" id="scr-check-all"></th>'
+    + '<th>'+(en?'Company':'Empresa')+'</th>'
+    + '<th>Sector</th>'
+    + '<th>'+(en?'Market':'Mercado')+'</th>'
+    + '<th>Score</th><th>P/E</th><th>Yield</th>'
+    + '<th>'+(en?'Margins':'Márgenes')+'</th>'
+    + '<th>'+(en?'Growth':'Crec.')+'</th>'
+    + '</tr></thead><tbody>'+rows+'</tbody></table>';
+
+  // Attach checkbox events after render
+  var checkAll = document.getElementById('scr-check-all');
+  if (checkAll) checkAll.addEventListener('change', function(){ scrToggleAll(this.checked); });
+  document.querySelectorAll('.scr-check').forEach(function(cb){
+    cb.addEventListener('change', _updateScoreBtn);
+  });
+
+  // Pagination
+  if (pagEl) {
+    if (pages > 1) {
+      var pags = [];
+      for (var i=0; i<pages; i++) {
+        pags.push('<button class="scr-pag-btn'+(i===_scrPage?' active':'')+'" data-page="'+i+'">'+(i+1)+'</button>');
+      }
+      pagEl.innerHTML = '<div class="scr-pag-row">'+pags.join('')+'</div>';
+      pagEl.querySelectorAll('.scr-pag-btn').forEach(function(btn){
+        btn.addEventListener('click', function(){ scrGoPage(parseInt(this.dataset.page)); });
+      });
+    } else {
+      pagEl.innerHTML = '';
+    }
+  }
+
+  _updateScoreBtn();
+}
+
+function _updateScoreBtn() {
+  var selected = document.querySelectorAll('.scr-check:checked').length;
+  var btn = document.getElementById('scr-score-btn');
+  var en  = lang === 'en';
+  if (!btn) return;
+  if (selected > 0) {
+    btn.style.display = 'inline-flex';
+    var label = '⚡ ' + (en ? 'Score ' : 'Puntuar ') + Math.min(selected,20);
+    if (selected > 20) label += ' (max 20)';
+    btn.textContent = label;
+    btn.style.opacity = selected > 20 ? '.6' : '1';
+  } else {
+    btn.style.display = 'none';
+  }
 }
 
 function scrToggleAll(checked) {
   document.querySelectorAll('.scr-check').forEach(function(cb){ cb.checked = checked; });
-  scrUpdateScoreBtn();
-}
-
-function scrUpdateScoreBtn() {
-  var selected = document.querySelectorAll('.scr-check:checked').length;
-  var btn = document.getElementById('scr-score-btn');
-  if (btn) {
-    btn.style.display = selected > 0 ? 'inline-flex' : 'none';
-    btn.textContent = '⚡ ' + (lang==='en'?'Score ':' Puntuar ') + selected + (lang==='en'?' companies':' empresas');
-    if (selected > 20) {
-      btn.textContent += ' (' + (lang==='en'?'max 20':'máx 20') + ')';
-      btn.style.opacity = '.6';
-    } else {
-      btn.style.opacity = '1';
-    }
-  }
+  _updateScoreBtn();
 }
 
 async function scrScoreSelected() {
-  if (!WORKER_URL) { _showToast('Worker URL no configurada', 2000); return; }
+  if (!window.WORKER_URL) { _showToast('Worker URL no configurada', 2000); return; }
   var checkboxes = Array.from(document.querySelectorAll('.scr-check:checked')).slice(0, 20);
-  var tickers = checkboxes.map(function(cb){ return cb.dataset.ticker; });
+  var tickers    = checkboxes.map(function(cb){ return cb.dataset.ticker; });
   if (!tickers.length) return;
 
   var btn = document.getElementById('scr-score-btn');
   if (btn) { btn.textContent = '⏳ Cargando...'; btn.disabled = true; }
 
-  for (var i=0; i<tickers.length; i++) {
+  for (var i = 0; i < tickers.length; i++) {
     var ticker = tickers[i];
     try {
       var resp = await fetch(WORKER_URL + '/yahoo?ticker=' + encodeURIComponent(ticker));
       var json = await resp.json();
       if (json.ok && json.data) {
-        var d = json.data;
-        var sector = (TICKER_DB[ticker] && TICKER_DB[ticker][1]) || 'default';
-        var scData = typeof scBuildData === 'function' ? scBuildData(d, sector) : null;
-        // Find result and update
-        var resIdx = _scrResults.findIndex(function(r){ return r.ticker===ticker; });
-        if (resIdx >= 0 && scData) {
-          var total = typeof scCalcTotal === 'function' ? scCalcTotal(scData) : 0;
-          _scrResults[resIdx]._score = {
-            total: Math.round(total * 10),
-            pe:    d.pe ? d.pe.toFixed(1)+'x' : '—',
+        var d      = json.data;
+        var dbEntry= window.TICKER_DB && TICKER_DB[ticker];
+        var sector = dbEntry ? dbEntry[1] : 'default';
+        var scData = typeof scBuildData === 'function' ? scBuildData(d, sector) : [];
+        var idx    = _scrResults.findIndex(function(r){ return r.ticker===ticker; });
+        if (idx >= 0) {
+          var total  = typeof scCalcTotal === 'function' ? Math.round(scCalcTotal(scData)*10) : 0;
+          var marg   = scData.find ? scData.find(function(b){return b.id==='margenes';}) : null;
+          var crec   = scData.find ? scData.find(function(b){return b.id==='crecimiento';}) : null;
+          _scrResults[idx]._score = {
+            total: total,
+            pe:    d.pe    ? d.pe.toFixed(1)+'x'      : '—',
             yield: d.dividendYield ? d.dividendYield.toFixed(2)+'%' : '—',
-            margenes:  scData.find ? (scData.find(function(b){return b.id==='margenes';})||{}).score : null,
-            crec:      scData.find ? (scData.find(function(b){return b.id==='crecimiento';})||{}).score : null,
-            fortaleza: scData.find ? (scData.find(function(b){return b.id==='fortaleza';})||{}).score : null,
+            marg:  marg && typeof scBlockPts==='function' ? scBlockPts(marg.metrics).toFixed(1) : '—',
+            crec:  crec && typeof scBlockPts==='function' ? scBlockPts(crec.metrics).toFixed(1) : '—',
           };
         }
       }
     } catch(e) { console.warn('Screener score error:', ticker, e.message); }
   }
 
-  scrRenderResults();
-  if (btn) { btn.textContent = '✓ ' + (lang==='en'?'Scored':'Puntuadas'); btn.disabled = false; }
+  requestAnimationFrame(scrRenderResults);
+  if (btn) { btn.textContent = '✓ '+(lang==='en'?'Scored':'Puntuadas'); btn.disabled = false; }
 }
 
 function scrGoPage(p) {
   _scrPage = p;
-  scrRenderResults();
-  document.getElementById('screener-content').scrollIntoView({behavior:'smooth'});
+  requestAnimationFrame(scrRenderResults);
 }
