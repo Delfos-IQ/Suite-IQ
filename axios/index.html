@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- AXIOS-IQ · v3.0 · Módulos · Tema Claro/Oscuro · Screener · Comparador -->
-<html lang="es" data-theme="dark">
+<html lang="es" data-theme="dark" style="font-size:16px">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
@@ -94,10 +94,10 @@
       <button class="nav-tab" id="tab-watchlist" onclick="showTab('watchlist')">
         <span class="tab-icon">⭐</span><span id="tab-watchlist-lbl">WATCHLIST</span>
       </button>
-      <button class="nav-tab" id="tab-academy" onclick="showTab('academy')">
-        <span class="tab-icon">🎓</span><span id="tab-academy-lbl">ACADEMIA</span>
+      <a class="nav-tab" href="sophiaiq.html" style="text-decoration:none">
+        <span class="tab-icon">🎓</span><span>SOPHIA·IQ</span>
         <span class="tab-pro-badge">PRO</span>
-      </button>
+      </a>
     </div>
 
 <!-- BREADCRUMB -->
@@ -350,6 +350,7 @@
 <div id="err-toast" class="err-toast"></div>
 
 <!-- ── JS Modules (order matters) ──────────────────────── -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="js/data.js"></script>
 <script src="js/core.js"></script>
 <script src="js/autofill.js"></script>
