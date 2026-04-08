@@ -21,6 +21,7 @@
       --axios:   #00d4aa;
       --harvest: #4ADE80;
       --delfos:  #c9a84c;
+      --sophia:  #f59e0b;
     }
 
     html, body {
@@ -98,6 +99,7 @@
     .axios-card  .card-hero { background: linear-gradient(135deg, rgba(0,212,170,.1), rgba(59,130,246,.06)); }
     .harvest-card .card-hero { background: linear-gradient(135deg, rgba(74,222,128,.1), rgba(16,185,129,.05)); }
     .delfos-card  .card-hero { background: linear-gradient(135deg, rgba(201,168,76,.1), rgba(184,149,42,.05)); }
+    .sophia-card  .card-hero { background: linear-gradient(135deg, rgba(245,158,11,.1), rgba(251,191,36,.05)); }
 
     .card-hero-emoji {
       font-size: 68px; filter: drop-shadow(0 4px 20px rgba(0,0,0,.4));
@@ -212,6 +214,7 @@
     .axios-dot   { background: var(--axios); }
     .harvest-dot { background: var(--harvest); }
     .delfos-dot  { background: var(--delfos); }
+    .sophia-dot { background: var(--sophia); box-shadow: 0 0 8px rgba(245,158,11,.5); }
     @keyframes pdot { 0%,100%{opacity:1} 50%{opacity:.35} }
 
     #viewer-title {
@@ -221,6 +224,7 @@
     #viewer-title.axios-title   { background-image: linear-gradient(135deg, #00d4aa 0%, #3b82f6 100%); }
     #viewer-title.harvest-title { background-image: linear-gradient(135deg, #4ADE80 0%, #059669 100%); }
     #viewer-title.delfos-title  { background-image: linear-gradient(135deg, #c9a84c 0%, #e8c97a 100%); }
+    .sophia-title { background: linear-gradient(135deg, #f59e0b, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
     #app-frame { flex: 1; border: none; width: 100%; display: block; }
 
@@ -339,7 +343,7 @@
         <span class="suite-logo-text">IQ Suite</span>
       </div>
       <p class="suite-tagline" id="s-tagline">Herramientas de inversión inteligente, gratuitas y sin registro.</p>
-      <p class="suite-sub" id="s-sub">Análisis fundamental · Cartera de dividendos · Swing trading Cava</p>
+      <p class="suite-sub" id="s-sub">Análisis fundamental · Cartera de dividendos · Academia · Swing trading</p>
     </header>
 
     <div class="apps-grid">
@@ -435,6 +439,47 @@
             <path d="M 8 65 Q 30 55 52 58 Q 72 61 102 50" stroke="#fde08a" stroke-width="2" fill="none" opacity=".8" stroke-dasharray="4,3"/>
           </svg>
         </div>
+
+      <div class="app-card sophia-card" onclick="openApp('sophia/index.html','SOPHIA·IQ','sophia')">
+        <div class="card-hero">
+          <!-- SOPHIA·IQ — knowledge-svgrepo lightbulb adapted, monochrome amber -->
+          <svg width="90" height="90" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"
+               style="filter:drop-shadow(0 4px 24px rgba(245,158,11,.4));transition:transform .2s">
+            <defs>
+              <filter id="sophia-glow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="0.5" result="blur"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <!-- Bulb body -->
+            <path d="M22.63 4.81C21.77 3.92 20.74 3.21 19.6 2.73C18.46 2.25 17.24 2 16 2C13.61 2 11.32 2.95 9.64 4.64C7.95 6.32 7 8.61 7 11C7.09 12.68 7.57 14.32 8.4 15.78C8.66 16.3 8.89 16.83 9.1 17.37L11.1 22.37C11.17 22.55 11.3 22.71 11.46 22.82C11.62 22.93 11.8 22.99 12 23H20C20.2 23 20.4 22.94 20.56 22.83C20.73 22.72 20.86 22.56 20.93 22.37L22.93 17.37C23.16 16.8 23.4 16.27 23.63 15.75C24.41 14.28 24.88 12.66 25 11C25.04 9.86 24.85 8.73 24.45 7.66C24.04 6.6 23.42 5.63 22.63 4.81Z" fill="rgba(245,158,11,.15)" stroke="#f59e0b" stroke-width="0.65" stroke-linejoin="round" filter="url(#sophia-glow)"/>
+            <!-- Filament Z (knowledge SVG shape) -->
+            <path d="M18 8H14C13.82 8 13.64 8.05 13.48 8.15C13.32 8.25 13.19 8.39 13.11 8.55L11.11 12.55C11.02 12.7 10.98 12.87 10.98 13.05C10.98 13.23 11.02 13.4 11.11 13.55C11.2 13.69 11.37 13.79 11.51 13.88C11.66 13.96 11.83 14 12 14H20C20.27 14 20.52 13.89 20.71 13.71C20.89 13.51 21 13.27 21 13C21 12.73 20.89 12.48 20.71 12.29C20.52 12.11 20.27 12 20 12H13.66L14.66 10H18C18.27 10 18.52 9.89 18.71 9.71C18.89 9.52 19 9.27 19 9C19 8.73 18.89 8.48 18.71 8.29C18.52 8.11 18.27 8 18 8Z" fill="rgba(251,191,36,.3)" stroke="#fbbf24" stroke-width="0.5"/>
+            <line x1="16" y1="12" x2="16" y2="18" stroke="#fbbf24" stroke-width="0.85" stroke-linecap="round"/>
+            <!-- Socket rings -->
+            <rect x="11" y="24" width="10" height="6" rx="1.5" fill="rgba(245,158,11,.35)" stroke="#f59e0b" stroke-width="0.45"/>
+            <line x1="12" y1="26.5" x2="20" y2="26.5" stroke="rgba(245,158,11,.4)" stroke-width="0.45"/>
+            <!-- Rays -->
+            <line x1="16" y1="0.3" x2="16" y2="1.4" stroke="#fbbf24" stroke-width="0.85" stroke-linecap="round" opacity=".65"/>
+            <line x1="26.8" y1="3.2" x2="25.9" y2="4.1" stroke="#fbbf24" stroke-width="0.85" stroke-linecap="round" opacity=".5"/>
+            <line x1="30.2" y1="11" x2="29" y2="11" stroke="#fbbf24" stroke-width="0.85" stroke-linecap="round" opacity=".5"/>
+            <line x1="5.2" y1="3.2" x2="6.1" y2="4.1" stroke="#fbbf24" stroke-width="0.85" stroke-linecap="round" opacity=".5"/>
+            <line x1="1.8" y1="11" x2="3" y2="11" stroke="#fbbf24" stroke-width="0.85" stroke-linecap="round" opacity=".5"/>
+          </svg>
+        </div>
+        <div class="card-body">
+          <span class="card-badge">💡 Academia</span>
+          <div class="card-title">SOPHIA·IQ</div>
+          <p class="card-desc">Academia de inversión y finanzas personales. 97 artículos trilingues, 4 cursos con certificados y progreso guardado.</p>
+          <div class="card-features">
+            <div class="card-feature"><span class="card-feature-dot"></span>4 cursos: Finanzas Personales, Iniciado, Intermedio, Avanzado</div>
+            <div class="card-feature"><span class="card-feature-dot"></span>97 artículos en español, inglés y portugués</div>
+            <div class="card-feature"><span class="card-feature-dot"></span>Certificados descargables por curso</div>
+            <div class="card-feature"><span class="card-feature-dot"></span>100% offline · sin cuenta · sin servidor</div>
+          </div>
+          <button class="card-cta">Abrir SOPHIA·IQ →</button>
+        </div>
+      </div>
         <div class="card-body">
           <span class="card-badge">🔮 Oráculo</span>
           <div class="card-title">DELFOS·IQ</div>
@@ -549,9 +594,11 @@
     const SUITE_STRINGS = {
       es: {
         tagline: 'Herramientas de inversión inteligente, gratuitas y sin registro.',
-        sub: 'Análisis fundamental · Cartera de dividendos · Swing trading Cava',
+        sub: 'Análisis fundamental · Cartera de dividendos · Academia de inversión · Swing trading',
         support: 'Apoya este proyecto',
         footer: 'IQ SUITE · HERRAMIENTAS DE INVERSIÓN · SIN REGISTRO · SIN SERVIDOR',
+        sophiaBadge: '💡 Academia', sophiaDesc: 'Academia de inversión y finanzas personales. Cursos con certificados, artículos trilingues y progreso guardado.', sophiaCta: 'Abrir SOPHIA·IQ →',
+        sp1:'4 cursos: Finanzas Personales, Iniciado, Intermedio, Avanzado', sp2:'97 artículos trilingues', sp3:'Certificados descargables', sp4:'100% offline · sin cuenta',
         axiosBadge: '⚡ Analizador', axiosDesc: 'Terminal de análisis fundamental. Analiza cualquier empresa con datos reales de mercado y valoración asistida por IA.',
         axiosCta: 'Abrir AXIOS·IQ →',
         harvestBadge: '🌾 Cartera', harvestDesc: 'Gestión inteligente de cartera de dividendos. Carga tu CSV o Excel para análisis DGI, oportunidades y proyección de ingresos pasivos.',
@@ -568,6 +615,8 @@
         sub: 'Fundamental analysis · Dividend portfolio · Cava swing trading',
         support: 'Support this project',
         footer: 'IQ SUITE · INVESTMENT TOOLS · NO ACCOUNT · NO SERVER',
+        sophiaBadge: '💡 Academy', sophiaDesc: 'Investment academy and personal finance. Courses with certificates, trilingual articles and saved progress.', sophiaCta: 'Open SOPHIA·IQ →',
+        sp1:'4 courses: Personal Finance, Beginner, Intermediate, Advanced', sp2:'97 trilingual articles', sp3:'Downloadable certificates', sp4:'100% offline · no account',
         axiosBadge: '⚡ Analyzer', axiosDesc: 'Fundamental analysis terminal. Analyze any company with real market data and AI-assisted valuation.',
         axiosCta: 'Open AXIOS·IQ →',
         harvestBadge: '🌾 Portfolio', harvestDesc: 'Smart dividend portfolio manager. Upload your CSV or Excel for DGI analysis, opportunities and passive income projection.',
@@ -584,6 +633,8 @@
         sub: 'Análise fundamental · Carteira de dividendos',
         support: 'Apoia este projeto',
         footer: 'IQ SUITE · FERRAMENTAS DE INVESTIMENTO · SEM REGISTO · SEM SERVIDOR',
+        sophiaBadge: '💡 Academia', sophiaDesc: 'Academia de investimento e finanças pessoais. Cursos com certificados, artigos trilingues e progresso guardado.', sophiaCta: 'Abrir SOPHIA·IQ →',
+        sp1:'4 cursos: Finanças Pessoais, Iniciado, Intermédio, Avançado', sp2:'97 artigos trilingues', sp3:'Certificados para descarregar', sp4:'100% offline · sem conta',
         axiosBadge: '⚡ Analisador', axiosDesc: 'Terminal de análise fundamental. Analisa qualquer empresa com dados reais de mercado e valorização assistida por IA.',
         axiosCta: 'Abrir AXIOS·IQ →',
         harvestBadge: '🌾 Carteira', harvestDesc: 'Gestão inteligente de carteira de dividendos. Carrega o teu CSV ou Excel para análise DGI, oportunidades e projeção de rendimentos passivos.',
@@ -627,10 +678,16 @@
       // Features
       const axFeats = document.querySelectorAll('.axios-card .card-feature');
       const hxFeats = document.querySelectorAll('.harvest-card .card-feature');
+      const spFeats = document.querySelectorAll('.sophia-card .card-feature');
       const af = [s.f1,s.f2,s.f3,s.f4];
       const hf = [s.h1,s.h2,s.h3,s.h4];
+      const spf = [s.sp1,s.sp2,s.sp3,s.sp4];
       axFeats.forEach(function(el,i){ if(af[i]) el.innerHTML = '<span class="card-feature-dot"></span>' + af[i]; });
       hxFeats.forEach(function(el,i){ if(hf[i]) el.innerHTML = '<span class="card-feature-dot"></span>' + hf[i]; });
+      spFeats.forEach(function(el,i){ if(spf[i]) el.innerHTML = '<span class="card-feature-dot"></span>' + spf[i]; });
+      set('.sophia-card .card-badge', s.sophiaBadge);
+      set('.sophia-card .card-desc',  s.sophiaDesc);
+      set('.sophia-card .card-cta',   s.sophiaCta);
     }
 
     // Restore lang on load
