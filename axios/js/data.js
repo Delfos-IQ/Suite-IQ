@@ -29,6 +29,11 @@
 
 
 // ══════════════════════════════════════════════════════════════════════
+// WORKER URL — único punto de configuración del backend
+// ══════════════════════════════════════════════════════════════════════
+var WORKER_URL = 'https://suite-iq.pedicode-app.workers.dev';
+
+// ══════════════════════════════════════════════════════════════════════
 // TICKER_DB — cargado de forma asíncrona desde tickers.json
 // ══════════════════════════════════════════════════════════════════════
 let TICKER_DB = null;

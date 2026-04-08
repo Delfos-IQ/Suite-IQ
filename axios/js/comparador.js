@@ -115,7 +115,7 @@ async function cmpAnalyze() {
       var r = await fetch(WORKER_URL + '/yahoo?ticker=' + encodeURIComponent(tk));
       var j = await r.json();
       if (j.ok && j.data) {
-        var db  = window.TICKER_DB && TICKER_DB[tk];
+        var db  = TICKER_DB && TICKER_DB[tk];
         var sec = db ? db[1] : 'default';
         var sc  = typeof scBuildData === 'function' ? scBuildData(j.data, sec) : [];
         _cmpData[tk] = { ticker:tk, name:db?db[0]:tk, flag:db?db[2]:'🌐',

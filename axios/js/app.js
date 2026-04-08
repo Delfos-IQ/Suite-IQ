@@ -25,7 +25,7 @@ if ('serviceWorker' in navigator) {
   initTheme();
   renderSectorOptions();
   document.getElementById('tab-analyzer-lbl').textContent = tr('tabAnalyzer');
-  document.getElementById('tab-academy-lbl').textContent  = tr('tabAcademy');
+  // tab-academy-lbl ya no existe — academia migrada a SOPHIA·IQ externo
   document.getElementById('tab-watchlist-lbl').textContent= tr('tabWatchlist');
 
   // ── Hash routing: restore from URL on direct load ──────────────────
@@ -54,7 +54,7 @@ if ('serviceWorker' in navigator) {
           setTimeout(()=>{ try{openItem(s.itemId);}catch(e){} },150);
         }
       }
-      if(s.tab==='academy') setTimeout(()=>renderAcademy(),100);
+      if(s.tab==='academy') setTimeout(()=>{ if(typeof renderAcademy==='function') renderAcademy(); },100);
     }
   }catch(e){ console.warn('Session restore failed:',e); }
 })();

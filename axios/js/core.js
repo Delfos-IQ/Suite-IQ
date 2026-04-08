@@ -172,7 +172,7 @@ function setLang(l){
   document.getElementById('search-hint').textContent= tr('searchHint');
   document.getElementById('go-btn').textContent           = tr('goBtnTxt');
   document.getElementById('tab-analyzer-lbl').textContent  = tr('tabAnalyzer');
-  document.getElementById('tab-academy-lbl').textContent   = tr('tabAcademy');
+  // tab-academy-lbl ya no existe — academia migrada a SOPHIA·IQ (enlace externo)
   const _wlbl = document.getElementById('tab-watchlist-lbl');
   if(_wlbl) _wlbl.textContent = tr('tabWatchlist');
   const _ablbl = document.getElementById('tab-about-lbl');
@@ -221,7 +221,7 @@ function showTab(tab){
     if(prev) prev.classList.remove('fading');
     _applyTab(tab);
     _pushNav('tab:'+tab);
-    if(tab==='academy')    renderAcademy();
+    if(tab==='academy')    { if(typeof renderAcademy==='function') renderAcademy(); }
     if(tab==='watchlist')  renderWatchlist();
     if(tab==='about')      renderAboutAxios();
     if(tab==='screener')   { if(typeof renderScreener  ==='function') renderScreener();   }

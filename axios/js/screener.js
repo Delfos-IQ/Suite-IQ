@@ -114,7 +114,7 @@ function _sectorOptions(en) {
 
 // ── Apply filters (called only on button click) ───────────
 function scrApplyFilters() {
-  if (!window.TICKER_DB) {
+  if (!TICKER_DB) {
     var status = document.getElementById('scr-status');
     if (status) status.textContent = '⏳ Cargando base de datos...';
     _loadTickerDB().then(function() {
@@ -297,7 +297,7 @@ async function scrScoreSelected() {
       var json = await resp.json();
       if (json.ok && json.data) {
         var d      = json.data;
-        var dbEntry= window.TICKER_DB && TICKER_DB[ticker];
+        var dbEntry= TICKER_DB && TICKER_DB[ticker];
         var sector = dbEntry ? dbEntry[1] : 'default';
         var scData = typeof scBuildData === 'function' ? scBuildData(d, sector) : [];
         var idx    = _scrResults.findIndex(function(r){ return r.ticker===ticker; });
