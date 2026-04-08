@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- AXIOS-IQ · v3.0 · Módulos · Tema Claro/Oscuro · Screener · Comparador -->
-<html lang="es" data-theme="dark" style="font-size:16px">
+<!-- AXIOS·IQ · v3.1 · Análisis Fundamental · Screener · Comparador -->
+<html lang="es" data-theme="dark">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>AXIOS-IQ · Terminal de Análisis Fundamental</title>
+<title>AXIOS·IQ v3.1 · Terminal de Análisis Fundamental</title>
 <meta name="description" content="Análisis fundamental de acciones. 1.500+ tickers globales. Auto-fill desde Yahoo Finance. Score 1-100. Screener. Comparador. Academia de inversión."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@300;400;500;700&family=Bebas+Neue&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
@@ -94,9 +94,8 @@
       <button class="nav-tab" id="tab-watchlist" onclick="showTab('watchlist')">
         <span class="tab-icon">⭐</span><span id="tab-watchlist-lbl">WATCHLIST</span>
       </button>
-      <a class="nav-tab" href="sophiaiq.html" style="text-decoration:none">
-        <span class="tab-icon">🎓</span><span>SOPHIA·IQ</span>
-        <span class="tab-pro-badge">PRO</span>
+      <a class="nav-tab" href="../sophia/index.html" style="text-decoration:none" title="Ir a SOPHIA·IQ Academia">
+        <span class="tab-icon">💡</span><span>SOPHIA·IQ</span>
       </a>
     </div>
 
@@ -132,7 +131,7 @@
         <div class="search-hint" id="search-hint">Ejemplo: AAPL, MSFT, NVDA, SAN, BBVA, ITX, NESN, AMZN, TSLA, O, JPM...</div>
         <div class="home-stats-strip" id="home-stats-strip">
           <div class="home-stat"><span class="home-stat-num">1309</span><span class="home-stat-lbl" id="stat-tickers-lbl">tickers</span></div>
-          <div class="home-stat"><span class="home-stat-num">97</span><span class="home-stat-lbl" id="stat-articles-lbl">artículos</span></div>
+          
           <div class="home-stat"><span class="home-stat-num">21</span><span class="home-stat-lbl" id="stat-items-lbl">ítems de análisis</span></div>
           <div class="home-stat"><span class="home-stat-num">ES·EN·PT</span><span class="home-stat-lbl" id="stat-langs-lbl">trilingüe</span></div>
         </div>
@@ -244,8 +243,6 @@
 
     </div><!-- /analyzer-content -->
 
-    <!-- ACADEMIA CONTENT -->
-    
 
     <!-- WATCHLIST CONTENT -->
     <div id="watchlist-content" style="display:none"></div>
@@ -350,7 +347,6 @@
 <div id="err-toast" class="err-toast"></div>
 
 <!-- ── JS Modules (order matters) ──────────────────────── -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="js/data.js"></script>
 <script src="js/core.js"></script>
 <script src="js/autofill.js"></script>
@@ -360,7 +356,6 @@
 <script src="js/screener.js"></script>
 <script src="js/comparador.js"></script>
 <script src="js/ui.js"></script>
-
 <script src="js/about.js"></script>
 <script src="js/app.js"></script>
 
