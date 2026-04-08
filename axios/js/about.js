@@ -69,11 +69,11 @@ function renderAboutAxios(){
      en?'5-block scorecard (Price · Dividend · Margins · Growth · Strength) · Score 1-5 per metric · Sector benchmarks · Equal-weighted and custom modes · Phase 2: real dynamic peer medians via /peers Worker endpoint · Modular repo structure'
        :(pt?'Scorecard 5 blocos (Preço · Dividendo · Margens · Crescimento · Solidez) · Pontuação 1-5 por métrica · Benchmarks sectoriais · Ponderação igual e personalizada · Fase 2: medianas reais de peers via Worker · Estrutura modular'
            :'Scorecard 5 bloques (Precio · Dividendo · Márgenes · Crecimiento · Fortaleza) · Puntuación 1-5 por métrica · Benchmarks sectoriales · Modo equiponderado y personalizado · Fase 2: medianas reales de peers vía Worker · Estructura modular del repo')],
-    ['v2.0','2026-03',
-     en?'v2.0 — Complete redesign + AI':(pt?'v2.0 — Redesenho completo + IA':'v2.0 — Rediseño completo + IA'),
+    ['v3.1','2026-04',
+     en?'v3.1 — Modular · Screener · Comparador':(pt?'v3.1 — Modular · Screener · Comparador':'v3.1 — Arquitectura modular · Screener · Comparador'),
      en?'21 items (from 28) · 14 auto-filled · Score 1-100 · Visual Margin of Safety bar · 9-section AI analysis · AI qualitative fill for moat/management/governance · About tab · 1.309 tickers in 35+ countries'
        :(pt?'21 itens (de 28) · 14 preenchidos · Score 1-100 · Barra visual MoS · Análise IA 9 secções · Preenchimento qualitativo IA · Aba About · 1.309 tickers em 35+ países'
-           :'21 ítems (de 28) · 14 auto-rellenados · Score 1-100 · Barra visual MoS · Análisis IA 9 secciones · Relleno cualitativo IA · Pestaña About · 1.309 tickers en 35+ países')],
+           :'21 ítems (de 28) · 14 auto-rellenados · Score 1-100 · Barra visual MoS · Análisis IA 9 secciones · Relleno cualitativo IA · Pestaña About · 1.500+ tickers en 35+ países')],
     ['v1.5','2026-02',
      en?'v1.5 — Academy + Worker':(pt?'v1.5 — Academia + Worker':'v1.5 — Academia + Worker'),
      en?'4 courses with certificates · 97 trilingual articles · Groq AI via Cloudflare Worker · RSI + MA data from Yahoo · FRED macro data · Hash routing'
