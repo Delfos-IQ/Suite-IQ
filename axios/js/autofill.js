@@ -476,13 +476,13 @@ function _restoreFromHash(){
       const isCourse = typeof COURSES !== 'undefined' && COURSES.some(c=>c.id===h.ticker);
       if(isCourse){
         _currentCourseId = h.ticker;
-        setTimeout(function(){ renderAcademy(); },100);
+        setTimeout(function(){ if(typeof renderAcademy==='function') renderAcademy(); },100);
       } else {
-        setTimeout(function(){ renderAcademy(); setTimeout(function(){ openAcadModal(h.ticker); },200); },100);
+        setTimeout(function(){ if(typeof renderAcademy==='function'){ renderAcademy(); setTimeout(function(){ openAcadModal(h.ticker); },200); } },100);
       }
     } else {
       _currentCourseId = null;
-      setTimeout(renderAcademy,100);
+      setTimeout(function(){ if(typeof renderAcademy==='function') renderAcademy(); },100);
     }
     setTimeout(_updateBreadcrumb,150);
     return true;
@@ -681,7 +681,7 @@ function _gsSelect(idx){
     setTimeout(lookupTicker,100);
   } else {
     showTab('academy');
-    setTimeout(function(){ renderAcademy(); setTimeout(function(){ openAcadModal(item.id); },200); },100);
+    setTimeout(function(){ if(typeof renderAcademy==='function'){ renderAcademy(); setTimeout(function(){ openAcadModal(item.id); },200); } },100);
   }
 }
 
