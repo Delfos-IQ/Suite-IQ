@@ -1,135 +1,92 @@
-/**
- * IQ Suite — Service Worker v1.2
- * Strategy: activate-on-deploy
- *   - Cache-first for all assets (fast loads)
- *   - Background revalidation on every fetch
- *   - NEW: on SW upgrade (new CACHE_NAME detected), immediately re-fetch
- *     all assets and notify all open tabs → they reload on next navigation
- *   - No banner, no interruption — seamless update
- */
+// IQ Suite Service Worker — v3.1
+// Axios v3.1 · Harvest v1.3 · Sophia v1.0
 
-const CACHE_NAME = 'iq-suite-v3';
+const VERSION    = '3.1';
+const CACHE_NAME = 'iq-suite-v3.1';
 
-const PRECACHE = [
+const PRECACHE_URLS = [
   '/',
   '/index.html',
   '/tickers.json',
   '/axios/index.html',
-  '/axios/academia.json',
-  '/axios/courses.json',
+  '/axios/css/tokens.css',
+  '/axios/css/base.css',
+  '/axios/css/mobile.css',
+  '/axios/js/data.js',
+  '/axios/js/core.js',
+  '/axios/js/autofill.js',
+  '/axios/js/analyzer.js',
+  '/axios/js/ai.js',
+  '/axios/js/scorecard.js',
+  '/axios/js/screener.js',
+  '/axios/js/comparador.js',
+  '/axios/js/ui.js',
+  '/axios/js/about.js',
+  '/axios/js/app.js',
   '/harvest/index.html',
-  '/delfos/index.html',
-  '/delfos/course.json',
-  '/delfos/seasonal.json',
-  '/delfos/js/config.js',
-  '/delfos/js/engine.js',
-  '/delfos/js/fetch.js',
-  '/delfos/js/ai.js',
-  '/delfos/js/oracle-ui.js',
-  '/delfos/js/course-ui.js',
-  '/delfos/js/app.js',
-  '/version.json',
+  '/sophia/index.html',
 ];
 
-// ── INSTALL — pre-cache everything, activate immediately ─────────────────────
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache =>
-        cache.addAll(PRECACHE.map(url => new Request(url, { cache: 'no-store' })))
-          .catch(err => console.warn('[SW] Pre-cache partial fail:', err))
-      )
-      .then(() => self.skipWaiting())  // Don't wait for old SW to die
-  );
-});
-
-// ── ACTIVATE — delete old caches, claim clients, notify if upgrade ───────────
-self.addEventListener('activate', event => {
-  event.waitUntil((async () => {
-    const keys = await caches.keys();
-    const oldKeys = keys.filter(k => k !== CACHE_NAME);
-    const isUpgrade = oldKeys.length > 0;
-
-    // Delete old caches
-    await Promise.all(oldKeys.map(k => caches.delete(k)));
-
-    // Take control of all open tabs immediately
-    await self.clients.claim();
-
-    if (isUpgrade) {
-      // This is a real deploy — re-fetch all assets fresh and tell tabs to reload
-      console.log('[SW] Upgrade detected: old caches deleted. Refreshing assets...');
-      const cache = await caches.open(CACHE_NAME);
-      await Promise.allSettled(
-        PRECACHE.map(url =>
-          fetch(new Request(url, { cache: 'no-store' }))
-            .then(r => { if (r && r.ok) cache.put(url, r); })
-            .catch(() => {})
-        )
-      );
-
-      // Read new version from freshly fetched version.json
-      let newVersion = CACHE_NAME;
-      try {
-        const vRes = await cache.match('/version.json');
-        if (vRes) {
-          const vData = await vRes.json();
-          if (vData.suite) newVersion = vData.suite;
-        }
-      } catch(e) {}
-
-      // Notify all open tabs → client-side handler reloads the page
-      const clients = await self.clients.matchAll({ type: 'window' });
-      clients.forEach(client =>
-        client.postMessage({ type: 'SW_UPDATED', version: newVersion })
-      );
-      console.log('[SW] Notified', clients.length, 'tab(s) to reload. Version:', newVersion);
-    }
-  })());
-});
-
-// ── FETCH — cache-first + background revalidation ───────────────────────────
-self.addEventListener('fetch', event => {
-  const req = event.request;
-  if (req.method !== 'GET') return;
-  if (!req.url.startsWith(self.location.origin)) return;
-
-  // Never cache external APIs
-  if (req.url.includes('workers.dev')    ||
-      req.url.includes('yahoo.com')      ||
-      req.url.includes('groq.com')       ||
-      req.url.includes('openai.com')     ||
-      req.url.includes('fred.stlouisfed.org') ||
-      req.url.includes('fonts.googleapis.com') ||
-      req.url.includes('cdnjs.cloudflare.com')) {
-    return;
-  }
-
-  event.respondWith(
-    caches.open(CACHE_NAME).then(async cache => {
-      const cached = await cache.match(req);
-
-      // Revalidate in background regardless
-      const networkFetch = fetch(req.clone())
-        .then(response => {
-          if (response && response.ok && response.status < 400) {
-            cache.put(req, response.clone());
-          }
-          return response;
-        })
-        .catch(() => null);
-
-      // Serve cached immediately if available
-      if (cached) {
-        networkFetch.catch(() => {});
-        return cached;
-      }
-      return networkFetch;
+// Install: cache all precache URLs
+self.addEventListener('install', function(evt) {
+  evt.waitUntil(
+    caches.open(CACHE_NAME).then(function(cache) {
+      return cache.addAll(PRECACHE_URLS.map(function(url) {
+        return new Request(url, { cache: 'reload' });
+      })).catch(function() { /* ignore individual failures */ });
+    }).then(function() {
+      return self.skipWaiting();
     })
   );
 });
 
-// ── MESSAGE HANDLER ──────────────────────────────────────────────────────────
-self.addEventListener('message', event => {
-  if (event.data && event.data.type === 'SKIP_WAITING') self.skipWaiting();
+// Activate: delete old caches
+self.addEventListener('activate', function(evt) {
+  evt.waitUntil(
+    caches.keys().then(function(keys) {
+      return Promise.all(
+        keys.filter(function(k) { return k !== CACHE_NAME; })
+            .map(function(k) { return caches.delete(k); })
+      );
+    }).then(function() {
+      self.clients.matchAll({ includeUncontrolled: true }).then(function(clients) {
+        clients.forEach(function(c) {
+          c.postMessage({ type: 'SW_UPDATED', version: VERSION });
+        });
+      });
+      return self.clients.claim();
+    })
+  );
+});
+
+// Fetch: network-first for JSON, cache-first for assets
+self.addEventListener('fetch', function(evt) {
+  if (evt.request.method !== 'GET') return;
+  var url = evt.request.url;
+  if (url.includes('fonts.googleapis') || url.includes('fonts.gstatic') || url.includes('cdnjs')) return;
+
+  var isJSON = url.endsWith('.json');
+  
+  evt.respondWith(
+    isJSON
+      ? fetch(evt.request).then(function(res) {
+          var clone = res.clone();
+          caches.open(CACHE_NAME).then(function(c) { c.put(evt.request, clone); });
+          return res;
+        }).catch(function() {
+          return caches.match(evt.request);
+        })
+      : caches.match(evt.request).then(function(cached) {
+          return cached || fetch(evt.request).then(function(res) {
+            var clone = res.clone();
+            caches.open(CACHE_NAME).then(function(c) { c.put(evt.request, clone); });
+            return res;
+          });
+        })
+  );
+});
+
+// Listen for SKIP_WAITING message
+self.addEventListener('message', function(evt) {
+  if (evt.data && evt.data.type === 'SKIP_WAITING') self.skipWaiting();
 });

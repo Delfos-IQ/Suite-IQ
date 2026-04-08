@@ -7,12 +7,13 @@ Herramientas de inversión inteligentes, gratuitas y sin registro.
 ```
 repo/
 ├── index.html            ← Launcher de la Suite (punto de entrada)
-├── tickers.json          ← 1.309 tickers compartidos
+├── tickers.json          ← 1.500+ tickers globales
+├── sw.js                 ← Service Worker v3.1
+├── version.json          ← Versiones de cada app
 ├── README.md
 │
 ├── axios/
-│   ├── index.html        ← AXIOS·IQ (análisis fundamental + screener + comparador)
-│   ├── tickers.json      ← (opcional, copia local)
+│   ├── index.html        ← AXIOS·IQ v3.1 (análisis fundamental)
 │   ├── worker.js         ← Cloudflare Worker (Yahoo Finance + Groq)
 │   ├── css/
 │   │   ├── tokens.css    ← Variables dark/light, escala tipográfica
@@ -28,33 +29,21 @@ repo/
 │       ├── screener.js   ← Screener de acciones
 │       ├── comparador.js ← Comparador hasta 3 empresas con AI TOP 3
 │       ├── ui.js         ← Watchlist, search dropdown, init()
-│       ├── academy.js    ← Stub (academia movida a SOPHIA·IQ)
+│       ├── academy.js    ← Stub mínimo (academia en SOPHIA·IQ)
 │       ├── about.js      ← Página About
 │       └── app.js        ← Init IIFE, service worker
 │
 ├── harvest/
-│   ├── index.html        ← HARVEST·IQ (cartera de dividendos)
+│   ├── index.html        ← HARVEST·IQ v1.3 (cartera de dividendos)
 │   └── worker.js         ← Cloudflare Worker (Yahoo dividendos + Groq)
 │
-├── sophia/
-│   ├── index.html        ← SOPHIA·IQ (academia de inversión)
-│   ├── academia.json     ← 97 artículos trilingues (ES/EN/PT)
-│   └── courses.json      ← 4 cursos con módulos y lecciones
-│
-└── delfos/
-    ├── index.html        ← DELFOS·IQ (swing trading Método Cava)
-    ├── course.json       ← 4 niveles, 40 temas del Método Cava
-    ├── seasonal.json     ← Estacionalidad S&P 500 (12 meses)
-    ├── worker.js         ← Cloudflare Worker (Yahoo charts + Groq)
-    └── js/
-        ├── config.js     ← CFG, i18n ES/EN, estado global
-        ├── engine.js     ← Motor Cava: EMA, MACD, ADX, RSI
-        ├── fetch.js      ← Yahoo Finance via Worker/proxy CORS
-        ├── ai.js         ← Groq llama-3.3-70b + fallback local
-        ├── oracle-ui.js  ← Renderizado del Oráculo
-        ├── course-ui.js  ← Curso: tarjetas, desbloqueo, progreso
-        └── app.js        ← Boot: carga JSON, init, tutor IA
+└── sophia/
+    ├── index.html        ← SOPHIA·IQ v1.0 (academia de inversión)
+    ├── academia.json     ← 97 artículos trilingues (ES/EN/PT)
+    └── courses.json      ← 4 cursos: Finanzas Personales, Iniciado, Intermedio, Avanzado
 ```
+
+> **Nota:** La carpeta `delfos/` puede eliminarse del repositorio.
 
 ## 🚀 Deploy en GitHub Pages
 
@@ -66,19 +55,15 @@ URLs directas con hash:
 - `#axios`   → abre AXIOS·IQ
 - `#harvest` → abre HARVEST·IQ
 - `#sophia`  → abre SOPHIA·IQ
-- `#delfos`  → abre DELFOS·IQ
 
 ## ⚡ Workers de Cloudflare
 
-Cada app tiene su propio Worker independiente:
+| App | Worker URL | Secretos |
+|-----|-----------|---------|
+| AXIOS·IQ | `suite-iq.pedicode-app.workers.dev` | `GROQ_API_KEY` |
+| HARVEST·IQ | `harvest-iq.pedicode-app.workers.dev` | `GROQ_API_KEY` |
 
-| App | Worker | Secretos necesarios |
-|-----|--------|---------------------|
-| AXIOS·IQ | `axios/worker.js` → `suite-iq.pedicode-app.workers.dev` | `GROQ_API_KEY` |
-| HARVEST·IQ | `harvest/worker.js` → `harvest-iq.pedicode-app.workers.dev` | `GROQ_API_KEY` |
-| DELFOS·IQ | `delfos/worker.js` → `oraculo-delfos-iq.pedicode-app.workers.dev` | `GROQ_API_KEY` |
-
-> **SOPHIA·IQ** no necesita Worker — es 100% estática (academia.json + courses.json).
+> **SOPHIA·IQ** no necesita Worker — es 100% estática.
 
 ### Pasos para cada Worker:
 1. Cloudflare Dashboard → **Workers & Pages → Create**
@@ -88,17 +73,25 @@ Cada app tiene su propio Worker independiente:
 
 ## 🎨 Identidad visual
 
-| App | Color | Tipografía |
-|-----|-------|-----------|
-| AXIOS·IQ | Teal `#00d4aa` | IBM Plex Sans + IBM Plex Mono + Syne |
-| HARVEST·IQ | Green `#4ADE80` | DM Sans + DM Mono + Syne |
-| SOPHIA·IQ | Amber `#f59e0b` | IBM Plex Sans + IBM Plex Mono + Syne |
-| DELFOS·IQ | Amber `#c9a84c` | IBM Plex Sans + IBM Plex Mono + Cinzel + Syne |
+| App | Color | Descripción |
+|-----|-------|-------------|
+| AXIOS·IQ | Teal `#00d4aa` | Análisis fundamental · Screener · Comparador |
+| HARVEST·IQ | Green `#4ADE80` | Gestión de cartera de dividendos DGI |
+| SOPHIA·IQ | Amber `#f59e0b` | Academia de inversión y finanzas personales |
 
-## 📦 Novedades v3.0 (AXIOS·IQ)
+## 📦 Versiones
 
-- **Arquitectura modular** — monolito 323KB dividido en 12 módulos JS + 3 CSS
-- **Tema dark/light** — toggle en el header, detecta preferencia del sistema
-- **Screener** — filtra por sector/país, puntúa hasta 20 empresas dinámicamente
-- **Comparador** — hasta 3 empresas con AI TOP 3, medallas dorado/plata/bronce y 5 secciones rediseñadas
-- **SOPHIA·IQ** — academia extraída como app independiente con logo propio
+| App | Versión | Novedades |
+|-----|---------|-----------|
+| AXIOS·IQ | **v3.1** | Modular (12 JS + 3 CSS) · Dark/Light · Screener · Comparador AI TOP 3 |
+| HARVEST·IQ | **v1.3** | Importación CSV/Excel · DGI Discover · Sector Cycle |
+| SOPHIA·IQ | **v1.0** | Academia independiente · 97 artículos · 4 cursos · Certificados |
+
+## 📁 Migración desde versión anterior
+
+Si venías de una versión con DELFOS·IQ:
+- Puedes eliminar la carpeta `delfos/` del repositorio
+- El launcher ya no muestra la tarjeta de DELFOS
+- `tickers.json` en raíz es compartido por AXIOS y SOPHIA
+
+El contenido de `axios/academia.json` y `axios/courses.json` debe copiarse/moverse a `sophia/`.
