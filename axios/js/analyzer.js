@@ -303,6 +303,7 @@ function closePanel(){
 // GENERATE ANALYSIS
 // ══════════════════════════════════════════════════════════════
 function generateAnalysis(){
+  var na = '—';
   const res=runValuation(state);
     // Score 1-100 with quality tier
   const sc=res.pct>=80?'var(--green)':res.pct>=60?'#4ade80':res.pct>=40?'var(--yellow)':'var(--red)';
