@@ -1,18 +1,10 @@
 {
-  "suite": "3.1",
-  "axios": "3.1",
-  "harvest": "1.3",
-  "sophia": "1.0",
-  "updated": "2026-04-08",
+  "suite": "2.2.0",
+  "axios": "3.2.0",
+  "harvest": "1.7.0",
+  "delfos": "2.1.0",
+  "updated": "2026-04-09",
   "changelog": {
-    "3.1": [
-      "AXIOS: Arquitectura modular (12 módulos JS + 3 CSS)",
-      "AXIOS: Tema dark/light con detección de sistema",
-      "AXIOS: Screener de acciones con scoring dinámico",
-      "AXIOS: Comparador hasta 3 empresas con AI TOP 3 y medallas",
-      "SOPHIA: Academia independiente (97 artículos, 4 cursos, certificados)",
-      "Suite: Eliminado DELFOS del launcher",
-      "Suite: SW v3.1 con precache de todos los módulos"
-    ]
+    "axios": "v3.2 — Bugfix: screener/comparador/lang switch · AI análisis vitaminado (semáforo, moat, sector_insight, peers, timing, conviction) · CSS token aliases --tx1/--transition"
   }
 }
