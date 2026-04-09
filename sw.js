@@ -2,7 +2,6 @@
 const CACHE_NAME = 'iq-suite-v3';
 
 const PRECACHE = [
-  '/',
   '/index.html',
   '/tickers.json',
   '/axios/index.html',
@@ -20,24 +19,27 @@ const PRECACHE = [
   '/axios/js/ui.js',
   '/axios/js/about.js',
   '/axios/js/app.js',
-  '/harvest/index.html',
-  '/delfos/index.html',
 ];
 
-// Recursos que NUNCA se cachean — siempre van a red
-const NEVER_CACHE = [
-  'version.json',   // el sistema de actualización depende de esto
-  'sw.js',          // el propio SW nunca debe cachearse
-];
+// Nunca cachear — siempre van a red
+const NEVER_CACHE = ['version.json', 'sw.js'];
 
-// Recursos que van a red primero (JS, CSS) — si falla, caché
+// Red primero — JS y CSS siempre frescos si hay conexión
 const NETWORK_FIRST = ['.js', '.css'];
 
 self.addEventListener('install', function(e) {
   e.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(function(cache) { return cache.addAll(PRECACHE); })
-      .then(function() { return self.skipWaiting(); })
+    caches.open(CACHE_NAME).then(function(cache) {
+      // Carga individual — un 404 no rompe todo el install
+      var promises = PRECACHE.map(function(url) {
+        return cache.add(url).catch(function(err) {
+          console.warn('[SW] No se pudo cachear:', url, err);
+        });
+      });
+      return Promise.all(promises);
+    }).then(function() {
+      return self.skipWaiting();
+    })
   );
 });
 
@@ -62,20 +64,20 @@ self.addEventListener('activate', function(e) {
 self.addEventListener('fetch', function(e) {
   var url = e.request.url;
 
-  // 1. APIs externas y fuentes — sin interceptar
+  // APIs externas y fuentes — sin interceptar
   if (url.includes('workers.dev') ||
       url.includes('fonts.googleapis') ||
       url.includes('fonts.gstatic')) {
     return;
   }
 
-  // 2. NEVER_CACHE — siempre red, nunca caché
+  // NEVER_CACHE — siempre red
   if (NEVER_CACHE.some(function(p) { return url.includes(p); })) {
     e.respondWith(fetch(e.request));
     return;
   }
 
-  // 3. JS y CSS — network-first: intenta red, fallback a caché
+  // JS y CSS — network-first, caché como fallback
   if (NETWORK_FIRST.some(function(ext) { return url.includes(ext); })) {
     e.respondWith(
       fetch(e.request).then(function(res) {
@@ -91,7 +93,7 @@ self.addEventListener('fetch', function(e) {
     return;
   }
 
-  // 4. Todo lo demás — cache-first con actualización en background
+  // Todo lo demás — cache-first
   e.respondWith(
     caches.match(e.request).then(function(cached) {
       var network = fetch(e.request).then(function(res) {
