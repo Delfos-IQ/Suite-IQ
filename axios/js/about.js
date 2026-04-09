@@ -59,6 +59,11 @@ function renderAboutAxios(){
   ];
 
   var changelog = [
+    ['v3.2','2026-04',
+     en?'v3.2 — Stable · AI Enhanced · Auto-update':(pt?'v3.2 — Estável · IA Melhorada · Atualização automática':'v3.2 — Estable · IA vitaminada · Actualización automática'),
+     en?'Bug fixes: screener, comparador, lang switch crash · AI enhanced: semaphore, conviction, moat, sector dynamics, peers, entry timing, position size · Auto-update banner via version.json · Smart SW cache (network-first JS/CSS, never-cache version.json)'
+       :(pt?'Correções: screener, comparador, crash troca idioma · IA melhorada: semáforo, convicção, moat, dinâmica setorial, peers, timing entrada · Atualização automática via version.json · Cache SW inteligente'
+           :'Bugfix: screener, comparador, crash cambio idioma · IA vitaminada: semáforo, convicción, moat, dinámica sectorial, peers, timing de entrada, tamaño posición · Actualización automática vía banner · SW network-first para JS/CSS')],
     ['v2.2','2026-03',
      en?'v2.2 — Sharpe · Sortino · Momentum · AI Full Report':(pt?'v2.2 — Sharpe · Sortino · Momentum · Relatório IA Completo':'v2.2 — Sharpe · Sortino · Momentum · Informe IA Completo'),
      en?'Sharpe & Sortino ratio (dynamic risk-free rate via FRED) · Annualized volatility · Max Drawdown 1Y · Multi-period momentum (1M/3M/6M/12M) · OpenAI GPT-4.1-mini primary + Groq fallback · Full PDF investment report generator with optional document upload · tickers.json path fix · Worker chart extended to 1Y'
@@ -90,7 +95,8 @@ function renderAboutAxios(){
   out += '<div style="text-align:center;padding:40px 24px 36px;border-bottom:1px solid var(--border)">'
     + '<div style="font-size:64px;margin-bottom:16px">📈</div>'
     + '<div style="font-family:Syne,sans-serif;font-size:32px;font-weight:800;background:linear-gradient(135deg,#00d4aa,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px">AXIOS·IQ</div>'
-    + '<div style="font-size:11px;color:var(--tx3);letter-spacing:.15em;font-family:monospace;text-transform:uppercase;margin-bottom:16px">' + tagline + '</div>'
+    + '<div style="font-size:11px;color:var(--tx3);letter-spacing:.15em;font-family:monospace;text-transform:uppercase;margin-bottom:8px">' + tagline + '</div>'
+    + '<div style="font-size:10px;color:var(--a1);letter-spacing:.1em;font-family:monospace;margin-bottom:16px">v3.2.0 — 2026-04</div>'
     + '<p style="color:var(--tx3);font-size:13px;max-width:520px;margin:0 auto;line-height:1.7">' + desc + '</p>'
     + '</div>';
 
