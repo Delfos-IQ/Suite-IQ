@@ -282,7 +282,7 @@ function scrToggleAll(checked) {
 }
 
 async function scrScoreSelected() {
-  if (!window.WORKER_URL) { _showToast('Worker URL no configurada', 2000); return; }
+  if (!WORKER_URL) { _showToast('Worker URL no configurada', 2000); return; }
   var checkboxes = Array.from(document.querySelectorAll('.scr-check:checked')).slice(0, 20);
   var tickers    = checkboxes.map(function(cb){ return cb.dataset.ticker; });
   if (!tickers.length) return;

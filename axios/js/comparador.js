@@ -99,7 +99,7 @@ function cmpClearAll() { _cmpTickers = []; _cmpData = {}; _cmpAIRank = null; ren
 
 // ─── Analyze ─────────────────────────────────────────────────
 async function cmpAnalyze() {
-  if (!window.WORKER_URL || !_cmpTickers.length) return;
+  if (!WORKER_URL || !_cmpTickers.length) return;
   var btn = document.getElementById('cmp-analyze-btn');
   var en  = lang === 'en';
   if (btn) { btn.textContent = '⏳ ' + (en ? 'Fetching…' : 'Cargando…'); btn.disabled = true; }
@@ -138,7 +138,7 @@ async function cmpAnalyze() {
 
 // ─── AI Ranking ──────────────────────────────────────────────
 async function _cmpFetchAIRank() {
-  if (!window.WORKER_URL || !Object.keys(_cmpData).length) return;
+  if (!WORKER_URL || !Object.keys(_cmpData).length) return;
   var summaries = Object.values(_cmpData).map(function(e) {
     var d = e.d || {};
     return e.ticker + ' (' + e.name + ', ' + e.sector + ')'
