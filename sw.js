@@ -1,4 +1,4 @@
-// IQ Suite — Service Worker v3 — silent auto-update
+// IQ Suite — Service Worker v3 — smart update strategy
 const CACHE_NAME = 'iq-suite-v3';
 
 const PRECACHE = [
@@ -24,6 +24,15 @@ const PRECACHE = [
   '/delfos/index.html',
 ];
 
+// Recursos que NUNCA se cachean — siempre van a red
+const NEVER_CACHE = [
+  'version.json',   // el sistema de actualización depende de esto
+  'sw.js',          // el propio SW nunca debe cachearse
+];
+
+// Recursos que van a red primero (JS, CSS) — si falla, caché
+const NETWORK_FIRST = ['.js', '.css'];
+
 self.addEventListener('install', function(e) {
   e.waitUntil(
     caches.open(CACHE_NAME)
@@ -40,7 +49,6 @@ self.addEventListener('activate', function(e) {
             .map(function(k) { return caches.delete(k); })
       );
     }).then(function() {
-      // Notify all clients of update
       return self.clients.matchAll({ includeUncontrolled: true });
     }).then(function(clients) {
       clients.forEach(function(c) {
@@ -52,12 +60,38 @@ self.addEventListener('activate', function(e) {
 });
 
 self.addEventListener('fetch', function(e) {
-  // Network-first for API/worker calls
-  if (e.request.url.includes('workers.dev') ||
-      e.request.url.includes('fonts.googleapis') ||
-      e.request.url.includes('fonts.gstatic')) {
+  var url = e.request.url;
+
+  // 1. APIs externas y fuentes — sin interceptar
+  if (url.includes('workers.dev') ||
+      url.includes('fonts.googleapis') ||
+      url.includes('fonts.gstatic')) {
     return;
   }
+
+  // 2. NEVER_CACHE — siempre red, nunca caché
+  if (NEVER_CACHE.some(function(p) { return url.includes(p); })) {
+    e.respondWith(fetch(e.request));
+    return;
+  }
+
+  // 3. JS y CSS — network-first: intenta red, fallback a caché
+  if (NETWORK_FIRST.some(function(ext) { return url.includes(ext); })) {
+    e.respondWith(
+      fetch(e.request).then(function(res) {
+        if (res && res.status === 200) {
+          var clone = res.clone();
+          caches.open(CACHE_NAME).then(function(c) { c.put(e.request, clone); });
+        }
+        return res;
+      }).catch(function() {
+        return caches.match(e.request);
+      })
+    );
+    return;
+  }
+
+  // 4. Todo lo demás — cache-first con actualización en background
   e.respondWith(
     caches.match(e.request).then(function(cached) {
       var network = fetch(e.request).then(function(res) {
