@@ -1,398 +1,185 @@
-/**
- * HARVEST-IQ — Cloudflare Worker v2
- *
- * Worker independiente para Harvest-IQ.
- *
- * Rutas:
- *   GET  /ping                        → health check
- *   GET  /quote?ticker=MSFT           → datos de dividendo de una acción
- *   GET  /quotes?tickers=MSFT,KO,PEP  → datos de múltiples acciones (hasta 30)
- *   POST /ai                          → análisis IA con OpenAI (primario) + Groq (fallback)
- *
- * Variables de entorno (Cloudflare → Settings → Variables and Secrets):
- *   OPENAI_API_KEY  → API key de OpenAI  (tipo Secret) — primario
- *   GROQ_API_KEY    → API key de Groq    (tipo Secret) — fallback automático
- *
- * Estrategia IA:
- *   1. Intenta OpenAI GPT-4.1-mini (pago, mejor calidad JSON estructurado)
- *   2. Si falla (sin crédito, error, timeout) → Groq llama-3.3-70b (gratuito)
- *   La respuesta incluye `_provider: "openai"|"groq"` para depuración.
- *
- * Deploy:
- *   1. Workers & Pages → Create Worker → nombre: harvest-iq
- *   2. Pega este código → Deploy
- *   3. Settings → Variables and Secrets:
- *      - Add Secret: OPENAI_API_KEY  (tu key de OpenAI, empieza por sk-...)
- *      - Add Secret: GROQ_API_KEY    (tu key de Groq, empieza por gsk_...)
- */
+// HARVEST·IQ Worker v2.0.0
+// OpenAI GPT-4.1-mini (primary) · Groq llama-3.3-70b (fallback)
+// Routes: /ping  /quote  /quotes  /ai
 
 const CORS = {
   'Access-Control-Allow-Origin':  '*',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
-  'Content-Type': 'application/json',
 };
 
-const MODULES = 'summaryDetail,price,defaultKeyStatistics,calendarEvents';
-
-const BROWSER_HEADERS = {
-  'User-Agent':      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-  'Accept':          'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-  'Accept-Language': 'en-US,en;q=0.9',
-  'Accept-Encoding': 'gzip, deflate, br',
-  'Referer':         'https://finance.yahoo.com/',
-};
-
-const TICKER_MAP = {
-  'BRK.B':  'BRK-B',
-  'BRK/B':  'BRK-B',
-  'LVMHF':  'MC.PA',
-  'NSRGF':  'NESN.SW',
-  'RHHBY':  'ROG.SW',
-};
-
-// ── Cookie + Crumb auth ───────────────────────────────────────
-async function getCookieAndCrumb() {
-  const cookieRes = await fetch('https://fc.yahoo.com', {
-    headers: BROWSER_HEADERS,
-    redirect: 'follow',
+function json(data, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: { ...CORS, 'Content-Type': 'application/json' },
   });
-  const cookie = (cookieRes.headers.get('set-cookie') || '').split(';')[0];
-  if (!cookie) throw new Error('Could not obtain Yahoo cookie');
+}
 
-  const crumbRes = await fetch('https://query2.finance.yahoo.com/v1/test/getcrumb', {
-    headers: { ...BROWSER_HEADERS, 'Cookie': cookie },
+function cors() {
+  return new Response(null, { status: 204, headers: CORS });
+}
+
+// ── Yahoo Finance helper ──────────────────────────────────────
+async function fetchYahoo(ticker) {
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?interval=1d&range=5d`;
+  const r = await fetch(url, {
+    headers: { 'User-Agent': 'Mozilla/5.0', Accept: 'application/json' },
   });
-  const crumb = await crumbRes.text();
-  if (!crumb || crumb.includes('{')) throw new Error('Could not obtain Yahoo crumb');
-  return { cookie, crumb };
+  if (!r.ok) throw new Error(`Yahoo ${ticker}: HTTP ${r.status}`);
+  const d = await r.json();
+  const q = d?.chart?.result?.[0]?.meta;
+  if (!q) throw new Error(`Yahoo ${ticker}: no data`);
+
+  const price        = q.regularMarketPrice ?? 0;
+  const prevClose    = q.previousClose ?? q.chartPreviousClose ?? price;
+  const change       = price - prevClose;
+  const changePct    = prevClose > 0 ? (change / prevClose) * 100 : 0;
+  const trailingDiv  = q.trailingAnnualDividendRate ?? 0;
+  const yld          = price > 0 && trailingDiv > 0 ? (trailingDiv / price) * 100 : 0;
+  const freq         = trailingDiv > 0 ? 'Q' : null;
+  const dpp          = freq === 'Q' ? trailingDiv / 4 : 0;
+
+  return {
+    ticker,
+    price:     +price.toFixed(4),
+    change:    +change.toFixed(4),
+    changePct: +changePct.toFixed(2),
+    adps:      +trailingDiv.toFixed(4),
+    yld:       +yld.toFixed(4),
+    dpp:       +dpp.toFixed(4),
+    payout:    0,   // not available from chart endpoint
+    freq,
+    currency:  q.currency ?? 'USD',
+    name:      q.shortName ?? ticker,
+  };
 }
 
-// ── Fetch single ticker from Yahoo ───────────────────────────
-async function fetchQuote(ticker, cookie, crumb) {
-  const yahooTicker = TICKER_MAP[ticker] || ticker;
-  const url = `https://query2.finance.yahoo.com/v10/finance/quoteSummary/${encodeURIComponent(yahooTicker)}`
-    + `?modules=${MODULES}&crumb=${encodeURIComponent(crumb)}&formatted=false`;
-
-  const res = await fetch(url, {
-    headers: { ...BROWSER_HEADERS, 'Cookie': cookie },
-  });
-
-  if (!res.ok) return { ticker, error: `Yahoo returned ${res.status}` };
-
-  let raw;
-  try { raw = await res.json(); }
-  catch(e) { return { ticker, error: 'Invalid response from Yahoo' }; }
-
-  return parseQuote(ticker, raw);
-}
-
-// ── Parse Yahoo response → Harvest-IQ format ─────────────────
-function parseQuote(ticker, raw) {
-  try {
-    const qs = raw?.quoteSummary;
-    if (!qs || qs.error) return { ticker, error: qs?.error?.description || 'No data' };
-
-    const result = qs.result?.[0];
-    if (!result) return { ticker, error: 'Ticker not found' };
-
-    const pr  = result.price               || {};
-    const sd  = result.summaryDetail       || {};
-    const ks  = result.defaultKeyStatistics|| {};
-    const cal = result.calendarEvents      || {};
-
-    const v   = (o, k) => o[k]?.raw ?? o[k] ?? null;
-    const pct = (o, k) => { const r = v(o,k); return r !== null ? +(r*100).toFixed(4) : null; };
-
-    const price        = v(pr, 'regularMarketPrice') || 0;
-    const divRate      = v(sd, 'dividendRate') || 0;
-    const divYieldTTM  = pct(sd, 'dividendYield') || 0;
-    const divYieldFwd  = pct(sd, 'trailingAnnualDividendYield') || 0;
-    const payoutRatio  = pct(sd, 'payoutRatio') || 0;
-    const exDivRaw     = v(sd, 'exDividendDate');
-    const exDivDate    = exDivRaw ? new Date(exDivRaw * 1000).toLocaleDateString('en-US') : null;
-
-    const freq = inferFrequency(ticker, divRate, sd);
-    const freqN = { M: 12, Q: 4, S: 2, A: 1 }[freq] || 4;
-    const dpp   = divRate > 0 ? +(divRate / freqN).toFixed(4) : 0;
-
-    const fiveYearYield = v(sd, 'fiveYearAvgDividendYield') || null;
-    const beta          = v(sd, 'beta') || null;
-    const pe            = v(sd, 'trailingPE') || null;
-    const eps           = v(ks, 'trailingEps') || null;
-
-    const nextEarnings = cal.earnings?.earningsDate?.[0]?.raw
-      ? new Date(cal.earnings.earningsDate[0].raw * 1000).toLocaleDateString('en-US')
-      : null;
-
-    return {
-      ticker,
-      price:        +(price).toFixed(2),
-      change:       +(v(pr, 'regularMarketChangePercent') * 100 || 0).toFixed(2),
-      currency:     pr.currency || 'USD',
-      exchange:     pr.exchangeName || '',
-      name:         pr.longName || pr.shortName || ticker,
-      adps:         +(divRate).toFixed(4),
-      dpp:          dpp,
-      freq:         freq,
-      yld:          +(divYieldTTM).toFixed(2),
-      yldFwd:       +(divYieldFwd).toFixed(2),
-      yld5y:        fiveYearYield ? +fiveYearYield.toFixed(2) : null,
-      payout:       +(payoutRatio).toFixed(2),
-      exDiv:        exDivDate,
-      pe:           pe ? +pe.toFixed(1) : null,
-      beta:         beta ? +beta.toFixed(2) : null,
-      eps:          eps ? +eps.toFixed(2) : null,
-      marketCap:    v(pr, 'marketCap') || 0,
-      nextEarnings: nextEarnings,
-      _source:      'yahoo',
-      _ts:          Date.now(),
-    };
-
-  } catch(e) {
-    return { ticker, error: 'Parse error: ' + e.message };
-  }
-}
-
-// ── Infer dividend frequency ──────────────────────────────────
-function inferFrequency(ticker, annualRate, sd) {
-  const MONTHLY = [
-    'O','MAIN','STAG','AGNC','NLY','IIPR','GLAD','GAIN','PFLT',
-    'PSEC','SLRC','NEWT','OXSQ','BXMX','LAND','FPI','PINE',
-    'REALTY','ELME','SLR','SUNS','WHF','HRZN','TPVG','CSWC',
-  ];
-  if (MONTHLY.includes(ticker.toUpperCase())) return 'M';
-
-  const trailing = sd?.trailingAnnualDividendRate?.raw || 0;
-  if (trailing > 0 && annualRate > 0) {
-    const mDiv = annualRate / 12;
-    if (mDiv < 0.2 && mDiv > 0.005) return 'M';
-  }
-  return 'Q';
-}
-
-// ══════════════════════════════════════════════════════════════
-// ── AI helpers — OpenAI primary + Groq fallback ──────────────
-// ══════════════════════════════════════════════════════════════
-
-/**
- * Calls OpenAI GPT-4.1-mini.
- * Throws on network error or non-OK response (triggers fallback).
- * Returns parsed JSON from the model's content.
- */
-async function callOpenAI(apiKey, systemPrompt, userPrompt, maxTokens = 1800) {
-  const res = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type':  'application/json',
-      'Authorization': 'Bearer ' + apiKey,
-    },
-    body: JSON.stringify({
-      model:       'gpt-4.1-mini',
-      max_tokens:  maxTokens,
-      temperature: 0.3,
-      response_format: { type: 'json_object' },   // forces valid JSON output
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user',   content: userPrompt   },
-      ],
-    }),
-  });
-
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    // 429 = quota exceeded → trigger fallback
-    // 402 = payment required → trigger fallback
-    throw new Error(`OpenAI ${res.status}: ${err.error?.message || 'error'}`);
-  }
-
-  const data = await res.json();
-  const raw  = data.choices?.[0]?.message?.content || '';
-  // response_format:json_object guarantees valid JSON, but clean just in case
-  return JSON.parse(raw.replace(/```json|```/g, '').trim());
-}
-
-/**
- * Calls Groq llama-3.3-70b-versatile.
- * Throws on error (last resort).
- */
-async function callGroq(apiKey, systemPrompt, userPrompt, maxTokens = 1800) {
-  const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type':  'application/json',
-      'Authorization': 'Bearer ' + apiKey,
-    },
-    body: JSON.stringify({
-      model:       'llama-3.3-70b-versatile',
-      max_tokens:  maxTokens,
-      temperature: 0.3,
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user',   content: userPrompt   },
-      ],
-    }),
-  });
-
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(`Groq ${res.status}: ${err.error?.message || 'error'}`);
-  }
-
-  const data = await res.json();
-  const raw  = data.choices?.[0]?.message?.content || '';
-  return JSON.parse(raw.replace(/```json|```/g, '').trim());
-}
-
-/**
- * Main AI router: tries OpenAI first, falls back to Groq.
- * Returns { analysis, _provider, _fallback_reason? }
- */
-async function callAI(env, systemPrompt, userPrompt, maxTokens = 1800) {
-  const OPENAI_KEY = env.OPENAI_API_KEY;
-  const GROQ_KEY   = env.GROQ_API_KEY;
-
-  // ── Try OpenAI first ──────────────────────────────────────
-  if (OPENAI_KEY) {
+// ── AI: OpenAI primary, Groq fallback ────────────────────────
+async function callAI(prompt, env) {
+  // ── PRIMARY: OpenAI GPT-4.1-mini ──
+  if (env.OPENAI_API_KEY) {
     try {
-      const analysis = await callOpenAI(OPENAI_KEY, systemPrompt, userPrompt, maxTokens);
-      return { analysis, _provider: 'openai' };
-    } catch (openaiErr) {
-      // Log and fall through to Groq
-      console.warn('[Harvest Worker] OpenAI failed, falling back to Groq:', openaiErr.message);
-
-      if (GROQ_KEY) {
-        try {
-          const analysis = await callGroq(GROQ_KEY, systemPrompt, userPrompt, maxTokens);
-          return { analysis, _provider: 'groq', _fallback_reason: openaiErr.message };
-        } catch (groqErr) {
-          throw new Error(`Both providers failed. OpenAI: ${openaiErr.message} | Groq: ${groqErr.message}`);
-        }
-      }
-      // No Groq key — rethrow OpenAI error
-      throw openaiErr;
+      const r = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type':  'application/json',
+          Authorization:   `Bearer ${env.OPENAI_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model:           'gpt-4.1-mini',
+          max_tokens:      2000,
+          temperature:     0.4,
+          response_format: { type: 'json_object' },
+          messages: [
+            {
+              role:    'system',
+              content: 'You are a DGI (Dividend Growth Investing) portfolio analyst. Always respond with valid JSON only, no markdown, no text outside JSON.',
+            },
+            { role: 'user', content: prompt },
+          ],
+        }),
+      });
+      if (!r.ok) throw new Error(`OpenAI HTTP ${r.status}`);
+      const d = await r.json();
+      const text = d?.choices?.[0]?.message?.content ?? '';
+      const analysis = JSON.parse(text);
+      return { ok: true, analysis, provider: 'openai' };
+    } catch (e) {
+      console.error('OpenAI failed, trying Groq:', e.message);
     }
   }
 
-  // ── No OpenAI key — use Groq directly ────────────────────
-  if (GROQ_KEY) {
-    const analysis = await callGroq(GROQ_KEY, systemPrompt, userPrompt, maxTokens);
-    return { analysis, _provider: 'groq' };
+  // ── FALLBACK: Groq llama-3.3-70b ──
+  if (env.GROQ_API_KEY) {
+    const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type':  'application/json',
+        Authorization:   `Bearer ${env.GROQ_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model:           'llama-3.3-70b-versatile',
+        max_tokens:      2000,
+        temperature:     0.4,
+        response_format: { type: 'json_object' },
+        messages: [
+          {
+            role:    'system',
+            content: 'You are a DGI portfolio analyst. Always respond with valid JSON only, no markdown, no text outside JSON.',
+          },
+          { role: 'user', content: prompt },
+        ],
+      }),
+    });
+    if (!r.ok) throw new Error(`Groq HTTP ${r.status}`);
+    const d = await r.json();
+    const text = d?.choices?.[0]?.message?.content ?? '';
+    const analysis = JSON.parse(text);
+    return { ok: true, analysis, provider: 'groq' };
   }
 
-  throw new Error('No AI provider configured. Add OPENAI_API_KEY or GROQ_API_KEY in Worker secrets.');
+  throw new Error('No AI provider configured. Set OPENAI_API_KEY or GROQ_API_KEY in Worker secrets.');
 }
 
-// ── Main Worker ───────────────────────────────────────────────
+// ── Router ────────────────────────────────────────────────────
 export default {
   async fetch(request, env) {
+    if (request.method === 'OPTIONS') return cors();
 
-    if (request.method === 'OPTIONS') {
-      return new Response(null, { status: 204, headers: CORS });
-    }
+    const url      = new URL(request.url);
+    const path     = url.pathname;
 
-    const url  = new URL(request.url);
-    const path = url.pathname;
-
-    // ── /ping ────────────────────────────────────────────────
+    // ── /ping ──
     if (path === '/ping') {
-      return new Response(
-        JSON.stringify({
-          ok:       true,
-          worker:   'harvest-iq',
-          version:  '2.0',
-          ai:       env.OPENAI_API_KEY ? 'openai+groq' : (env.GROQ_API_KEY ? 'groq' : 'none'),
-        }),
-        { status: 200, headers: CORS }
-      );
+      return json({ ok: true, version: '2.0.0', ts: Date.now() });
     }
 
-    // ── /quote?ticker=MSFT ───────────────────────────────────
+    // ── /quote?ticker=MSFT ──
     if (path === '/quote') {
-      const ticker = (url.searchParams.get('ticker') || '').toUpperCase().trim();
-      if (!ticker) {
-        return new Response(JSON.stringify({ error: 'ticker required' }), { status: 400, headers: CORS });
-      }
+      const ticker = url.searchParams.get('ticker');
+      if (!ticker) return json({ ok: false, error: 'Missing ticker' }, 400);
       try {
-        const { cookie, crumb } = await getCookieAndCrumb();
-        const data = await fetchQuote(ticker, cookie, crumb);
-        return new Response(JSON.stringify(data), { status: 200, headers: CORS });
-      } catch(e) {
-        return new Response(JSON.stringify({ error: e.message }), { status: 500, headers: CORS });
+        const q = await fetchYahoo(ticker.toUpperCase());
+        return json({ ok: true, quote: q });
+      } catch (e) {
+        return json({ ok: false, error: e.message }, 502);
       }
     }
 
-    // ── /quotes?tickers=MSFT,KO,PEP ─────────────────────────
+    // ── /quotes?tickers=MSFT,KO,JNJ ──
     if (path === '/quotes') {
-      const param = url.searchParams.get('tickers') || '';
-      if (!param) {
-        return new Response(JSON.stringify({ error: 'tickers required' }), { status: 400, headers: CORS });
-      }
-      const tickers = param.split(',').map(t => t.trim().toUpperCase()).filter(Boolean).slice(0, 30);
+      const raw = url.searchParams.get('tickers') ?? '';
+      const tickers = raw.split(',').map(t => t.trim().toUpperCase()).filter(Boolean);
+      if (!tickers.length) return json({ ok: false, error: 'Missing tickers' }, 400);
 
-      try {
-        const { cookie, crumb } = await getCookieAndCrumb();
-        const BATCH = 5;
-        const results = {};
-
-        for (let i = 0; i < tickers.length; i += BATCH) {
-          const batch = tickers.slice(i, i + BATCH);
-          const settled = await Promise.allSettled(
-            batch.map(t => fetchQuote(t, cookie, crumb).then(d => ({ t, d })))
-          );
-          for (const s of settled) {
-            if (s.status === 'fulfilled') results[s.value.t] = s.value.d;
-          }
-          if (i + BATCH < tickers.length) await new Promise(r => setTimeout(r, 150));
-        }
-
-        return new Response(
-          JSON.stringify({ results, count: Object.keys(results).length, timestamp: new Date().toISOString() }),
-          { status: 200, headers: CORS }
-        );
-
-      } catch(e) {
-        return new Response(JSON.stringify({ error: e.message }), { status: 500, headers: CORS });
-      }
+      const results = {};
+      const errors  = {};
+      await Promise.allSettled(
+        tickers.map(async t => {
+          try   { results[t] = await fetchYahoo(t); }
+          catch (e) { errors[t] = e.message; }
+        })
+      );
+      return json({ ok: true, quotes: results, errors });
     }
 
-    // ── /ai — Portfolio analysis (OpenAI → Groq fallback) ────
-    if (path === '/ai') {
+    // ── /ai  (POST) ──
+    if (path === '/ai' && request.method === 'POST') {
       let body;
-      try { body = await request.json(); }
-      catch(e) { return new Response(JSON.stringify({ error: 'Invalid JSON body' }), { status: 400, headers: CORS }); }
+      try   { body = await request.json(); }
+      catch { return json({ ok: false, error: 'Invalid JSON body' }, 400); }
 
       const { prompt, lang } = body;
-      if (!prompt) {
-        return new Response(JSON.stringify({ error: 'Missing prompt' }), { status: 400, headers: CORS });
-      }
-
-      const langName = lang === 'en' ? 'English' : lang === 'pt' ? 'Português' : 'Español';
-
-      const systemPrompt =
-        'Eres un asesor de inversión en dividendos DGI (Dividend Growth Investing) experto. ' +
-        'Respondes SIEMPRE en ' + langName + '. ' +
-        'Respondes SOLO con JSON válido, sin markdown, sin texto adicional fuera del JSON.';
+      if (!prompt) return json({ ok: false, error: 'Missing prompt' }, 400);
 
       try {
-        const { analysis, _provider, _fallback_reason } = await callAI(env, systemPrompt, prompt, 1800);
-
-        return new Response(
-          JSON.stringify({ ok: true, analysis, _provider, _fallback_reason }),
-          { status: 200, headers: CORS }
-        );
-
-      } catch(e) {
-        return new Response(
-          JSON.stringify({ error: e.message }),
-          { status: 500, headers: CORS }
-        );
+        const result = await callAI(prompt, env);
+        return json(result);
+      } catch (e) {
+        return json({ ok: false, error: e.message }, 502);
       }
     }
 
-    return new Response(
-      JSON.stringify({ error: 'Unknown route. Use /quote?ticker=X, /quotes?tickers=X,Y or POST /ai' }),
-      { status: 404, headers: CORS }
-    );
+    return json({ ok: false, error: `Unknown route: ${path}` }, 404);
   },
 };

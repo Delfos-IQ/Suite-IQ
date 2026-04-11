@@ -1,0 +1,10 @@
+{
+  "suite":   "2.2.0",
+  "axios":   "3.2.0",
+  "harvest": "2.0.0",
+  "delfos":  "2.1.0",
+  "updated": "2026-04-11",
+  "changelog": {
+    "harvest": "v2.0 — Tema noche/día · CSS variables · Navegación 5 tabs · Bugs críticos corregidos · Worker OpenAI GPT-4.1-mini"
+  }
+}
