@@ -1,649 +1,850 @@
 <!DOCTYPE html>
-<html lang="es">
+<!-- Suite-IQ · Landing Page · v2.0.0 -->
+<html lang="es" data-theme="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IQ Suite v3.0 — Herramientas de Inversión Inteligente</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Suite-IQ · Inteligencia Financiera</title>
+<meta name="description" content="Suite de herramientas de inversión y educación financiera. Análisis fundamental, gestión de cartera DGI y academia de finanzas personales."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@300;400;500;700&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --axios:#00d4aa;--harvest:#4ADE80;--sophia:#c9a84c;
+  --bull:#22c55e;--bear:#ef4444;
+  --r:6px;--r-sm:4px;--r-lg:12px;--r-xl:16px;--r-2xl:24px;
+  --trans:180ms cubic-bezier(.4,0,.2,1);--trans-slow:400ms cubic-bezier(.4,0,.2,1);
+}
+:root,[data-theme="dark"]{
+  --bg:#070a0e;--bg2:#0d1117;--bg3:#111820;--bg4:#161f2b;
+  --bdr:#1e2d3d;--bdr2:#253445;
+  --tx:#e2e8f0;--tx2:#94a3b8;--tx3:#475569;--tx4:#2d3f52;
+  --card:#0d1117;--card-bdr:#1e2d3d;
+}
+[data-theme="light"]{
+  --bg:#f8fafc;--bg2:#ffffff;--bg3:#f1f5f9;--bg4:#e2e8f0;
+  --bdr:#e2e8f0;--bdr2:#cbd5e1;
+  --tx:#0f172a;--tx2:#334155;--tx3:#64748b;--tx4:#94a3b8;
+  --card:#ffffff;--card-bdr:#e2e8f0;
+  --axios:#007d64;--harvest:#16a34a;--sophia:#9a7530;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--tx);font-family:'IBM Plex Sans',sans-serif;font-size:15px;line-height:1.65;min-height:100vh;overflow-x:hidden}
+.grid-bg{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.014) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.014) 1px,transparent 1px);background-size:48px 48px}
+[data-theme="light"] .grid-bg{background-image:linear-gradient(rgba(0,0,0,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,.022) 1px,transparent 1px)}
+.gb{position:fixed;border-radius:50%;filter:blur(130px);pointer-events:none;z-index:0;opacity:.28}
+.gb1{width:640px;height:640px;top:-220px;right:-180px;background:radial-gradient(circle,rgba(0,212,170,.22) 0%,transparent 70%)}
+.gb2{width:520px;height:520px;bottom:5%;left:-160px;background:radial-gradient(circle,rgba(74,222,128,.15) 0%,transparent 70%)}
+.gb3{width:420px;height:420px;bottom:32%;right:6%;background:radial-gradient(circle,rgba(201,168,76,.13) 0%,transparent 70%)}
+[data-theme="light"] .gb{opacity:.14}
+.page{position:relative;z-index:1}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px}
 
-    :root {
-      --bg:      #070a0e;
-      --bg2:     #0d1117;
-      --bg3:     #111820;
-      --border:  #1e2d3d;
-      --tx:      #e2e8f0;
-      --tx2:     #94a3b8;
-      --tx3:     #475569;
-      --axios:   #00d4aa;
-      --harvest: #4ADE80;
-      --sophia:  #f59e0b;
-    }
+/* ── NAV ── */
+.nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px) saturate(1.4);-webkit-backdrop-filter:blur(20px) saturate(1.4);background:rgba(7,10,14,.88);border-bottom:1px solid var(--bdr);padding:12px 0}
+[data-theme="light"] .nav{background:rgba(248,250,252,.92)}
+.nav-inner{max-width:1160px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.nav-logo{display:flex;align-items:center;gap:11px;text-decoration:none}
+.nav-logo-icon{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,rgba(0,212,170,.1),rgba(201,168,76,.1));border:1px solid rgba(0,212,170,.22);box-shadow:0 0 16px rgba(0,212,170,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;padding:8px}
+.nav-logo-text{font-family:'Syne',sans-serif;font-size:19px;font-weight:800;letter-spacing:-.3px;line-height:1}
+.logo-suite{color:var(--tx2)}
+.logo-iq{background:linear-gradient(135deg,var(--axios) 0%,var(--harvest) 50%,var(--sophia) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-logo-sub{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--tx3);letter-spacing:.14em;text-transform:uppercase;margin-top:2px}
+.nav-r{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.lang-sw{display:flex;gap:2px;background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r);padding:3px}
+.lang-btn{background:transparent;border:none;border-radius:4px;padding:4px 9px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.04em;color:var(--tx3);cursor:pointer;transition:var(--trans)}
+.lang-btn.active,.lang-btn:hover{background:var(--bg2);color:var(--tx)}
+.theme-btn{width:32px;height:32px;border-radius:var(--r);background:var(--bg3);border:1px solid var(--bdr);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;color:var(--tx3);transition:var(--trans)}
+.theme-btn:hover{border-color:var(--bdr2);color:var(--tx)}
+.nav-cta{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:100px;background:linear-gradient(135deg,rgba(0,212,170,.12),rgba(74,222,128,.07));border:1px solid rgba(0,212,170,.28);color:var(--axios);font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.04em;text-decoration:none;transition:var(--trans);white-space:nowrap}
+.nav-cta:hover{background:rgba(0,212,170,.18);border-color:rgba(0,212,170,.5);transform:translateY(-1px)}
 
-    html, body {
-      height: 100%; background: var(--bg); color: var(--tx);
-      font-family: 'IBM Plex Sans', sans-serif;
-      -webkit-font-smoothing: antialiased;
-      overflow: hidden;
-    }
+/* ── HERO ── */
+.hero{padding:96px 0 72px;text-align:center;position:relative}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:5px 16px;border-radius:100px;border:1px solid var(--bdr2);background:var(--bg2);font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;color:var(--tx3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:32px;animation:fadeUp .7s ease both}
+.e-dot{width:6px;height:6px;border-radius:50%;background:var(--axios);box-shadow:0 0 8px var(--axios)}
 
-    body::before {
-      content: ''; position: fixed; inset: 0;
-      background-image:
-        linear-gradient(rgba(0,212,170,.018) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,212,170,.018) 1px, transparent 1px);
-      background-size: 48px 48px;
-      pointer-events: none; z-index: 0;
-    }
+/* Headline */
+.hero-h{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(46px,7.5vw,90px);line-height:.97;letter-spacing:-.03em;margin-bottom:32px}
+.h-l1{display:block;color:var(--tx);animation:fadeUp .6s .1s ease both}
+.h-l2{display:block;min-height:1.1em;animation:fadeUp .6s .2s ease both}
+.h-l3{display:block;color:var(--tx3);font-size:clamp(20px,3.2vw,42px);letter-spacing:-.02em;animation:fadeUp .6s .3s ease both}
 
-    /* ── LAUNCHER ─────────────────────────────────────────────── */
-    #launcher {
-      position: fixed; inset: 0; z-index: 10;
-      overflow-y: auto;
-      transition: opacity .32s ease, transform .32s ease;
-    }
-    #launcher.hidden { opacity: 0; pointer-events: none; transform: scale(.97); }
+/* Typewriter word */
+.tw-word{
+  background:linear-gradient(135deg,var(--axios) 0%,var(--harvest) 45%,var(--sophia) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+/* Cursor — separate element so it's NOT clipped */
+.tw-cursor{
+  display:inline-block;width:5px;height:.72em;
+  background:var(--axios);border-radius:2px;
+  margin-left:4px;vertical-align:middle;
+  animation:blink .85s step-end infinite;
+  box-shadow:0 0 10px rgba(0,212,170,.6);
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 
-    .wrap {
-      position: relative; z-index: 1; min-height: 100vh;
-      max-width: 960px; margin: 0 auto;
-      padding: 56px 24px 72px;
-      display: flex; flex-direction: column; align-items: center;
-    }
+/* Brand tag + tagline */
+.hero-brand{
+  font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;
+  letter-spacing:.06em;color:var(--tx2);
+  margin-bottom:8px;
+  animation:fadeUp .6s .4s ease both;
+}
+.hero-brand span{
+  background:linear-gradient(135deg,var(--axios),var(--harvest),var(--sophia));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hero-tagline{
+  font-size:15px;color:var(--tx3);
+  margin-bottom:36px;
+  animation:fadeUp .6s .45s ease both;
+}
+.hero-sub{font-size:17px;color:var(--tx2);line-height:1.75;max-width:540px;margin:0 auto 44px;animation:fadeUp .6s .4s ease both}
+.hero-btns{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:60px;animation:fadeUp .6s .5s ease both}
+.btn-p{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:100px;background:linear-gradient(135deg,var(--axios),rgba(0,212,170,.75));color:#070a0e;font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.06em;text-decoration:none;border:none;cursor:pointer;box-shadow:0 4px 24px rgba(0,212,170,.28);transition:var(--trans)}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,212,170,.42)}
+.btn-g{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:100px;background:var(--bg2);border:1px solid var(--bdr2);color:var(--tx2);font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;letter-spacing:.04em;text-decoration:none;cursor:pointer;transition:var(--trans)}
+.btn-g:hover{border-color:var(--tx3);color:var(--tx);transform:translateY(-1px)}
+.hero-stats{display:flex;background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r-xl);overflow:hidden;max-width:600px;margin:0 auto;animation:fadeUp .6s .6s ease both}
+.h-stat{flex:1;padding:18px 14px;text-align:center;border-right:1px solid var(--bdr)}
+.h-stat:last-child{border-right:none}
+.h-sn{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;line-height:1;margin-bottom:4px;background:linear-gradient(135deg,var(--axios),var(--harvest));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.h-sl{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--tx3);letter-spacing:.1em;text-transform:uppercase}
+.hero-pills{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:44px;flex-wrap:wrap;animation:fadeUp .6s .7s ease both}
+.h-pill{display:flex;align-items:center;gap:9px;padding:9px 18px;border-radius:100px;background:var(--bg2);border:1px solid var(--bdr);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;text-decoration:none;color:var(--tx2);transition:var(--trans)}
+.h-pill:hover{transform:translateY(-2px)}
+.h-pill[data-app="axios"]{border-color:rgba(0,212,170,.28)}
+.h-pill[data-app="axios"]:hover{background:rgba(0,212,170,.08);color:var(--axios)}
+.h-pill[data-app="harvest"]{border-color:rgba(74,222,128,.28)}
+.h-pill[data-app="harvest"]:hover{background:rgba(74,222,128,.08);color:var(--harvest)}
+.h-pill[data-app="sophia"]{border-color:rgba(201,168,76,.28)}
+.h-pill[data-app="sophia"]:hover{background:rgba(201,168,76,.08);color:var(--sophia)}
+.p-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+[data-app="axios"] .p-dot{background:var(--axios);box-shadow:0 0 7px var(--axios)}
+[data-app="harvest"] .p-dot{background:var(--harvest);box-shadow:0 0 7px var(--harvest)}
+[data-app="sophia"] .p-dot{background:var(--sophia);box-shadow:0 0 7px var(--sophia)}
 
-    /* Header */
-    .suite-header { text-align: center; margin-bottom: 52px; }
+/* ── DIVIDER ── */
+.dvd{height:1px;background:linear-gradient(90deg,transparent,var(--bdr),transparent)}
 
-    .suite-logo { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 18px; }
-    .suite-logo-icon {
-      width: 52px; height: 52px; border-radius: 14px;
-      background: linear-gradient(135deg, var(--axios), var(--harvest));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 26px; box-shadow: 0 0 32px rgba(0,212,170,.22);
-    }
-    .suite-logo-text {
-      font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800; letter-spacing: -0.5px;
-      background: linear-gradient(135deg, var(--axios) 0%, var(--harvest) 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .suite-tagline { font-size: 15px; color: var(--tx2); line-height: 1.6; max-width: 460px; margin: 0 auto 8px; }
-    .suite-sub { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--tx3); letter-spacing: 2px; text-transform: uppercase; }
+/* ── SECTION HEADERS ── */
+.s-ey{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--tx3);margin-bottom:12px}
+.s-ti{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(26px,4vw,40px);letter-spacing:-.02em;line-height:1.1;color:var(--tx);margin-bottom:14px}
+.s-su{font-size:15px;color:var(--tx2);line-height:1.75;max-width:540px}
 
-    /* Cards */
-    .apps-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px; width: 100%; margin-bottom: 44px;
-    }
+/* ── PILLARS ── */
+.pillars-sec{padding:72px 0}
+.pillars-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:40px}
+.pillar{padding:22px;border-radius:var(--r-lg);background:var(--card);border:1px solid var(--card-bdr);transition:var(--trans)}
+.pillar:hover{border-color:var(--bdr2);transform:translateY(-2px)}
+.pi-ico{font-size:22px;margin-bottom:12px}
+.pi-t{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tx);margin-bottom:7px}
+.pi-b{font-size:13px;color:var(--tx3);line-height:1.6}
 
-    .app-card {
-      background: var(--bg2); border: 1px solid var(--border);
-      border-radius: 20px; overflow: hidden;
-      display: flex; flex-direction: column;
-      cursor: pointer; user-select: none;
-      transition: border-color .2s, box-shadow .2s, transform .2s;
-    }
-    .app-card:hover { transform: translateY(-4px); }
-    .axios-card:hover   { border-color: var(--axios);   box-shadow: 0 16px 48px rgba(0,212,170,.12); }
-    .harvest-card:hover { border-color: var(--harvest); box-shadow: 0 16px 48px rgba(74,222,128,.12); }
-    .app-card:active { transform: translateY(-1px); }
+/* ── APP CARDS ── */
+.apps-sec{padding:72px 0}
+.app-card{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;padding:44px;border-radius:var(--r-2xl);background:var(--card);border:1px solid var(--card-bdr);margin-bottom:20px;overflow:hidden;position:relative;transition:var(--trans-slow)}
+.app-card:hover{transform:translateY(-3px)}
+.app-card::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:0;transition:var(--trans-slow);border-radius:var(--r-2xl)}
+.app-card::after{content:'';position:absolute;left:0;top:20%;bottom:20%;width:3px;border-radius:0 3px 3px 0;transition:var(--trans-slow)}
+[data-app="axios"].app-card::before{background:radial-gradient(ellipse at top right,rgba(0,212,170,.07) 0%,transparent 70%)}
+[data-app="harvest"].app-card::before{background:radial-gradient(ellipse at top right,rgba(74,222,128,.07) 0%,transparent 70%)}
+[data-app="sophia"].app-card::before{background:radial-gradient(ellipse at top right,rgba(201,168,76,.07) 0%,transparent 70%)}
+.app-card:hover::before{opacity:1}
+[data-app="axios"].app-card::after{background:var(--axios);opacity:.35}
+[data-app="harvest"].app-card::after{background:var(--harvest);opacity:.35}
+[data-app="sophia"].app-card::after{background:var(--sophia);opacity:.35}
+.app-card:hover::after{opacity:1}
+.app-badge{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:100px;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+[data-app="axios"] .app-badge{background:rgba(0,212,170,.1);border:1px solid rgba(0,212,170,.22);color:var(--axios)}
+[data-app="harvest"] .app-badge{background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.22);color:var(--harvest)}
+[data-app="sophia"] .app-badge{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.22);color:var(--sophia)}
+.app-name{font-family:'Syne',sans-serif;font-size:34px;font-weight:800;letter-spacing:-.02em;line-height:1;margin-bottom:7px}
+[data-app="axios"] .app-name{color:var(--axios)}
+[data-app="harvest"] .app-name{color:var(--harvest)}
+[data-app="sophia"] .app-name{color:var(--sophia)}
+.app-tl{font-size:17px;font-weight:600;color:var(--tx);margin-bottom:14px}
+.app-desc{font-size:13px;color:var(--tx3);line-height:1.75;margin-bottom:22px}
+.app-cta{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border-radius:100px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.05em;text-decoration:none;border:1px solid;transition:var(--trans);cursor:pointer}
+[data-app="axios"] .app-cta{color:var(--axios);border-color:rgba(0,212,170,.32);background:rgba(0,212,170,.07)}
+[data-app="axios"] .app-cta:hover{background:rgba(0,212,170,.16);border-color:var(--axios);transform:translateY(-1px)}
+[data-app="harvest"] .app-cta{color:var(--harvest);border-color:rgba(74,222,128,.32);background:rgba(74,222,128,.07)}
+[data-app="harvest"] .app-cta:hover{background:rgba(74,222,128,.16);border-color:var(--harvest);transform:translateY(-1px)}
+[data-app="sophia"] .app-cta{color:var(--sophia);border-color:rgba(201,168,76,.32);background:rgba(201,168,76,.07)}
+[data-app="sophia"] .app-cta:hover{background:rgba(201,168,76,.16);border-color:var(--sophia);transform:translateY(-1px)}
+.app-flist{list-style:none;display:flex;flex-direction:column;gap:8px}
+.app-fi{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--tx2);line-height:1.5;padding:9px 12px;border-radius:var(--r-lg);background:var(--bg3);border:1px solid var(--bdr);transition:var(--trans)}
+.app-fi:hover{border-color:var(--bdr2)}
+.fi-ico{font-size:13px;flex-shrink:0;margin-top:1px}
+.app-ideal{margin-top:14px;padding:9px 13px;border-radius:var(--r);border-left:2px solid;background:var(--bg3);font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--tx3);line-height:1.6}
+[data-app="axios"] .app-ideal{border-color:rgba(0,212,170,.4)}
+[data-app="harvest"] .app-ideal{border-color:rgba(74,222,128,.4)}
+[data-app="sophia"] .app-ideal{border-color:rgba(201,168,76,.4)}
 
-    .card-hero {
-      height: 148px; position: relative;
-      display: flex; align-items: center; justify-content: center; overflow: hidden;
-    }
-    .axios-card  .card-hero { background: linear-gradient(135deg, rgba(0,212,170,.1), rgba(59,130,246,.06)); }
-    .harvest-card .card-hero { background: linear-gradient(135deg, rgba(74,222,128,.1), rgba(16,185,129,.05)); }
-    .sophia-card  .card-hero { background: linear-gradient(135deg, rgba(245,158,11,.1), rgba(251,191,36,.05)); }
+/* ── FLOW ── */
+.flow-sec{padding:72px 0;text-align:center}
+.flow-box{display:flex;align-items:stretch;justify-content:center;background:var(--card);border:1px solid var(--card-bdr);border-radius:var(--r-2xl);overflow:hidden;margin-top:48px;flex-wrap:wrap}
+.flow-step{flex:1;min-width:220px;padding:36px 26px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.flow-step:not(:last-child){border-right:1px solid var(--bdr)}
+.f-num{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;margin-bottom:18px;border:2px solid}
+[data-step="1"] .f-num{color:var(--sophia);border-color:var(--sophia);background:rgba(201,168,76,.08)}
+[data-step="2"] .f-num{color:var(--axios);border-color:var(--axios);background:rgba(0,212,170,.08)}
+[data-step="3"] .f-num{color:var(--harvest);border-color:var(--harvest);background:rgba(74,222,128,.08)}
+.f-app{font-family:'Syne',sans-serif;font-size:13px;font-weight:800;margin-bottom:5px}
+[data-step="1"] .f-app{color:var(--sophia)}
+[data-step="2"] .f-app{color:var(--axios)}
+[data-step="3"] .f-app{color:var(--harvest)}
+.f-lbl{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--tx);margin-bottom:9px}
+.f-body{font-size:13px;color:var(--tx3);line-height:1.65}
+.f-arr{display:flex;align-items:center;padding:0 2px;font-size:18px;color:var(--tx4);align-self:center;flex-shrink:0}
+.connectors{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+.conn{display:flex;align-items:flex-start;gap:11px;padding:12px 18px;border-radius:var(--r-lg);background:var(--bg2);border:1px solid var(--bdr);font-size:13px;color:var(--tx3);line-height:1.6;text-align:left}
+.conn-ico{font-size:15px;flex-shrink:0;margin-top:2px}
 
-    .card-hero-emoji {
-      font-size: 68px; filter: drop-shadow(0 4px 20px rgba(0,0,0,.4));
-      transition: transform .2s;
-    }
-    .app-card:hover .card-hero-emoji { transform: scale(1.1) rotate(-3deg); }
-    .axios-card:hover .card-hero svg { transform: scale(1.08) translateY(-3px); }
+/* ── PRICING ── */
+.pricing-sec{padding:80px 0}
+.pricing-hdr{text-align:center;margin-bottom:52px}
+.pricing-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:16px;align-items:start}
+.plan{border-radius:var(--r-2xl);background:var(--card);border:1px solid var(--card-bdr);padding:28px 24px 24px;position:relative;overflow:hidden;transition:var(--trans-slow);display:flex;flex-direction:column}
+.plan:hover{transform:translateY(-4px)}
+.plan.best{border-color:rgba(0,212,170,.38);background:linear-gradient(160deg,rgba(0,212,170,.04) 0%,var(--card) 55%)}
+.plan.best::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--axios),var(--harvest))}
+.plan-ribbon{position:absolute;top:18px;right:18px;padding:3px 10px;border-radius:100px;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.08em;background:rgba(0,212,170,.12);border:1px solid rgba(0,212,170,.3);color:var(--axios)}
+.plan-tier{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--tx3);margin-bottom:8px}
+.plan-name{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:var(--tx);margin-bottom:4px;letter-spacing:-.01em}
+.plan-tl{font-size:12px;color:var(--tx3);margin-bottom:22px;min-height:32px;line-height:1.5}
+.plan-price{display:flex;align-items:baseline;gap:4px;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--bdr)}
+.plan-cur{font-family:'IBM Plex Mono',monospace;font-size:14px;color:var(--tx3);margin-bottom:4px}
+.plan-amt{font-family:'Syne',sans-serif;font-size:44px;font-weight:800;letter-spacing:-.03em;line-height:1;color:var(--tx)}
+.plan-amt.free{font-size:32px;color:var(--bull)}
+.plan-per{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--tx3)}
+.plan-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+.chip{padding:3px 10px;border-radius:100px;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.06em;border:1px solid}
+.chip-axios{color:var(--axios);border-color:rgba(0,212,170,.3);background:rgba(0,212,170,.07)}
+.chip-harvest{color:var(--harvest);border-color:rgba(74,222,128,.3);background:rgba(74,222,128,.07)}
+.chip-sophia{color:var(--sophia);border-color:rgba(201,168,76,.3);background:rgba(201,168,76,.07)}
+.chip-pod{color:#a855f7;border-color:rgba(168,85,247,.3);background:rgba(168,85,247,.07)}
+.plan-fts{list-style:none;flex:1;display:flex;flex-direction:column;gap:10px;margin-bottom:22px}
+.plan-ft{display:flex;align-items:flex-start;gap:9px;font-size:13px;color:var(--tx2);line-height:1.5}
+.plan-ft.dim{color:var(--tx4)}
+.ft-ok{flex-shrink:0;font-size:14px;margin-top:1px;color:var(--bull)}
+.ft-no{flex-shrink:0;font-size:14px;margin-top:1px;color:var(--tx4)}
+.plan-btn{display:flex;align-items:center;justify-content:center;gap:7px;padding:11px 20px;border-radius:100px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.05em;border:1px solid;text-decoration:none;cursor:pointer;transition:var(--trans);margin-top:auto}
+.plan-btn.primary{background:linear-gradient(135deg,var(--axios),rgba(0,212,170,.75));color:#070a0e;border-color:transparent;box-shadow:0 4px 18px rgba(0,212,170,.22)}
+.plan-btn.primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,212,170,.35)}
+.plan-btn.ghost{background:var(--bg3);border-color:var(--bdr2);color:var(--tx2)}
+.plan-btn.ghost:hover{border-color:var(--tx3);color:var(--tx);transform:translateY(-1px)}
+.plan-btn.pod{background:rgba(168,85,247,.08);border-color:rgba(168,85,247,.3);color:#a855f7}
+.plan-btn.pod:hover{background:rgba(168,85,247,.16);transform:translateY(-1px)}
+.pricing-note{text-align:center;margin-top:26px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--tx3);line-height:1.8}
+.pricing-note a{color:var(--axios);text-decoration:none}
+.pricing-note a:hover{text-decoration:underline}
 
-    .card-body { padding: 22px 24px 24px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+/* ── CTA ── */
+.cta-sec{padding:72px 0}
+.cta-box{padding:52px 48px;border-radius:var(--r-2xl);background:var(--card);border:1px solid var(--card-bdr);text-align:center;position:relative;overflow:hidden}
+.cta-box::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% -20%,rgba(0,212,170,.07) 0%,transparent 70%)}
+.cta-t{font-family:'Syne',sans-serif;font-size:clamp(26px,4vw,42px);font-weight:800;letter-spacing:-.02em;color:var(--tx);margin-bottom:8px;position:relative}
+.cta-s{font-size:14px;color:var(--tx3);font-family:'IBM Plex Mono',monospace;letter-spacing:.04em;margin-bottom:36px;position:relative}
+.cta-btns{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;position:relative}
+.cta-ab{display:inline-flex;align-items:center;gap:9px;padding:11px 22px;border-radius:var(--r-lg);font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.05em;text-decoration:none;border:1px solid;transition:var(--trans)}
+[data-app="axios"].cta-ab{color:var(--axios);border-color:rgba(0,212,170,.32);background:rgba(0,212,170,.07)}
+[data-app="axios"].cta-ab:hover{background:rgba(0,212,170,.16);border-color:var(--axios);transform:translateY(-2px)}
+[data-app="harvest"].cta-ab{color:var(--harvest);border-color:rgba(74,222,128,.32);background:rgba(74,222,128,.07)}
+[data-app="harvest"].cta-ab:hover{background:rgba(74,222,128,.16);border-color:var(--harvest);transform:translateY(-2px)}
+[data-app="sophia"].cta-ab{color:var(--sophia);border-color:rgba(201,168,76,.32);background:rgba(201,168,76,.07)}
+[data-app="sophia"].cta-ab:hover{background:rgba(201,168,76,.16);border-color:var(--sophia);transform:translateY(-2px)}
+.cta-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+[data-app="axios"] .cta-dot{background:var(--axios)}
+[data-app="harvest"] .cta-dot{background:var(--harvest)}
+[data-app="sophia"] .cta-dot{background:var(--sophia)}
 
-    .card-badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 9px; font-weight: 600; letter-spacing: 2px;
-      text-transform: uppercase; padding: 3px 10px;
-      border-radius: 20px; width: fit-content;
-    }
-    .axios-card  .card-badge { background: rgba(0,212,170,.1);  color: var(--axios);   border: 1px solid rgba(0,212,170,.2); }
-    .harvest-card .card-badge { background: rgba(74,222,128,.1); color: var(--harvest); border: 1px solid rgba(74,222,128,.2); }
+/* ── FOOTER ── */
+.footer{padding:36px 0 28px;border-top:1px solid var(--bdr)}
+.footer-top{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;margin-bottom:20px}
+.f-logo{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;letter-spacing:-.01em}
+.f-logo .suite{color:var(--tx2)}
+.f-logo .iq{background:linear-gradient(135deg,var(--axios),var(--harvest),var(--sophia));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.f-tl{font-size:12px;color:var(--tx3);margin-top:3px}
+.f-links{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.f-lnk{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:.06em;color:var(--tx3);text-decoration:none;text-transform:uppercase;transition:var(--trans)}
+.f-lnk:hover{color:var(--tx)}
+.f-disc{font-size:11px;color:var(--tx4);line-height:1.65;border-top:1px solid var(--bdr);padding-top:18px}
 
-    /* Gradient titles — each app's own palette */
-    .card-title {
-      font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800;
-      letter-spacing: -0.3px; line-height: 1.1;
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .axios-card  .card-title { background-image: linear-gradient(135deg, #00d4aa 0%, #3b82f6 100%); }
-    .harvest-card .card-title { background-image: linear-gradient(135deg, #4ADE80 0%, #059669 100%); }
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
 
-    .card-desc { font-size: 12px; color: var(--tx2); line-height: 1.65; flex: 1; }
-
-    .card-features { display: flex; flex-direction: column; gap: 5px; margin: 2px 0; }
-    .card-feature { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--tx3); }
-    .card-feature-dot { width: 4px; height: 4px; border-radius: 50%; flex-shrink: 0; }
-    .axios-card  .card-feature-dot { background: var(--axios); }
-    .harvest-card .card-feature-dot { background: var(--harvest); }
-
-    .card-cta {
-      width: 100%; padding: 10px 18px; border-radius: 10px; border: none;
-      font-family: 'IBM Plex Sans', sans-serif; font-size: 12px; font-weight: 700;
-      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
-      transition: opacity .15s, transform .1s; margin-top: 6px;
-    }
-    .card-cta:hover { opacity: .88; transform: translateY(-1px); }
-    .axios-card  .card-cta { background: var(--axios);   color: #070a0e; }
-    .harvest-card .card-cta { background: var(--harvest); color: #070a0e; }
-
-    /* Stats */
-    .suite-stats {
-      display: flex; align-items: center; gap: 26px; flex-wrap: wrap;
-      justify-content: center; padding: 18px 0;
-      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
-      width: 100%; margin-bottom: 36px;
-    }
-    .stat-item { text-align: center; }
-    .stat-num {
-      font-family: 'IBM Plex Mono', monospace; font-size: 20px; font-weight: 600;
-      background: linear-gradient(135deg, var(--axios), var(--harvest));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      line-height: 1; margin-bottom: 3px;
-    }
-    .stat-lbl { font-size: 10px; color: var(--tx3); letter-spacing: 0.3px; }
-    .stat-div { width: 1px; height: 26px; background: var(--border); }
-
-    /* Footer */
-    .suite-footer { text-align: center; }
-    .footer-text { font-size: 10px; color: var(--tx3); font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px; }
-    .footer-links { display: flex; gap: 20px; justify-content: center; margin-top: 10px; }
-    .footer-link {
-      font-size: 10px; color: var(--tx3); text-decoration: none; cursor: pointer;
-      font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px;
-      transition: color .15s;
-    }
-    .footer-link:hover { color: var(--axios); }
-
-    /* ── APP VIEWER ───────────────────────────────────────────── */
-    #app-viewer {
-      position: fixed; inset: 0; z-index: 100;
-      display: flex; flex-direction: column;
-      background: var(--bg);
-      transform: translateY(100%);
-      transition: transform .38s cubic-bezier(.4,0,.2,1);
-    }
-    #app-viewer.open { transform: translateY(0); }
-
-    #viewer-bar {
-      display: flex; align-items: center; gap: 10px;
-      padding: 0 14px; height: 42px;
-      background: var(--bg2); border-bottom: 1px solid var(--border);
-      flex-shrink: 0; position: relative; z-index: 101;
-    }
-
-    #back-btn {
-      display: flex; align-items: center; gap: 6px;
-      background: var(--bg3); border: 1px solid var(--border);
-      color: var(--tx2); font-family: 'IBM Plex Sans', sans-serif;
-      font-size: 11px; font-weight: 600; padding: 5px 11px;
-      border-radius: 6px; cursor: pointer;
-      transition: all .15s; white-space: nowrap; flex-shrink: 0;
-    }
-    #back-btn:hover { border-color: var(--axios); color: var(--axios); }
-
-    .viewer-dot {
-      width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
-      animation: pdot 2s infinite;
-    }
-    .axios-dot   { background: var(--axios); }
-    .harvest-dot { background: var(--harvest); }
-    .sophia-dot { background: var(--sophia); box-shadow: 0 0 8px rgba(245,158,11,.5); }
-    @keyframes pdot { 0%,100%{opacity:1} 50%{opacity:.35} }
-
-    #viewer-title {
-      font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 800;
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    #viewer-title.axios-title   { background-image: linear-gradient(135deg, #00d4aa 0%, #3b82f6 100%); }
-    #viewer-title.harvest-title { background-image: linear-gradient(135deg, #4ADE80 0%, #059669 100%); }
-    .sophia-title { background: linear-gradient(135deg, #f59e0b, #fbbf24); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-    #app-frame { flex: 1; border: none; width: 100%; display: block; }
-
-    #frame-loader {
-      position: absolute; inset: 42px 0 0;
-      display: flex; align-items: center; justify-content: center;
-      background: var(--bg); z-index: 102;
-      flex-direction: column; gap: 14px;
-      transition: opacity .3s;
-    }
-    #frame-loader.hidden { opacity: 0; pointer-events: none; }
-    .loader-spinner {
-      width: 34px; height: 34px; border-radius: 50%;
-      border: 3px solid var(--border); border-top-color: var(--axios);
-      animation: spin .7s linear infinite;
-    }
-    .loader-text { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--tx3); letter-spacing: 1px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    @media (max-width: 600px) {
-      .wrap { padding: 36px 14px 56px; }
-      .suite-header { margin-bottom: 36px; }
-      .apps-grid { grid-template-columns: 1fr; }
-      .suite-stats { gap: 14px; }
-      .stat-div { display: none; }
-    }
-  
-    /* Lang switcher */
-    .slang-btn {
-      background: var(--bg3); border: 1px solid var(--border);
-      color: var(--tx3); font-family: 'IBM Plex Mono', monospace;
-      font-size: 9px; font-weight: 600; padding: 4px 9px;
-      border-radius: 6px; cursor: pointer; transition: all .15s;
-      letter-spacing: 0.5px;
-    }
-    .slang-btn:hover { border-color: var(--axios); color: var(--axios); }
-    .slang-btn.active { background: rgba(0,212,170,.1); border-color: var(--axios); color: var(--axios); }
-
-    /* Ko-Fi header button */
-    .kofi-header-btn {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(244,114,182,.08);
-      border: 1px solid rgba(244,114,182,.2);
-      color: #f472b6; text-decoration: none;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 9px; font-weight: 600; letter-spacing: 1px;
-      padding: 5px 11px; border-radius: 6px;
-      transition: all .15s;
-    }
-    .kofi-header-btn:hover {
-      background: rgba(244,114,182,.16);
-      border-color: rgba(244,114,182,.4);
-      transform: translateY(-1px);
-    }
-
-    /* Support button */
-    .support-btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: linear-gradient(135deg, rgba(244,114,182,.1), rgba(167,139,250,.08));
-      border: 1px solid rgba(244,114,182,.25);
-      color: #f472b6; text-decoration: none;
-      font-family: 'IBM Plex Sans', sans-serif;
-      font-size: 12px; font-weight: 600;
-      padding: 10px 20px; border-radius: 10px;
-      transition: all .15s; cursor: pointer;
-    }
-    .support-btn:hover {
-      background: linear-gradient(135deg, rgba(244,114,182,.18), rgba(167,139,250,.14));
-      border-color: rgba(244,114,182,.5);
-      transform: translateY(-1px);
-    }
-
-    /* Harvest card title gradient tweak — slightly bigger */
-    .harvest-card .card-title { font-size: 28px; }
-
-  </style>
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .app-card{grid-template-columns:1fr;gap:28px;padding:32px 26px}
+  .flow-step:not(:last-child){border-right:none;border-bottom:1px solid var(--bdr)}
+  .f-arr{display:none}
+}
+@media(max-width:640px){
+  .hero{padding:64px 0 52px}
+  .nav-cta{display:none}
+  .hero-stats{flex-wrap:wrap}
+  .h-stat{min-width:50%;border-bottom:1px solid var(--bdr)}
+  .h-stat:nth-child(3),.h-stat:nth-child(4){border-bottom:none}
+  .cta-box{padding:36px 22px}
+  .wrap{padding:0 16px}
+  .pillars-sec,.apps-sec,.flow-sec,.pricing-sec,.cta-sec{padding:52px 0}
+}
+</style>
 </head>
 <body>
+<div class="grid-bg"></div>
+<div class="gb gb1"></div>
+<div class="gb gb2"></div>
+<div class="gb gb3"></div>
 
-<!-- LAUNCHER -->
-<div id="launcher">
+<div class="page">
+
+<!-- ═══ NAV ═══ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-icon">
+        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+          <!-- Bars -->
+          <rect x="1"  y="19" width="5" height="7" rx="1.2" fill="#00d4aa" opacity=".65"/>
+          <rect x="8"  y="13" width="5" height="13" rx="1.2" fill="#00d4aa" opacity=".82"/>
+          <rect x="15" y="8"  width="5" height="18" rx="1.2" fill="#4ADE80"/>
+          <rect x="22" y="3"  width="5" height="23" rx="1.2" fill="#c9a84c"/>
+          <!-- Trend line -->
+          <polyline points="3.5,20 10.5,14 17.5,9 24.5,4" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity=".3"/>
+          <!-- Arrow head -->
+          <circle cx="24.5" cy="4" r="2.2" fill="white" opacity=".5"/>
+        </svg>
+      </div>
+      <div>
+        <div class="nav-logo-text"><span class="logo-suite">Suite</span><span class="logo-iq">-IQ</span></div>
+        <div class="nav-logo-sub" data-i18n="nav.suite_label">Suite de Inversión</div>
+      </div>
+    </a>
+    <div class="nav-r">
+      <div class="lang-sw">
+        <button class="lang-btn active" data-lang="es">ES</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="pt">PT</button>
+      </div>
+      <button class="theme-btn" id="theme-toggle">🌙</button>
+      <a href="#pricing" class="nav-cta" data-i18n="nav.cta">Ver precios →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
   <div class="wrap">
+    <div class="hero-eyebrow">
+      <span class="e-dot"></span>
+      <span data-i18n="hero.eyebrow">Suite de Inversión · 3 Herramientas · Empieza Gratis</span>
+    </div>
+    <h1 class="hero-h">
+      <span class="h-l1" data-i18n="hero.title_pre">Inteligencia</span>
+      <span class="h-l2"><span id="tw-word" class="tw-word"></span><span class="tw-cursor"></span></span>
+      <span class="h-l3" data-i18n="hero.title_post">al alcance de todos</span>
+    </h1>
+    <p class="hero-brand"><span>Suite-IQ</span> — <span data-i18n="hero.brand_tag">tu cerebro financiero</span></p>
+    <p class="hero-tagline" data-i18n="hero.tagline">Diseñada para inversores reales con criterio.</p>
+    <div class="hero-btns">
+      <a href="#pricing" class="btn-p" data-i18n="hero.cta_primary">Ver planes y precios →</a>
+      <a href="#apps" class="btn-g" data-i18n="hero.cta_secondary">Conocer las herramientas</a>
+    </div>
+    <div class="hero-stats">
+      <div class="h-stat"><div class="h-sn">1.560</div><div class="h-sl" data-i18n="hero.stat_tickers">tickers globales</div></div>
+      <div class="h-stat"><div class="h-sn">44</div><div class="h-sl" data-i18n="hero.stat_countries">países</div></div>
+      <div class="h-stat"><div class="h-sn">3</div><div class="h-sl" data-i18n="hero.stat_apps">herramientas</div></div>
+      <div class="h-stat"><div class="h-sn">0€</div><div class="h-sl" data-i18n="hero.stat_free">plan gratuito</div></div>
+    </div>
+    <div class="hero-pills">
+      <a href="axios/index.html" class="h-pill" data-app="axios"><span class="p-dot"></span>AXIOS·IQ</a>
+      <a href="harvest/index.html" class="h-pill" data-app="harvest"><span class="p-dot"></span>HARVEST·IQ</a>
+      <a href="sophia/index.html" class="h-pill" data-app="sophia"><span class="p-dot"></span>SOPHIA·IQ</a>
+    </div>
+  </div>
+</section>
 
-    <header class="suite-header">
-      <!-- Lang switcher -->
-      <div style="display:flex;justify-content:space-between;align-items:center;width:100%;margin-bottom:16px;gap:8px;flex-wrap:wrap">
-        <div style="display:flex;gap:5px">
-          <button onclick="setSuiteLang('es')" id="slang-es" class="slang-btn active">🇪🇸 ES</button>
-          <button onclick="setSuiteLang('en')" id="slang-en" class="slang-btn">🇬🇧 EN</button>
-          <button onclick="setSuiteLang('pt')" id="slang-pt" class="slang-btn">🇵🇹 PT</button>
-        </div>
-        <a href="https://ko-fi.com/axiosiq" target="_blank" rel="noopener" class="kofi-header-btn" id="s-kofi">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style="flex-shrink:0">
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="#f472b6"/>
-          </svg>
-          <span id="s-kofi-txt">Support</span>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;opacity:.5">
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" stroke="#f472b6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </a>
-      </div>
-      <div class="suite-logo">
-        <div class="suite-logo-icon">
-          <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <polyline points="3,24 9,16 15,18 21,9 27,4" stroke="white" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            <polyline points="23,3 27,4 26,8" stroke="white" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            <circle cx="9"  cy="16" r="1.8" fill="white" opacity=".9"/>
-            <circle cx="15" cy="18" r="1.8" fill="white" opacity=".9"/>
-            <circle cx="21" cy="9"  r="1.8" fill="white" opacity=".9"/>
-            <rect x="3"  y="25" width="4" height="2" rx="1" fill="white" opacity=".5"/>
-            <rect x="9"  y="23" width="4" height="4" rx="1" fill="white" opacity=".5"/>
-            <rect x="15" y="21" width="4" height="6" rx="1" fill="white" opacity=".5"/>
-            <rect x="21" y="18" width="4" height="9" rx="1" fill="white" opacity=".7"/>
-          </svg>
-        </div>
-        <span class="suite-logo-text">IQ Suite</span>
-      </div>
-      <p class="suite-tagline" id="s-tagline">Herramientas de inversión inteligente, gratuitas y sin registro.</p>
-      <p class="suite-sub" id="s-sub">Análisis fundamental · Cartera de dividendos · Academia · Swing trading</p>
-    </header>
+<div class="dvd"></div>
 
-    <div class="apps-grid">
+<!-- ═══ PILLARS ═══ -->
+<section class="pillars-sec reveal" id="philosophy">
+  <div class="wrap">
+    <div class="s-ey" data-i18n="pillars.eyebrow">Filosofía</div>
+    <h2 class="s-ti" data-i18n="pillars.title">Diseñada para inversores reales</h2>
+    <p class="s-su" data-i18n="pillars.subtitle">Herramientas profesionales con acceso democrático. Sin letra pequeña.</p>
+    <div class="pillars-g" id="pillars-g"></div>
+  </div>
+</section>
 
-      <div class="app-card axios-card" onclick="openApp('axios/index.html','AXIOS·IQ','axios')">
-        <div class="card-hero">
-          <svg width="110" height="90" viewBox="0 0 110 90" fill="none" xmlns="http://www.w3.org/2000/svg"
-               style="filter:drop-shadow(0 4px 24px rgba(0,212,170,.35));transition:transform .2s">
-            <!-- Candle 1 bearish -->
-            <line x1="18" y1="12" x2="18" y2="22" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/>
-            <rect x="12" y="22" width="12" height="28" rx="2" fill="#ef4444" opacity=".85"/>
-            <line x1="18" y1="50" x2="18" y2="60" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/>
-            <!-- Candle 2 bullish -->
-            <line x1="38" y1="18" x2="38" y2="30" stroke="#00d4aa" stroke-width="1.5" stroke-linecap="round"/>
-            <rect x="32" y="30" width="12" height="22" rx="2" fill="#00d4aa" opacity=".9"/>
-            <line x1="38" y1="52" x2="38" y2="62" stroke="#00d4aa" stroke-width="1.5" stroke-linecap="round"/>
-            <!-- Candle 3 bullish tall -->
-            <line x1="58" y1="8" x2="58" y2="20" stroke="#00d4aa" stroke-width="1.5" stroke-linecap="round"/>
-            <rect x="52" y="20" width="12" height="34" rx="2" fill="#00d4aa"/>
-            <line x1="58" y1="54" x2="58" y2="66" stroke="#00d4aa" stroke-width="1.5" stroke-linecap="round"/>
-            <!-- Candle 4 bearish small -->
-            <line x1="78" y1="16" x2="78" y2="26" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/>
-            <rect x="72" y="26" width="12" height="18" rx="2" fill="#ef4444" opacity=".75"/>
-            <line x1="78" y1="44" x2="78" y2="56" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"/>
-            <!-- Candle 5 bullish strong -->
-            <line x1="98" y1="6" x2="98" y2="18" stroke="#00d4aa" stroke-width="1.5" stroke-linecap="round"/>
-            <rect x="92" y="18" width="12" height="38" rx="2" fill="#00d4aa"/>
-            <line x1="98" y1="56" x2="98" y2="68" stroke="#00d4aa" stroke-width="1.5" stroke-linecap="round"/>
-            <!-- Moving average line -->
-            <path d="M 6 55 Q 28 45 48 40 Q 68 35 88 22 Q 96 18 108 12" stroke="#f59e0b" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".8"/>
-            <!-- Baseline -->
-            <line x1="6" y1="78" x2="104" y2="78" stroke="#1e2d3d" stroke-width="1" opacity=".6"/>
-            <!-- Volume bars -->
-            <rect x="12" y="68" width="12" height="8" rx="1" fill="#ef4444" opacity=".4"/>
-            <rect x="32" y="65" width="12" height="11" rx="1" fill="#00d4aa" opacity=".4"/>
-            <rect x="52" y="62" width="12" height="14" rx="1" fill="#00d4aa" opacity=".5"/>
-            <rect x="72" y="67" width="12" height="9" rx="1" fill="#ef4444" opacity=".35"/>
-            <rect x="92" y="61" width="12" height="15" rx="1" fill="#00d4aa" opacity=".5"/>
-          </svg>
-        </div>
-        <div class="card-body">
-          <span class="card-badge">⚡ Analizador</span>
-          <div class="card-title">AXIOS·IQ</div>
-          <p class="card-desc">Terminal de análisis fundamental. Analiza cualquier empresa con datos reales de mercado y valoración asistida por IA.</p>
-          <div class="card-features">
-            <div class="card-feature"><span class="card-feature-dot"></span>1.309 tickers en 35+ países</div>
-            <div class="card-feature"><span class="card-feature-dot"></span>21 ítems · 14 rellenados automáticamente</div>
-            <div class="card-feature"><span class="card-feature-dot"></span>Análisis IA con escenarios y precio de entrada</div>
-            <div class="card-feature"><span class="card-feature-dot"></span>Academia con 4 cursos y certificados</div>
-          </div>
-          <button class="card-cta">Abrir AXIOS·IQ →</button>
-        </div>
-      </div>
+<div class="dvd"></div>
 
-      <div class="app-card harvest-card" onclick="openApp('harvest/index.html','HARVEST·IQ','harvest')">
-        <div class="card-hero"><span class="card-hero-emoji">🌾</span></div>
-        <div class="card-body">
-          <span class="card-badge">🌾 Cartera</span>
-          <div class="card-title">HARVEST·IQ</div>
-          <p class="card-desc">Gestión inteligente de cartera de dividendos. Carga tu CSV o Excel para análisis DGI, oportunidades y proyección de ingresos pasivos.</p>
-          <div class="card-features">
-            <div class="card-feature"><span class="card-feature-dot"></span>Análisis completo de cartera de dividendos</div>
-            <div class="card-feature"><span class="card-feature-dot"></span>Ranking de oportunidades y refuerzo</div>
-            <div class="card-feature"><span class="card-feature-dot"></span>Proyección de ingresos mensuales</div>
-            <div class="card-feature"><span class="card-feature-dot"></span>100% privado — sin servidor, sin cuenta</div>
-          </div>
-          <button class="card-cta">Abrir HARVEST·IQ →</button>
-        </div>
-      </div>
-
-
+<!-- ═══ APPS ═══ -->
+<section class="apps-sec" id="apps">
+  <div class="wrap">
+    <div class="reveal" style="margin-bottom:48px">
+      <div class="s-ey" data-i18n="apps.eyebrow">Las herramientas</div>
     </div>
 
-    <div class="suite-stats">
-      <div class="stat-item"><div class="stat-num">1309</div><div class="stat-lbl">Tickers</div></div>
-      <div class="stat-div"></div>
-      <div class="stat-item"><div class="stat-num">97</div><div class="stat-lbl">Artículos</div></div>
-      <div class="stat-div"></div>
-      <div class="stat-item"><div class="stat-num">14/21</div><div class="stat-lbl">Auto-fill</div></div>
-      <div class="stat-div"></div>
-      <div class="stat-item"><div class="stat-num">5</div><div class="stat-lbl">Cursos</div></div>
-      <div class="stat-div"></div>
-      <div class="stat-item"><div class="stat-num">3</div><div class="stat-lbl">Apps</div></div>
-      <div class="stat-div"></div>
-      <div class="stat-item"><div class="stat-num">ES·EN·PT</div><div class="stat-lbl">Idiomas</div></div>
-      <div class="stat-div"></div>
-      <div class="stat-item"><div class="stat-num">100%</div><div class="stat-lbl">Gratis</div></div>
+    <!-- AXIOS -->
+    <div class="app-card reveal" data-app="axios">
+      <div>
+        <div class="app-badge" data-i18n="apps.axios.tag">Análisis Fundamental</div>
+        <div class="app-name">AXIOS·IQ</div>
+        <div class="app-tl" data-i18n="apps.axios.tagline">El terminal de análisis fundamental</div>
+        <div class="app-desc" data-i18n="apps.axios.description">Analiza cualquier empresa cotizada con datos reales de Yahoo Finance, modelos de valoración propios y un scorecard sectorial por benchmarks. De los datos en bruto a una decisión fundamentada en minutos.</div>
+        <a href="axios/index.html" class="app-cta" data-i18n="apps.axios.cta">Abrir AXIOS·IQ →</a>
+      </div>
+      <div>
+        <ul class="app-flist" id="axios-ft"></ul>
+        <div class="app-ideal" data-i18n="apps.axios.ideal">Ideal para: inversores value, buy-and-hold, due diligence</div>
+      </div>
     </div>
 
-    <footer class="suite-footer">
-      <p class="footer-text" id="s-footer">IQ SUITE · HERRAMIENTAS DE INVERSIÓN · SIN REGISTRO · SIN SERVIDOR</p>
-      <div class="footer-links">
-        <span class="footer-link" onclick="openApp('axios/index.html','AXIOS·IQ','axios')">AXIOS·IQ</span>
-        <span class="footer-link" onclick="openApp('harvest/index.html','HARVEST·IQ','harvest')">HARVEST·IQ</span>
-        <a class="footer-link" href="https://ko-fi.com/axiosiq" target="_blank" rel="noopener">KO-FI ☕</a>
+    <!-- HARVEST -->
+    <div class="app-card reveal" data-app="harvest">
+      <div>
+        <div class="app-badge" data-i18n="apps.harvest.tag">Cartera DGI</div>
+        <div class="app-name">HARVEST·IQ</div>
+        <div class="app-tl" data-i18n="apps.harvest.tagline">Tu cartera de dividendos, controlada</div>
+        <div class="app-desc" data-i18n="apps.harvest.description">Gestiona tu cartera de Dividend Growth Investing con privacidad total. Carga tu CSV, analiza dividendos, proyecta ingresos pasivos y descubre los mejores compounders del mercado.</div>
+        <a href="harvest/index.html" class="app-cta" data-i18n="apps.harvest.cta">Abrir HARVEST·IQ →</a>
       </div>
-    </footer>
+      <div>
+        <ul class="app-flist" id="harvest-ft"></ul>
+        <div class="app-ideal" data-i18n="apps.harvest.ideal">Ideal para: inversores DGI, independencia financiera, rentas pasivas</div>
+      </div>
+    </div>
 
+    <!-- SOPHIA -->
+    <div class="app-card reveal" data-app="sophia">
+      <div>
+        <div class="app-badge" data-i18n="apps.sophia.tag">Academia Financiera</div>
+        <div class="app-name">SOPHIA·IQ</div>
+        <div class="app-tl" data-i18n="apps.sophia.tagline">Tu academia de finanzas personales e inversión</div>
+        <div class="app-desc" data-i18n="apps.sophia.description">Cursos estructurados de finanzas personales e inversión. Del ahorro al análisis fundamental, con podcasts gratuitos, artículos trilingues y lecciones para todos los niveles.</div>
+        <a href="sophia/index.html" class="app-cta" data-i18n="apps.sophia.cta">Abrir SOPHIA·IQ →</a>
+      </div>
+      <div>
+        <ul class="app-flist" id="sophia-ft"></ul>
+        <div class="app-ideal" data-i18n="apps.sophia.ideal">Ideal para: principiantes, familias, inversores en formación</div>
+      </div>
+    </div>
   </div>
-</div>
+</section>
 
-<!-- APP VIEWER -->
-<div id="app-viewer">
-  <div id="viewer-bar">
-    <button id="back-btn" onclick="closeApp()">← IQ Suite</button>
-    <span class="viewer-dot" id="viewer-dot"></span>
-    <span id="viewer-title"></span>
+<div class="dvd"></div>
+
+<!-- ═══ FLOW ═══ -->
+<section class="flow-sec reveal" id="integration">
+  <div class="wrap">
+    <div class="s-ey" data-i18n="flow.eyebrow">Flujo de trabajo</div>
+    <h2 class="s-ti" data-i18n="flow.title">Tres herramientas, un proceso</h2>
+    <p class="s-su" style="margin:0 auto;text-align:center" data-i18n="flow.subtitle">Cada herramienta cubre una fase distinta del proceso inversor y se complementa con las demás.</p>
+
+    <div class="flow-box">
+      <div class="flow-step" data-step="1">
+        <div class="f-num">01</div>
+        <div class="f-app">SOPHIA·IQ</div>
+        <div class="f-lbl" data-i18n="flow.step1_label">Aprende</div>
+        <div class="f-body" data-i18n="flow.step1_body">Formación en finanzas antes de invertir tu primer euro.</div>
+      </div>
+      <div class="f-arr">→</div>
+      <div class="flow-step" data-step="2">
+        <div class="f-num">02</div>
+        <div class="f-app">AXIOS·IQ</div>
+        <div class="f-lbl" data-i18n="flow.step2_label">Analiza</div>
+        <div class="f-body" data-i18n="flow.step2_body">Aplica lo aprendido analizando empresas con datos reales.</div>
+      </div>
+      <div class="f-arr">→</div>
+      <div class="flow-step" data-step="3">
+        <div class="f-num">03</div>
+        <div class="f-app">HARVEST·IQ</div>
+        <div class="f-lbl" data-i18n="flow.step3_label">Construye</div>
+        <div class="f-body" data-i18n="flow.step3_body">Añade las mejores empresas y proyecta tus ingresos pasivos.</div>
+      </div>
+    </div>
+    <div class="connectors">
+      <div class="conn"><span class="conn-ico">🎓</span><span data-i18n="flow.connector_a">Los conceptos de SOPHIA·IQ (P/E, DCF, ROE, moat, payout…) son exactamente los que aplicarás en AXIOS·IQ.</span></div>
+      <div class="conn"><span class="conn-ico">🔗</span><span data-i18n="flow.connector_b">Las empresas que superan el análisis de AXIOS·IQ son candidatas ideales para tu cartera en HARVEST·IQ.</span></div>
+    </div>
   </div>
-  <div id="frame-loader">
-    <div class="loader-spinner"></div>
-    <div class="loader-text" id="loader-text">Cargando...</div>
+</section>
+
+<div class="dvd"></div>
+
+<!-- ═══ PRICING ═══ -->
+<section class="pricing-sec" id="pricing">
+  <div class="wrap">
+    <div class="pricing-hdr reveal">
+      <div class="s-ey" data-i18n="pricing.eyebrow">Planes y precios</div>
+      <h2 class="s-ti" data-i18n="pricing.title">Empieza gratis. Crece cuando quieras.</h2>
+      <p class="s-su" style="margin:0 auto;text-align:center" data-i18n="pricing.subtitle">Sin permanencia. Cancela cuando quieras. Todos los planes incluyen actualizaciones.</p>
+    </div>
+    <div class="pricing-g reveal" id="pricing-g"></div>
+    <p class="pricing-note" id="pricing-note"></p>
   </div>
-  <iframe id="app-frame" title="App"></iframe>
+</section>
+
+<div class="dvd"></div>
+
+<!-- ═══ CTA ═══ -->
+<section class="cta-sec reveal">
+  <div class="wrap">
+    <div class="cta-box">
+      <h2 class="cta-t" data-i18n="cta.title">Empieza a invertir con criterio</h2>
+      <p class="cta-s" data-i18n="cta.subtitle">Sin compromisos. Empieza gratis con el podcast.</p>
+      <div class="cta-btns">
+        <a href="axios/index.html" class="cta-ab" data-app="axios"><span class="cta-dot"></span><span data-i18n="cta.btn_axios">AXIOS·IQ — Análisis</span></a>
+        <a href="harvest/index.html" class="cta-ab" data-app="harvest"><span class="cta-dot"></span><span data-i18n="cta.btn_harvest">HARVEST·IQ — Cartera</span></a>
+        <a href="sophia/index.html" class="cta-ab" data-app="sophia"><span class="cta-dot"></span><span data-i18n="cta.btn_sophia">SOPHIA·IQ — Academia</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <div class="f-logo"><span class="suite">Suite</span><span class="iq">-IQ</span></div>
+        <div class="f-tl" data-i18n="footer.tagline">Herramientas de inversión para inversores reales</div>
+      </div>
+      <div class="f-links">
+        <a href="axios/index.html" class="f-lnk" style="color:var(--axios)">AXIOS·IQ</a>
+        <a href="harvest/index.html" class="f-lnk" style="color:var(--harvest)">HARVEST·IQ</a>
+        <a href="sophia/index.html" class="f-lnk" style="color:var(--sophia)">SOPHIA·IQ</a>
+        <a href="https://github.com/pedicode" class="f-lnk" target="_blank" rel="noopener" data-i18n="footer.github">GitHub ↗</a>
+      </div>
+    </div>
+    <p class="f-disc" data-i18n="footer.disclaimer">Suite-IQ es una herramienta educativa e informativa. No constituye asesoramiento financiero. Invierte siempre con criterio propio y, si es necesario, consulta a un asesor financiero profesional regulado.</p>
+  </div>
+</footer>
+
 </div>
 
 <script>
-  const launcher  = document.getElementById('launcher');
-  const viewer    = document.getElementById('app-viewer');
-  const frame     = document.getElementById('app-frame');
-  const titleEl   = document.getElementById('viewer-title');
-  const dotEl     = document.getElementById('viewer-dot');
-  const loaderEl  = document.getElementById('frame-loader');
-  const loaderTxt = document.getElementById('loader-text');
+// ══════════════════════════════════════════════════════════════
+// TRANSLATIONS — embebidas, sin fetch externo
+// ══════════════════════════════════════════════════════════════
+var TR = {
+es:{
+  nav:{suite_label:"Suite de Inversión",cta:"Ver precios →"},
+  hero:{
+    eyebrow:"Suite de Inversión · 3 Herramientas · Empieza Gratis",
+    title_pre:"Inteligencia",
+    title_post:"al alcance de todos",
+    words:["Financiera","Patrimonial","Económica","Fiscal","del Ahorro","Estructurada","Emocional"],
+    brand_tag:"tu cerebro financiero",
+    tagline:"Diseñada para inversores reales con criterio.",
+    cta_primary:"Ver planes y precios →",cta_secondary:"Conocer las herramientas",
+    stat_tickers:"tickers globales",stat_countries:"países",stat_apps:"herramientas",stat_free:"plan gratuito"
+  },
+  pillars:{
+    eyebrow:"Filosofía",title:"Diseñada para inversores reales",subtitle:"Herramientas profesionales con acceso democrático. Sin letra pequeña.",
+    items:[
+      {ico:"🆓",t:"Empieza gratis",b:"El plan Free incluye acceso completo al podcast y contenido introductorio. Sin tarjeta de crédito."},
+      {ico:"🔒",t:"Privacidad total",b:"Tu cartera nunca sale de tu navegador. Sin servidores que almacenen tu información personal."},
+      {ico:"⚡",t:"Sin registro",b:"Abre la herramienta y empieza a trabajar. Sin cuenta, sin email, sin contraseña."},
+      {ico:"🌍",t:"Trilingüe",b:"Todas las herramientas disponibles en español, inglés y portugués de forma nativa."}
+    ]
+  },
+  apps:{
+    eyebrow:"Las herramientas",
+    axios:{tag:"Análisis Fundamental",tagline:"El terminal de análisis fundamental",description:"Analiza cualquier empresa cotizada con datos reales de Yahoo Finance, modelos de valoración propios y un scorecard sectorial por benchmarks. De los datos en bruto a una decisión fundamentada en minutos.",features:["1.560 tickers en 44 países con auto-relleno","Scorecard 5 bloques con benchmarks sectoriales","Valoración DCF + Graham + DDM con CAPM dinámico","Análisis IA: semáforo, moat, convicción y peers","Macro FRED: T10Y y FEDFUNDS en tiempo real","Print-ready: exporta tu análisis en PDF"],cta:"Abrir AXIOS·IQ →",ideal:"Ideal para: inversores value, análisis buy-and-hold, due diligence inicial"},
+    harvest:{tag:"Cartera DGI",tagline:"Tu cartera de dividendos, controlada",description:"Gestiona tu cartera de Dividend Growth Investing con privacidad total. Carga tu CSV, analiza dividendos, proyecta ingresos pasivos y descubre los mejores compounders del mercado.",features:["Carga CSV/Excel — 100% privado, sin servidor","DGI Score: DGR, YoC, payout, moat y streak","Proyección de ingresos pasivos con objetivo personal","Top 20 Compounders por calidad DGI","Veredicto 4 señales: COMPRAR / OPORTUNIDAD / MANTENER / EVITAR","Yield on Cost histórico y análisis de streak"],cta:"Abrir HARVEST·IQ →",ideal:"Ideal para: inversores DGI, independencia financiera, rentas pasivas"},
+    sophia:{tag:"Academia Financiera",tagline:"Tu academia de finanzas personales e inversión",description:"Cursos estructurados de finanzas personales e inversión. Del ahorro al análisis fundamental, con podcasts gratuitos, artículos trilingues y lecciones para todos los niveles.",features:["Podcast gratuito: Finanzas para Familias Modernas","97 artículos trilingues ES / EN / PT","Cursos con certificado de completado","Progresión del ahorro básico al análisis avanzado","Tutor IA por tema y lección","Acceso offline al contenido descargado"],cta:"Abrir SOPHIA·IQ →",ideal:"Ideal para: principiantes, familias, inversores en formación"}
+  },
+  flow:{
+    eyebrow:"Flujo de trabajo",title:"Tres herramientas, un proceso",subtitle:"Cada herramienta cubre una fase distinta del proceso inversor y se complementa con las demás.",
+    step1_label:"Aprende",step1_body:"Formación en finanzas antes de invertir tu primer euro.",
+    step2_label:"Analiza",step2_body:"Aplica lo aprendido analizando empresas con datos reales.",
+    step3_label:"Construye",step3_body:"Añade las mejores empresas y proyecta tus ingresos pasivos.",
+    connector_a:"Los conceptos de SOPHIA·IQ (P/E, DCF, ROE, moat, payout…) son exactamente los que aplicarás en AXIOS·IQ.",
+    connector_b:"Las empresas que superan el análisis de AXIOS·IQ son candidatas ideales para tu cartera en HARVEST·IQ."
+  },
+  pricing:{
+    eyebrow:"Planes y precios",title:"Empieza gratis. Crece cuando quieras.",subtitle:"Sin permanencia. Cancela cuando quieras. Todos los planes incluyen actualizaciones.",
+    plans:[
+      {tier:"Plan Free",name:"Escucha & Aprende",tl:"Podcast y contenido introductorio",amount:"0",cur:"",per:"/mes",best:false,apps:["podcast"],chips:{podcast:"🎙️ Podcast"},fts:[{y:true,t:"Podcast completo: Finanzas para Familias Modernas"},{y:true,t:"Artículos y contenido introductorio en SOPHIA·IQ"},{y:false,t:"AXIOS·IQ — Análisis fundamental"},{y:false,t:"HARVEST·IQ — Gestión de cartera DGI"}],cta:"Escuchar gratis",btn:"pod",href:"sophia/index.html",rib:null},
+      {tier:"Plan Esencial",name:"Una herramienta",tl:"AXIOS·IQ o HARVEST·IQ, a elegir",amount:"5",cur:"€",per:"/mes",best:false,apps:["axios","harvest"],chips:{axios:"AXIOS·IQ",harvest:"HARVEST·IQ"},fts:[{y:true,t:"Una herramienta a elegir: AXIOS·IQ o HARVEST·IQ"},{y:true,t:"Podcast + contenido introductorio de SOPHIA·IQ"},{y:true,t:"Todas las funciones de la herramienta elegida"},{y:false,t:"SOPHIA·IQ — Academia completa con cursos"}],cta:"Empezar por 5€/mes",btn:"ghost",href:"#",rib:null},
+      {tier:"Plan Pro",name:"Analiza + Construye",tl:"AXIOS·IQ + HARVEST·IQ completos",amount:"8",cur:"€",per:"/mes",best:true,apps:["axios","harvest"],chips:{axios:"AXIOS·IQ",harvest:"HARVEST·IQ"},fts:[{y:true,t:"AXIOS·IQ — Análisis fundamental completo"},{y:true,t:"HARVEST·IQ — Gestión de cartera DGI completa"},{y:true,t:"Podcast + contenido introductorio de SOPHIA·IQ"},{y:false,t:"SOPHIA·IQ — Academia completa con certificados"}],cta:"Empezar por 8€/mes",btn:"primary",href:"#",rib:"Más popular"},
+      {tier:"Suite Completa",name:"Todo incluido",tl:"AXIOS·IQ + HARVEST·IQ + SOPHIA·IQ",amount:"10",cur:"€",per:"/mes",best:false,apps:["axios","harvest","sophia"],chips:{axios:"AXIOS·IQ",harvest:"HARVEST·IQ",sophia:"SOPHIA·IQ"},fts:[{y:true,t:"AXIOS·IQ — Análisis fundamental completo"},{y:true,t:"HARVEST·IQ — Gestión de cartera DGI completa"},{y:true,t:"SOPHIA·IQ — Academia completa con cursos y certificados"},{y:true,t:"Acceso prioritario a nuevas funciones y contenidos"}],cta:"Empezar por 10€/mes",btn:"ghost",href:"#",rib:null}
+    ],
+    note:"¿Dudas sobre qué plan elegir? <a href='mailto:hola@suite-iq.com'>Escríbenos</a> y te ayudamos. · Sin permanencia — cancela cuando quieras."
+  },
+  cta:{title:"Empieza a invertir con criterio",subtitle:"Sin compromisos. Empieza gratis con el podcast.",btn_axios:"AXIOS·IQ — Análisis",btn_harvest:"HARVEST·IQ — Cartera",btn_sophia:"SOPHIA·IQ — Academia"},
+  footer:{tagline:"Herramientas de inversión para inversores reales",github:"GitHub ↗",disclaimer:"Suite-IQ es una herramienta educativa e informativa. No constituye asesoramiento financiero. Invierte siempre con criterio propio y, si es necesario, consulta a un asesor financiero profesional regulado."}
+},
+en:{
+  nav:{suite_label:"Investment Suite",cta:"See pricing →"},
+  hero:{
+    eyebrow:"Investment Suite · 3 Tools · Start Free",
+    title_pre:"Intelligence",
+    title_post:"within everyone's reach",
+    words:["Financial","Patrimonial","Economic","Fiscal","for Savings","Structured","Emotional"],
+    brand_tag:"your financial brain",
+    tagline:"Designed for real investors with knowledge and conviction.",
+    cta_primary:"See plans & pricing →",cta_secondary:"Explore the tools",
+    stat_tickers:"global tickers",stat_countries:"countries",stat_apps:"tools",stat_free:"free plan"
+  },
+  pillars:{
+    eyebrow:"Philosophy",title:"Designed for real investors",subtitle:"Professional tools with democratic access. No hidden catches.",
+    items:[
+      {ico:"🆓",t:"Start for free",b:"The Free plan includes full podcast access and introductory content. No credit card required."},
+      {ico:"🔒",t:"Total privacy",b:"Your portfolio never leaves your browser. No servers storing your personal data."},
+      {ico:"⚡",t:"No registration",b:"Open the tool and start working. No account, no email, no password."},
+      {ico:"🌍",t:"Trilingual",b:"All tools natively available in Spanish, English and Portuguese."}
+    ]
+  },
+  apps:{
+    eyebrow:"The tools",
+    axios:{tag:"Fundamental Analysis",tagline:"The fundamental analysis terminal",description:"Analyze any listed company with real Yahoo Finance data, proprietary valuation models and a sector scorecard with benchmarks. From raw data to a well-reasoned decision in minutes.",features:["1,560 tickers in 44 countries with auto-fill","5-block scorecard with sector benchmarks","DCF + Graham + DDM valuation with dynamic CAPM","AI analysis: signal, moat, conviction and peers","FRED Macro: live T10Y and FEDFUNDS rates","Print-ready: export your analysis as PDF"],cta:"Open AXIOS·IQ →",ideal:"Ideal for: value investors, buy-and-hold analysis, initial due diligence"},
+    harvest:{tag:"DGI Portfolio",tagline:"Your dividend portfolio, under control",description:"Manage your Dividend Growth Investing portfolio with total privacy. Load your CSV, analyze dividends, project passive income and discover the best compounders on the market.",features:["CSV/Excel upload — 100% private, no server","DGI Score: DGR, YoC, payout, moat and streak","Passive income projection with personal goal","Top 20 Compounders by DGI quality","4-signal verdict: BUY / OPPORTUNITY / HOLD / AVOID","Historical Yield on Cost and streak analysis"],cta:"Open HARVEST·IQ →",ideal:"Ideal for: DGI investors, financial independence, passive income"},
+    sophia:{tag:"Financial Academy",tagline:"Your personal finance & investing academy",description:"Structured courses on personal finance and investing. From saving basics to fundamental analysis, with free podcasts, trilingual articles and lessons for all levels.",features:["Free podcast: Finances for Modern Families","97 trilingual articles ES / EN / PT","Courses with completion certificates","Progression from basic saving to advanced analysis","AI tutor per topic and lesson","Offline access to downloaded content"],cta:"Open SOPHIA·IQ →",ideal:"Ideal for: beginners, families, investors in training"}
+  },
+  flow:{
+    eyebrow:"Workflow",title:"Three tools, one process",subtitle:"Each tool covers a different phase of the investment process and complements the others.",
+    step1_label:"Learn",step1_body:"Build your financial foundation before investing your first euro.",
+    step2_label:"Analyze",step2_body:"Apply what you've learned. Analyze companies with real data.",
+    step3_label:"Build",step3_body:"Add the best companies and project your passive income.",
+    connector_a:"The concepts you learn in SOPHIA·IQ (P/E, DCF, ROE, moat, payout…) are exactly what you'll apply in AXIOS·IQ.",
+    connector_b:"Companies that pass AXIOS·IQ analysis are ideal candidates for your HARVEST·IQ portfolio."
+  },
+  pricing:{
+    eyebrow:"Plans & pricing",title:"Start free. Grow when you're ready.",subtitle:"No commitment. Cancel anytime. All plans include updates.",
+    plans:[
+      {tier:"Free Plan",name:"Listen & Learn",tl:"Full podcast and introductory content",amount:"0",cur:"",per:"/month",best:false,apps:["podcast"],chips:{podcast:"🎙️ Podcast"},fts:[{y:true,t:"Full podcast: Finances for Modern Families"},{y:true,t:"Articles and introductory content on SOPHIA·IQ"},{y:false,t:"AXIOS·IQ — Fundamental analysis"},{y:false,t:"HARVEST·IQ — DGI portfolio management"}],cta:"Listen for free",btn:"pod",href:"sophia/index.html",rib:null},
+      {tier:"Essential Plan",name:"One tool",tl:"AXIOS·IQ or HARVEST·IQ, your choice",amount:"5",cur:"€",per:"/month",best:false,apps:["axios","harvest"],chips:{axios:"AXIOS·IQ",harvest:"HARVEST·IQ"},fts:[{y:true,t:"One tool of your choice: AXIOS·IQ or HARVEST·IQ"},{y:true,t:"Podcast + introductory content on SOPHIA·IQ"},{y:true,t:"All features of your chosen tool"},{y:false,t:"SOPHIA·IQ — Full academy access"}],cta:"Start at €5/month",btn:"ghost",href:"#",rib:null},
+      {tier:"Pro Plan",name:"Analyze + Build",tl:"Full AXIOS·IQ + HARVEST·IQ",amount:"8",cur:"€",per:"/month",best:true,apps:["axios","harvest"],chips:{axios:"AXIOS·IQ",harvest:"HARVEST·IQ"},fts:[{y:true,t:"AXIOS·IQ — Full fundamental analysis"},{y:true,t:"HARVEST·IQ — Full DGI portfolio management"},{y:true,t:"Podcast + introductory content on SOPHIA·IQ"},{y:false,t:"SOPHIA·IQ — Full academy with certificates"}],cta:"Start at €8/month",btn:"primary",href:"#",rib:"Most popular"},
+      {tier:"Full Suite",name:"Everything included",tl:"AXIOS·IQ + HARVEST·IQ + SOPHIA·IQ",amount:"10",cur:"€",per:"/month",best:false,apps:["axios","harvest","sophia"],chips:{axios:"AXIOS·IQ",harvest:"HARVEST·IQ",sophia:"SOPHIA·IQ"},fts:[{y:true,t:"AXIOS·IQ — Full fundamental analysis"},{y:true,t:"HARVEST·IQ — Full DGI portfolio management"},{y:true,t:"SOPHIA·IQ — Full academy with courses and certificates"},{y:true,t:"Priority access to new features and content"}],cta:"Start at €10/month",btn:"ghost",href:"#",rib:null}
+    ],
+    note:"Not sure which plan? <a href='mailto:hello@suite-iq.com'>Write to us</a> and we'll help. · No commitment — cancel anytime."
+  },
+  cta:{title:"Start investing with conviction",subtitle:"No commitment. Start free with the podcast.",btn_axios:"AXIOS·IQ — Analysis",btn_harvest:"HARVEST·IQ — Portfolio",btn_sophia:"SOPHIA·IQ — Academy"},
+  footer:{tagline:"Investment tools for real investors",github:"GitHub ↗",disclaimer:"Suite-IQ is an educational and informational tool. It does not constitute financial advice. Always invest with your own judgment and, if necessary, consult a regulated professional financial advisor."}
+},
+pt:{
+  nav:{suite_label:"Suite de Investimento",cta:"Ver preços →"},
+  hero:{
+    eyebrow:"Suite de Investimento · 3 Ferramentas · Começa Grátis",
+    title_pre:"Inteligência",
+    title_post:"ao alcance de todos",
+    words:["Financeira","Patrimonial","Económica","Fiscal","para a Poupança","Estruturada","Emocional"],
+    brand_tag:"o teu cérebro financeiro",
+    tagline:"Desenhada para investidores reais com critério.",
+    cta_primary:"Ver planos e preços →",cta_secondary:"Conhecer as ferramentas",
+    stat_tickers:"tickers globais",stat_countries:"países",stat_apps:"ferramentas",stat_free:"plano gratuito"
+  },
+  pillars:{
+    eyebrow:"Filosofia",title:"Desenhada para investidores reais",subtitle:"Ferramentas profissionais com acesso democrático. Sem letra pequena.",
+    items:[
+      {ico:"🆓",t:"Começa grátis",b:"O plano Free inclui acesso completo ao podcast e conteúdo introdutório. Sem cartão de crédito."},
+      {ico:"🔒",t:"Privacidade total",b:"A tua carteira nunca sai do browser. Sem servidores a armazenar os teus dados pessoais."},
+      {ico:"⚡",t:"Sem registo",b:"Abre a ferramenta e começa a trabalhar. Sem conta, sem email, sem password."},
+      {ico:"🌍",t:"Trilingue",b:"Todas as ferramentas disponíveis nativamente em espanhol, inglês e português."}
+    ]
+  },
+  apps:{
+    eyebrow:"As ferramentas",
+    axios:{tag:"Análise Fundamental",tagline:"O terminal de análise fundamental",description:"Analisa qualquer empresa cotada com dados reais do Yahoo Finance, modelos de valorização próprios e um scorecard sectorial com benchmarks. Dos dados em bruto a uma decisão fundamentada em minutos.",features:["1.560 tickers em 44 países com preenchimento automático","Scorecard 5 blocos com benchmarks sectoriais","Valorização DCF + Graham + DDM com CAPM dinâmico","Análise IA: semáforo, moat, convicção e peers","Macro FRED: T10Y e FEDFUNDS em tempo real","Print-ready: exporta a tua análise em PDF"],cta:"Abrir AXIOS·IQ →",ideal:"Ideal para: investidores value, análise buy-and-hold, due diligence inicial"},
+    harvest:{tag:"Carteira DGI",tagline:"A tua carteira de dividendos, controlada",description:"Gere a tua carteira de Dividend Growth Investing com privacidade total. Carrega o teu CSV, analisa dividendos, projeta rendimentos passivos e descobre os melhores compounders do mercado.",features:["Carregamento CSV/Excel — 100% privado, sem servidor","DGI Score: DGR, YoC, payout, moat e streak","Projeção de rendimentos passivos com objetivo pessoal","Top 20 Compounders por qualidade DGI","Veredicto 4 sinais: COMPRAR / OPORTUNIDADE / MANTER / EVITAR","Yield on Cost histórico e análise de streak"],cta:"Abrir HARVEST·IQ →",ideal:"Ideal para: investidores DGI, independência financeira, rendimentos passivos"},
+    sophia:{tag:"Academia Financeira",tagline:"A tua academia de finanças pessoais e investimento",description:"Cursos estruturados de finanças pessoais e investimento. Da poupança básica à análise fundamental, com podcasts gratuitos, artigos trilingues e lições para todos os níveis.",features:["Podcast gratuito: Finanças para Famílias Modernas","97 artigos trilingues ES / EN / PT","Cursos com certificado de conclusão","Progressão da poupança básica à análise avançada","Tutor IA por tema e lição","Acesso offline ao conteúdo transferido"],cta:"Abrir SOPHIA·IQ →",ideal:"Ideal para: iniciantes, famílias, investidores em formação"}
+  },
+  flow:{
+    eyebrow:"Fluxo de trabalho",title:"Três ferramentas, um processo",subtitle:"Cada ferramenta cobre uma fase distinta do processo de investimento e complementa as restantes.",
+    step1_label:"Aprende",step1_body:"Formação em finanças antes de investires o teu primeiro euro.",
+    step2_label:"Analisa",step2_body:"Aplica o que aprendeste analisando empresas com dados reais.",
+    step3_label:"Constrói",step3_body:"Adiciona as melhores empresas e projeta os teus rendimentos passivos.",
+    connector_a:"Os conceitos do SOPHIA·IQ (P/E, DCF, ROE, moat, payout…) são exatamente o que aplicarás no AXIOS·IQ.",
+    connector_b:"As empresas que superam a análise do AXIOS·IQ são candidatas ideais para a tua carteira no HARVEST·IQ."
+  },
+  pricing:{
+    eyebrow:"Planos e preços",title:"Começa grátis. Cresce quando quiseres.",subtitle:"Sem permanência. Cancela quando quiseres. Todos os planos incluem atualizações.",
+    plans:[
+      {tier:"Plano Free",name:"Ouve & Aprende",tl:"Podcast completo e conteúdo introdutório",amount:"0",cur:"",per:"/mês",best:false,apps:["podcast"],chips:{podcast:"🎙️ Podcast"},fts:[{y:true,t:"Podcast completo: Finanças para Famílias Modernas"},{y:true,t:"Artigos e conteúdo introdutório no SOPHIA·IQ"},{y:false,t:"AXIOS·IQ — Análise fundamental"},{y:false,t:"HARVEST·IQ — Gestão de carteira DGI"}],cta:"Ouvir grátis",btn:"pod",href:"sophia/index.html",rib:null},
+      {tier:"Plano Essencial",name:"Uma ferramenta",tl:"AXIOS·IQ ou HARVEST·IQ, à tua escolha",amount:"5",cur:"€",per:"/mês",best:false,apps:["axios","harvest"],chips:{axios:"AXIOS·IQ",harvest:"HARVEST·IQ"},fts:[{y:true,t:"Uma ferramenta à escolha: AXIOS·IQ ou HARVEST·IQ"},{y:true,t:"Podcast + conteúdo introdutório do SOPHIA·IQ"},{y:true,t:"Todas as funcionalidades da ferramenta escolhida"},{y:false,t:"SOPHIA·IQ — Academia completa"}],cta:"Começar por 5€/mês",btn:"ghost",href:"#",rib:null},
+      {tier:"Plano Pro",name:"Analisa + Constrói",tl:"AXIOS·IQ + HARVEST·IQ completos",amount:"8",cur:"€",per:"/mês",best:true,apps:["axios","harvest"],chips:{axios:"AXIOS·IQ",harvest:"HARVEST·IQ"},fts:[{y:true,t:"AXIOS·IQ — Análise fundamental completa"},{y:true,t:"HARVEST·IQ — Gestão de carteira DGI completa"},{y:true,t:"Podcast + conteúdo introdutório do SOPHIA·IQ"},{y:false,t:"SOPHIA·IQ — Academia completa com certificados"}],cta:"Começar por 8€/mês",btn:"primary",href:"#",rib:"Mais popular"},
+      {tier:"Suite Completa",name:"Tudo incluído",tl:"AXIOS·IQ + HARVEST·IQ + SOPHIA·IQ",amount:"10",cur:"€",per:"/mês",best:false,apps:["axios","harvest","sophia"],chips:{axios:"AXIOS·IQ",harvest:"HARVEST·IQ",sophia:"SOPHIA·IQ"},fts:[{y:true,t:"AXIOS·IQ — Análise fundamental completa"},{y:true,t:"HARVEST·IQ — Gestão de carteira DGI completa"},{y:true,t:"SOPHIA·IQ — Academia completa com cursos e certificados"},{y:true,t:"Acesso prioritário a novas funcionalidades e conteúdos"}],cta:"Começar por 10€/mês",btn:"ghost",href:"#",rib:null}
+    ],
+    note:"Dúvidas sobre qual plano escolher? <a href='mailto:ola@suite-iq.com'>Escreve-nos</a> e ajudamos. · Sem permanência — cancela quando quiseres."
+  },
+  cta:{title:"Começa a investir com critério",subtitle:"Sem compromissos. Começa grátis com o podcast.",btn_axios:"AXIOS·IQ — Análise",btn_harvest:"HARVEST·IQ — Carteira",btn_sophia:"SOPHIA·IQ — Academia"},
+  footer:{tagline:"Ferramentas de investimento para investidores reais",github:"GitHub ↗",disclaimer:"A Suite-IQ é uma ferramenta educativa e informativa. Não constitui aconselhamento financeiro. Investe sempre com critério próprio e, se necessário, consulta um assessor financeiro profissional regulado."}
+}
+};
 
-  function openApp(src, title, type) {
-    titleEl.textContent   = title;
-    titleEl.className     = type + '-title';
-    dotEl.className       = 'viewer-dot ' + type + '-dot';
-    loaderTxt.textContent = 'Cargando ' + title + '...';
-    loaderEl.classList.remove('hidden');
-    frame.src = src;
-    viewer.classList.add('open');
-    launcher.classList.add('hidden');
-    history.pushState({ app: src, title, type }, title, '#' + type);
-  }
+// ══════════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════════
+var LANG  = localStorage.getItem('suiteiq_lang')  || 'es';
+var THEME = localStorage.getItem('suiteiq_theme') || 'dark';
+var T = {};
 
-  function closeApp() {
-    viewer.classList.remove('open');
-    launcher.classList.remove('hidden');
-    setTimeout(() => { frame.src = ''; loaderEl.classList.remove('hidden'); }, 400);
-    history.pushState({}, 'IQ Suite', location.pathname);
-  }
+// ── Theme ──
+function applyTheme(t){
+  THEME = t;
+  document.documentElement.setAttribute('data-theme', t);
+  var b = document.getElementById('theme-toggle');
+  if(b) b.textContent = t==='dark'?'🌙':'☀️';
+  localStorage.setItem('suiteiq_theme', t);
+}
+document.getElementById('theme-toggle').addEventListener('click',function(){applyTheme(THEME==='dark'?'light':'dark');});
+applyTheme(THEME);
 
-  frame.addEventListener('load', () => {
-    if (frame.src && frame.src !== 'about:blank') {
-      setTimeout(() => loaderEl.classList.add('hidden'), 350);
-    }
+// ── get nested key ──
+function g(path){ return path.split('.').reduce(function(o,k){return o&&o[k]!==undefined?o[k]:undefined;},T); }
+
+// ── Apply translations ──
+function apply(){
+  document.documentElement.lang = LANG;
+  document.title = 'Suite-IQ · '+({es:'Inteligencia Financiera',en:'Financial Intelligence',pt:'Inteligência Financeira'}[LANG]);
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var v=g(el.dataset.i18n);
+    if(v!==undefined&&typeof v==='string') el.innerHTML=v;
   });
+  renderPillars();
+  renderFeats('axios-ft',  g('apps.axios.features'),  'axios');
+  renderFeats('harvest-ft',g('apps.harvest.features'),'harvest');
+  renderFeats('sophia-ft', g('apps.sophia.features'), 'sophia');
+  renderPricing();
+}
 
-  window.addEventListener('popstate', (e) => {
-    if (e.state && e.state.app) openApp(e.state.app, e.state.title, e.state.type);
-    else closeApp();
-  });
+function renderFeats(id, feats, app){
+  var el=document.getElementById(id);
+  if(!el||!Array.isArray(feats))return;
+  var c={axios:'var(--axios)',harvest:'var(--harvest)',sophia:'var(--sophia)'};
+  el.innerHTML=feats.map(function(f){
+    return '<li class="app-fi"><span class="fi-ico" style="color:'+c[app]+'">◈</span><span>'+f+'</span></li>';
+  }).join('');
+}
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && viewer.classList.contains('open')) closeApp();
-  });
+function renderPillars(){
+  var el=document.getElementById('pillars-g');
+  var items=g('pillars.items');
+  if(!el||!Array.isArray(items))return;
+  el.innerHTML=items.map(function(p){
+    return '<div class="pillar"><div class="pi-ico">'+p.ico+'</div><div class="pi-t">'+p.t+'</div><div class="pi-b">'+p.b+'</div></div>';
+  }).join('');
+}
 
-  // Restore from hash on direct load
-  const h = location.hash.replace('#','');
-  if (h === 'axios')   openApp('axios/index.html',   'AXIOS·IQ',   'axios');
-  if (h === 'harvest') openApp('harvest/index.html', 'HARVEST·IQ', 'harvest');
-</script>
+function renderPricing(){
+  var el=document.getElementById('pricing-g');
+  var note=document.getElementById('pricing-note');
+  var plans=g('pricing.plans');
+  if(!el||!Array.isArray(plans))return;
+  var chipCls={axios:'chip-axios',harvest:'chip-harvest',sophia:'chip-sophia',podcast:'chip-pod'};
+  el.innerHTML=plans.map(function(p){
+    var chips=p.apps.map(function(a){return '<span class="chip '+chipCls[a]+'">'+(p.chips[a]||a)+'</span>';}).join('');
+    var fts=p.fts.map(function(f){
+      return '<li class="plan-ft'+(f.y?'':' dim')+'"><span class="'+(f.y?'ft-ok':'ft-no')+'">'+(f.y?'✓':'○')+'</span><span>'+f.t+'</span></li>';
+    }).join('');
+    var rib=p.rib?'<div class="plan-ribbon">'+p.rib+'</div>':'';
+    var price=p.amount==='0'?'<span class="plan-amt free">Free</span>':'<span class="plan-cur">'+p.cur+'</span><span class="plan-amt">'+p.amount+'</span><span class="plan-per">'+p.per+'</span>';
+    return '<div class="plan'+(p.best?' best':'')+'">'+rib+'<div class="plan-tier">'+p.tier+'</div><div class="plan-name">'+p.name+'</div><div class="plan-tl">'+p.tl+'</div><div class="plan-price">'+price+'</div><div class="plan-chips">'+chips+'</div><ul class="plan-fts">'+fts+'</ul><a href="'+p.href+'" class="plan-btn '+p.btn+'">'+p.cta+'</a></div>';
+  }).join('');
+  if(note) note.innerHTML=g('pricing.note')||'';
+}
 
-  <script>
-    // ── IQ Suite language switcher ──
-    const SUITE_STRINGS = {
-      es: {
-        tagline: 'Herramientas de inversión inteligente, gratuitas y sin registro.',
-        sub: 'Análisis fundamental · Cartera de dividendos · Academia de inversión',
-        support: 'Apoya este proyecto',
-        footer: 'IQ SUITE · HERRAMIENTAS DE INVERSIÓN · SIN REGISTRO · SIN SERVIDOR',
-        sophiaBadge: '💡 Academia', sophiaDesc: 'Academia de inversión y finanzas personales. Cursos con certificados, artículos trilingues y progreso guardado.', sophiaCta: 'Abrir SOPHIA·IQ →',
-        sp1:'4 cursos: Finanzas Personales, Iniciado, Intermedio, Avanzado', sp2:'97 artículos trilingues', sp3:'Certificados descargables', sp4:'100% offline · sin cuenta',
-        axiosBadge: '⚡ Analizador', axiosDesc: 'Terminal de análisis fundamental. Analiza cualquier empresa con datos reales de mercado y valoración asistida por IA.',
-        axiosCta: 'Abrir AXIOS·IQ →',
-        harvestBadge: '🌾 Cartera', harvestDesc: 'Gestión inteligente de cartera de dividendos. Carga tu CSV o Excel para análisis DGI, oportunidades y proyección de ingresos pasivos.',
-        harvestCta: 'Abrir HARVEST·IQ →',
-        f1:'1.309 tickers en 35+ países', f2:'21 ítems · 14 rellenados automáticamente',
-        f3:'Análisis IA con escenarios y precio de entrada', f4:'Academia con 4 cursos y certificados',
-        h1:'Análisis completo de cartera de dividendos', h2:'Ranking de oportunidades y refuerzo',
-        h3:'Proyección de ingresos mensuales', h4:'100% privado — sin servidor, sin cuenta',
-        back: '← IQ Suite',
-        kofi: 'Apoyar',
-      },
-      en: {
-        tagline: 'Smart investment tools, free and no account needed.',
-        sub: 'Fundamental analysis · Dividend portfolio · Investment academy',
-        support: 'Support this project',
-        footer: 'IQ SUITE · INVESTMENT TOOLS · NO ACCOUNT · NO SERVER',
-        sophiaBadge: '💡 Academy', sophiaDesc: 'Investment academy and personal finance. Courses with certificates, trilingual articles and saved progress.', sophiaCta: 'Open SOPHIA·IQ →',
-        sp1:'4 courses: Personal Finance, Beginner, Intermediate, Advanced', sp2:'97 trilingual articles', sp3:'Downloadable certificates', sp4:'100% offline · no account',
-        axiosBadge: '⚡ Analyzer', axiosDesc: 'Fundamental analysis terminal. Analyze any company with real market data and AI-assisted valuation.',
-        axiosCta: 'Open AXIOS·IQ →',
-        harvestBadge: '🌾 Portfolio', harvestDesc: 'Smart dividend portfolio manager. Upload your CSV or Excel for DGI analysis, opportunities and passive income projection.',
-        harvestCta: 'Open HARVEST·IQ →',
-        f1:'1.309 tickers in 35+ countries', f2:'21 items · 14 filled automatically',
-        f3:'AI analysis with scenarios and entry price', f4:'Academy with 4 courses and certificates',
-        h1:'Full dividend portfolio analysis', h2:'Opportunity and reinforcement ranking',
-        h3:'Monthly income projection', h4:'100% private — no server, no account',
-        back: '← IQ Suite',
-        kofi: 'Support',
-      },
-      pt: {
-        tagline: 'Ferramentas de investimento inteligentes, gratuitas e sem registo.',
-        sub: 'Análise fundamental · Carteira de dividendos · Academia de investimento',
-        support: 'Apoia este projeto',
-        footer: 'IQ SUITE · FERRAMENTAS DE INVESTIMENTO · SEM REGISTO · SEM SERVIDOR',
-        sophiaBadge: '💡 Academia', sophiaDesc: 'Academia de investimento e finanças pessoais. Cursos com certificados, artigos trilingues e progresso guardado.', sophiaCta: 'Abrir SOPHIA·IQ →',
-        sp1:'4 cursos: Finanças Pessoais, Iniciado, Intermédio, Avançado', sp2:'97 artigos trilingues', sp3:'Certificados para descarregar', sp4:'100% offline · sem conta',
-        axiosBadge: '⚡ Analisador', axiosDesc: 'Terminal de análise fundamental. Analisa qualquer empresa com dados reais de mercado e valorização assistida por IA.',
-        axiosCta: 'Abrir AXIOS·IQ →',
-        harvestBadge: '🌾 Carteira', harvestDesc: 'Gestão inteligente de carteira de dividendos. Carrega o teu CSV ou Excel para análise DGI, oportunidades e projeção de rendimentos passivos.',
-        harvestCta: 'Abrir HARVEST·IQ →',
-        f1:'1.309 tickers em 35+ países', f2:'21 itens · 14 preenchidos automaticamente',
-        f3:'Análise IA com cenários e preço de entrada', f4:'Academia com 4 cursos e certificados',
-        h1:'Análise completa de carteira de dividendos', h2:'Ranking de oportunidades e reforço',
-        h3:'Projeção de rendimentos mensais', h4:'100% privado — sem servidor, sem conta',
-        back: '← IQ Suite',
+// ══════════════════════════════════════════════════════════════
+// TYPEWRITER ENGINE
+// ══════════════════════════════════════════════════════════════
+var TW = {
+  el: null,
+  idx: 0,
+  charIdx: 0,
+  deleting: false,
+  timer: null,
+
+  // Speeds (ms)
+  TYPE_SPEED:   72,
+  DELETE_SPEED: 38,
+  PAUSE_AFTER:  2400,   // hold full word
+  PAUSE_BEFORE: 380,    // pause before typing next
+
+  start: function() {
+    this.el = document.getElementById('tw-word');
+    if (!this.el) return;
+    clearTimeout(this.timer);
+    this.charIdx = 0;
+    this.deleting = false;
+    // Reset index only on lang change, not on internal restart
+    this.step();
+  },
+
+  reset: function() {
+    this.idx = 0;
+    this.start();
+  },
+
+  words: function() {
+    var t = T && T.hero && T.hero.words;
+    return Array.isArray(t) ? t : ["Financiera","Patrimonial","Económica","Fiscal","del Ahorro","Estructurada","Emocional"];
+  },
+
+  step: function() {
+    var self = TW;
+    if (!self.el) return;
+    var words = self.words();
+    var word  = words[self.idx % words.length];
+
+    if (!self.deleting) {
+      // Typing
+      self.charIdx++;
+      self.el.textContent = word.slice(0, self.charIdx);
+      if (self.charIdx >= word.length) {
+        // Word complete — pause then delete
+        self.timer = setTimeout(function() { self.deleting = true; self.step(); }, self.PAUSE_AFTER);
+        return;
       }
-    };
-
-    let _suiteLang = localStorage.getItem('iq_suite_lang') || 'es';
-
-    function setSuiteLang(l) {
-      _suiteLang = l;
-      localStorage.setItem('iq_suite_lang', l);
-      ['es','en','pt'].forEach(function(x){
-        const btn = document.getElementById('slang-'+x);
-        if(btn) btn.classList.toggle('active', x===l);
-      });
-      const s = SUITE_STRINGS[l] || SUITE_STRINGS.es;
-      const safeSet = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
-      safeSet('s-tagline', s.tagline);
-      safeSet('s-sub',     s.sub);
-      safeSet('s-support', s.support);
-      safeSet('s-footer',  s.footer);
-      // back button
-      const bb = document.getElementById('back-btn');
-      if (bb) bb.innerHTML = '← IQ Suite';
-      // Cards — guard all
-      const set = (sel, txt) => { const el = document.querySelector(sel); if(el) el.textContent = txt; };
-      set('.axios-card .card-badge',  s.axiosBadge);
-      set('.axios-card .card-desc',   s.axiosDesc);
-      set('.axios-card .card-cta',    s.axiosCta);
-      set('.harvest-card .card-badge',s.harvestBadge);
-      set('.harvest-card .card-desc', s.harvestDesc);
-      set('.harvest-card .card-cta',  s.harvestCta);
-      const kofiEl = document.getElementById('s-kofi-txt');
-      if (kofiEl && s.kofi) kofiEl.textContent = s.kofi;
-      // Features
-      const axFeats = document.querySelectorAll('.axios-card .card-feature');
-      const hxFeats = document.querySelectorAll('.harvest-card .card-feature');
-      const spFeats = document.querySelectorAll('.sophia-card .card-feature');
-      const af = [s.f1,s.f2,s.f3,s.f4];
-      const hf = [s.h1,s.h2,s.h3,s.h4];
-      const spf = [s.sp1,s.sp2,s.sp3,s.sp4];
-      axFeats.forEach(function(el,i){ if(af[i]) el.innerHTML = '<span class="card-feature-dot"></span>' + af[i]; });
-      hxFeats.forEach(function(el,i){ if(hf[i]) el.innerHTML = '<span class="card-feature-dot"></span>' + hf[i]; });
-      spFeats.forEach(function(el,i){ if(spf[i]) el.innerHTML = '<span class="card-feature-dot"></span>' + spf[i]; });
-      set('.sophia-card .card-badge', s.sophiaBadge);
-      set('.sophia-card .card-desc',  s.sophiaDesc);
-      set('.sophia-card .card-cta',   s.sophiaCta);
+      self.timer = setTimeout(function() { self.step(); }, self.TYPE_SPEED);
+    } else {
+      // Deleting
+      self.charIdx--;
+      self.el.textContent = word.slice(0, self.charIdx);
+      if (self.charIdx <= 0) {
+        // Deleted — next word
+        self.deleting = false;
+        self.idx = (self.idx + 1) % words.length;
+        self.timer = setTimeout(function() { self.step(); }, self.PAUSE_BEFORE);
+        return;
+      }
+      self.timer = setTimeout(function() { self.step(); }, self.DELETE_SPEED);
     }
+  }
+};
 
-    // Restore lang on load
-    document.addEventListener('DOMContentLoaded', function(){
-      setSuiteLang(_suiteLang);
-    });
-  </script>
+// ── Lang switch ──
+function setLang(code){
+  if(!TR[code])return;
+  LANG=code; T=TR[code];
+  localStorage.setItem('suiteiq_lang',code);
+  apply();
+  document.querySelectorAll('.lang-btn').forEach(function(b){b.classList.toggle('active',b.dataset.lang===code);});
+  // Restart typewriter with new word list, preserve position feel
+  TW.idx = 0;
+  TW.charIdx = 0;
+  TW.deleting = false;
+  TW.start();
+}
+document.querySelectorAll('.lang-btn').forEach(function(b){b.addEventListener('click',function(){setLang(b.dataset.lang);});});
 
-  <!-- Service Worker — silent auto-update -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/sw.js')
-          .then(function(reg) {
-            // Listen for updates
-            reg.addEventListener('updatefound', function() {
-              var newWorker = reg.installing;
-              if (newWorker) {
-                newWorker.addEventListener('statechange', function() {
-                  if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                    // New SW installed — tell it to activate immediately
-                    newWorker.postMessage({ type: 'SKIP_WAITING' });
-                  }
-                });
-              }
-            });
-          })
-          .catch(function(err) { /* SW not critical */ });
+// ── Scroll reveal ──
+var obs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
+},{threshold:.07,rootMargin:'0px 0px -32px 0px'});
+document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
 
-        // When SW updates and reloads, auto-refresh the page once
-        var refreshing = false;
-        navigator.serviceWorker.addEventListener('controllerchange', function() {
-          if (!refreshing) {
-            refreshing = true;
-            window.location.reload();
-          }
-        });
-
-        // Listen for SW version update message
-        navigator.serviceWorker.addEventListener('message', function(e) {
-          if (e.data && e.data.type === 'SW_UPDATED') {
-            console.log('[IQ Suite] Updated to v' + e.data.version);
-          }
-        });
-      });
-    }
-  </script>
+// ── Init ──
+setLang(LANG);
+</script>
 </body>
 </html>
