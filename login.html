@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<!-- Suite-IQ · Login · v1.0.0 -->
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Suite-IQ · Acceder</title>
+<meta name="description" content="Accede a tu cuenta de Suite-IQ"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --axios:#00d4aa;--harvest:#4ADE80;--sophia:#c9a84c;
+  --r:8px;--r-lg:14px;--r-xl:20px;
+  --trans:180ms cubic-bezier(.4,0,.2,1);
+}
+:root,[data-theme="dark"]{
+  --bg:#070a0e;--bg2:#0d1117;--bg3:#111820;
+  --bdr:#1e2d3d;--bdr2:#253445;
+  --tx:#e2e8f0;--tx2:#94a3b8;--tx3:#475569;
+  --card:#0d1117;--card-bdr:#1e2d3d;
+}
+[data-theme="light"]{
+  --bg:#f8fafc;--bg2:#ffffff;--bg3:#f1f5f9;
+  --bdr:#e2e8f0;--bdr2:#cbd5e1;
+  --tx:#0f172a;--tx2:#334155;--tx3:#64748b;
+  --card:#ffffff;--card-bdr:#e2e8f0;
+  --axios:#007d64;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--tx);
+  font-family:'IBM Plex Sans',sans-serif;
+  font-size:15px;line-height:1.6;
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:24px;
+}
+
+/* Grid bg */
+.grid-bg{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(255,255,255,.013) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(255,255,255,.013) 1px,transparent 1px);
+  background-size:48px 48px}
+[data-theme="light"] .grid-bg{
+  background-image:linear-gradient(rgba(0,0,0,.02) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(0,0,0,.02) 1px,transparent 1px)}
+
+/* Glow */
+.glow{position:fixed;width:500px;height:500px;top:-150px;right:-150px;
+  border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0;
+  background:radial-gradient(circle,rgba(0,212,170,.18) 0%,transparent 70%);opacity:.3}
+
+.page{position:relative;z-index:1;width:100%;max-width:420px}
+
+/* Logo */
+.logo{display:flex;align-items:center;gap:10px;justify-content:center;
+  text-decoration:none;margin-bottom:40px}
+.logo-icon{width:40px;height:40px;border-radius:10px;
+  background:linear-gradient(135deg,rgba(0,212,170,.1),rgba(201,168,76,.1));
+  border:1px solid rgba(0,212,170,.22);
+  display:flex;align-items:center;justify-content:center;padding:8px}
+.logo-text{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;letter-spacing:-.3px}
+.logo-suite{color:var(--tx2)}
+.logo-iq{background:linear-gradient(135deg,var(--axios) 0%,var(--harvest) 50%,var(--sophia) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+/* Card */
+.card{background:var(--card);border:1px solid var(--card-bdr);
+  border-radius:var(--r-xl);padding:36px 32px;
+  box-shadow:0 8px 40px rgba(0,0,0,.2)}
+
+.card-title{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;
+  letter-spacing:-.02em;color:var(--tx);margin-bottom:6px;text-align:center}
+.card-sub{font-size:13px;color:var(--tx3);text-align:center;
+  line-height:1.6;margin-bottom:28px}
+
+/* Form */
+.form-group{margin-bottom:16px}
+.form-label{display:block;font-family:'IBM Plex Mono',monospace;font-size:10px;
+  font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--tx3);margin-bottom:7px}
+.form-input{
+  width:100%;padding:12px 14px;
+  background:var(--bg3);border:1px solid var(--bdr);
+  border-radius:var(--r);color:var(--tx);
+  font-family:'IBM Plex Sans',sans-serif;font-size:15px;
+  transition:var(--trans);outline:none;
+}
+.form-input:focus{border-color:var(--axios);box-shadow:0 0 0 3px rgba(0,212,170,.12)}
+.form-input::placeholder{color:var(--tx3)}
+
+/* Submit button */
+.btn-submit{
+  width:100%;padding:13px;border-radius:var(--r);
+  background:linear-gradient(135deg,var(--axios),rgba(0,212,170,.75));
+  color:#070a0e;font-family:'IBM Plex Mono',monospace;
+  font-size:12px;font-weight:700;letter-spacing:.06em;
+  border:none;cursor:pointer;
+  box-shadow:0 4px 20px rgba(0,212,170,.25);
+  transition:var(--trans);margin-top:8px;
+}
+.btn-submit:hover{transform:translateY(-1px);box-shadow:0 6px 28px rgba(0,212,170,.38)}
+.btn-submit:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* States */
+.msg{display:none;padding:12px 16px;border-radius:var(--r);
+  font-size:13px;line-height:1.6;margin-top:16px;text-align:center}
+.msg.success{background:rgba(0,212,170,.1);border:1px solid rgba(0,212,170,.3);
+  color:var(--axios);display:block}
+.msg.error{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);
+  color:#ef4444;display:block}
+.msg.loading{background:var(--bg3);border:1px solid var(--bdr);
+  color:var(--tx2);display:block}
+
+/* Divider */
+.divider{display:flex;align-items:center;gap:12px;margin:20px 0}
+.divider-line{flex:1;height:1px;background:var(--bdr)}
+.divider-text{font-family:'IBM Plex Mono',monospace;font-size:10px;
+  color:var(--tx3);letter-spacing:.08em}
+
+/* Plan info */
+.plan-info{
+  padding:14px 16px;border-radius:var(--r);
+  background:var(--bg3);border:1px solid var(--bdr);
+  font-size:12px;color:var(--tx3);line-height:1.7;
+  margin-top:20px;text-align:center;
+}
+.plan-info a{color:var(--axios);text-decoration:none}
+.plan-info a:hover{text-decoration:underline}
+
+/* Back link */
+.back-link{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  margin-top:24px;font-family:'IBM Plex Mono',monospace;
+  font-size:11px;color:var(--tx3);text-decoration:none;
+  transition:var(--trans);
+}
+.back-link:hover{color:var(--tx)}
+
+/* Lang switcher */
+.lang-sw{display:flex;gap:2px;justify-content:center;margin-bottom:28px;
+  background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r);
+  padding:3px;width:fit-content;margin-left:auto;margin-right:auto}
+.lang-btn{background:transparent;border:none;border-radius:4px;
+  padding:4px 10px;font-family:'IBM Plex Mono',monospace;font-size:10px;
+  font-weight:700;color:var(--tx3);cursor:pointer;transition:var(--trans)}
+.lang-btn.active,.lang-btn:hover{background:var(--bg2);color:var(--tx)}
+
+/* Theme toggle */
+.theme-btn{position:fixed;top:16px;right:16px;
+  width:32px;height:32px;border-radius:var(--r);
+  background:var(--bg3);border:1px solid var(--bdr);
+  cursor:pointer;font-size:14px;display:flex;
+  align-items:center;justify-content:center;
+  color:var(--tx3);transition:var(--trans);z-index:10}
+.theme-btn:hover{border-color:var(--bdr2);color:var(--tx)}
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div class="glow"></div>
+
+<button class="theme-btn" id="theme-toggle">🌙</button>
+
+<div class="page">
+
+  <!-- Logo -->
+  <a href="/" class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+        <rect x="1"  y="19" width="5" height="7" rx="1.2" fill="#00d4aa" opacity=".65"/>
+        <rect x="8"  y="13" width="5" height="13" rx="1.2" fill="#00d4aa" opacity=".82"/>
+        <rect x="15" y="8"  width="5" height="18" rx="1.2" fill="#4ADE80"/>
+        <rect x="22" y="3"  width="5" height="23" rx="1.2" fill="#c9a84c"/>
+        <polyline points="3.5,20 10.5,14 17.5,9 24.5,4" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity=".3"/>
+        <circle cx="24.5" cy="4" r="2.2" fill="white" opacity=".5"/>
+      </svg>
+    </div>
+    <div class="logo-text">
+      <span class="logo-suite">Suite</span><span class="logo-iq">-IQ</span>
+    </div>
+  </a>
+
+  <!-- Lang switcher -->
+  <div class="lang-sw">
+    <button class="lang-btn active" data-lang="es">ES</button>
+    <button class="lang-btn" data-lang="en">EN</button>
+    <button class="lang-btn" data-lang="pt">PT</button>
+  </div>
+
+  <!-- Card -->
+  <div class="card">
+    <h1 class="card-title" id="title">Acceder a Suite-IQ</h1>
+    <p class="card-sub" id="subtitle">Introduce tu email y te enviamos un enlace mágico. Sin contraseña.</p>
+
+    <div class="form-group">
+      <label class="form-label" id="email-label" for="email-input">Email</label>
+      <input
+        type="email"
+        id="email-input"
+        class="form-input"
+        placeholder="tu@email.com"
+        autocomplete="email"
+        autofocus
+      />
+    </div>
+
+    <button class="btn-submit" id="submit-btn" onclick="sendMagicLink()">
+      <span id="btn-text">Enviar enlace de acceso →</span>
+    </button>
+
+    <div class="msg" id="msg"></div>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <span class="divider-text" id="divider-text">sin contraseña</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <div class="plan-info" id="plan-info">
+      ¿Aún no tienes plan? <a href="/#pricing">Ver planes y precios →</a>
+    </div>
+  </div>
+
+  <a href="/" class="back-link" id="back-link">← Volver a Suite-IQ</a>
+
+</div>
+
+<!-- Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+// ══════════════════════════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════════════════════════
+var SUPABASE_URL  = 'https://mycbfhhhsigijmticokk.supabase.co';
+var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im15Y2JmaGhoc2lnaWptdGljb2trIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwMDYwODEsImV4cCI6MjA5MTU4MjA4MX0.R1FLufWCiInZyvrNj9BAIKLyaELIv3LENiR8kyJqDUs';
+var REDIRECT_URL  = 'https://suite-iq.org/login-callback.html';
+
+var sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+// ══════════════════════════════════════════════════════════════
+// i18n
+// ══════════════════════════════════════════════════════════════
+var TR = {
+  es:{
+    title:"Acceder a Suite-IQ",
+    subtitle:"Introduce tu email y te enviamos un enlace mágico. Sin contraseña.",
+    email_label:"Email",
+    btn:"Enviar enlace de acceso →",
+    btn_loading:"Enviando...",
+    divider:"sin contraseña",
+    plan_info:"¿Aún no tienes plan? <a href='/#pricing'>Ver planes y precios →</a>",
+    back:"← Volver a Suite-IQ",
+    success:"✓ ¡Enlace enviado! Revisa tu bandeja de entrada y haz clic en el enlace para acceder.",
+    error_empty:"Por favor introduce tu email.",
+    error_invalid:"Por favor introduce un email válido.",
+    error_send:"Error al enviar el enlace. Inténtalo de nuevo."
+  },
+  en:{
+    title:"Sign in to Suite-IQ",
+    subtitle:"Enter your email and we'll send you a magic link. No password needed.",
+    email_label:"Email",
+    btn:"Send access link →",
+    btn_loading:"Sending...",
+    divider:"passwordless",
+    plan_info:"Don't have a plan yet? <a href='/#pricing'>See plans & pricing →</a>",
+    back:"← Back to Suite-IQ",
+    success:"✓ Link sent! Check your inbox and click the link to sign in.",
+    error_empty:"Please enter your email.",
+    error_invalid:"Please enter a valid email.",
+    error_send:"Error sending the link. Please try again."
+  },
+  pt:{
+    title:"Aceder à Suite-IQ",
+    subtitle:"Introduz o teu email e enviamos-te um link mágico. Sem password.",
+    email_label:"Email",
+    btn:"Enviar link de acesso →",
+    btn_loading:"A enviar...",
+    divider:"sem password",
+    plan_info:"Ainda não tens plano? <a href='/#pricing'>Ver planos e preços →</a>",
+    back:"← Voltar à Suite-IQ",
+    success:"✓ Link enviado! Verifica a tua caixa de entrada e clica no link para aceder.",
+    error_empty:"Por favor introduz o teu email.",
+    error_invalid:"Por favor introduz um email válido.",
+    error_send:"Erro ao enviar o link. Tenta novamente."
+  }
+};
+
+var LANG  = localStorage.getItem('suiteiq_lang')  || 'es';
+var THEME = localStorage.getItem('suiteiq_theme') || 'dark';
+var T = {};
+
+// ── Theme ──
+function applyTheme(t){
+  THEME = t;
+  document.documentElement.setAttribute('data-theme', t);
+  document.getElementById('theme-toggle').textContent = t==='dark'?'🌙':'☀️';
+  localStorage.setItem('suiteiq_theme', t);
+}
+document.getElementById('theme-toggle').addEventListener('click',function(){
+  applyTheme(THEME==='dark'?'light':'dark');
+});
+applyTheme(THEME);
+
+// ── Apply lang ──
+function setLang(code){
+  if(!TR[code]) return;
+  LANG = code; T = TR[code];
+  localStorage.setItem('suiteiq_lang', code);
+  document.documentElement.lang = code;
+  document.getElementById('title').textContent       = T.title;
+  document.getElementById('subtitle').textContent    = T.subtitle;
+  document.getElementById('email-label').textContent = T.email_label;
+  document.getElementById('btn-text').textContent    = T.btn;
+  document.getElementById('divider-text').textContent= T.divider;
+  document.getElementById('plan-info').innerHTML     = T.plan_info;
+  document.getElementById('back-link').textContent   = T.back;
+  document.querySelectorAll('.lang-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.lang===code);
+  });
+}
+document.querySelectorAll('.lang-btn').forEach(function(b){
+  b.addEventListener('click', function(){ setLang(b.dataset.lang); });
+});
+
+// ── Enter key ──
+document.getElementById('email-input').addEventListener('keydown', function(e){
+  if(e.key==='Enter') sendMagicLink();
+});
+
+// ══════════════════════════════════════════════════════════════
+// MAGIC LINK
+// ══════════════════════════════════════════════════════════════
+function showMsg(type, text){
+  var el = document.getElementById('msg');
+  el.className = 'msg ' + type;
+  el.innerHTML = text;
+}
+
+async function sendMagicLink(){
+  var email = document.getElementById('email-input').value.trim();
+  var btn   = document.getElementById('submit-btn');
+  var btnTxt= document.getElementById('btn-text');
+
+  // Validación
+  if(!email){ showMsg('error', T.error_empty); return; }
+  var emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if(!emailRx.test(email)){ showMsg('error', T.error_invalid); return; }
+
+  // Loading
+  btn.disabled = true;
+  btnTxt.textContent = T.btn_loading;
+  showMsg('loading', '⏳ ' + T.btn_loading);
+
+  try {
+    var { error } = await sb.auth.signInWithOtp({
+      email: email,
+      options: {
+        emailRedirectTo: REDIRECT_URL,
+        shouldCreateUser: true,
+      }
+    });
+
+    if(error) throw error;
+
+    // Éxito
+    showMsg('success', T.success);
+    document.getElementById('email-input').value = '';
+    btn.disabled = false;
+    btnTxt.textContent = T.btn;
+
+  } catch(err) {
+    console.error('Magic link error:', err);
+    showMsg('error', T.error_send);
+    btn.disabled = false;
+    btnTxt.textContent = T.btn;
+  }
+}
+
+// ── Init ──
+setLang(LANG);
+</script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<!-- Suite-IQ · Login Callback · v1.0.0 -->
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Suite-IQ · Verificando acceso...</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@400;700&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--axios:#00d4aa;--harvest:#4ADE80;--sophia:#c9a84c;--bear:#ef4444}
+:root,[data-theme="dark"]{
+  --bg:#070a0e;--bg2:#0d1117;--bg3:#111820;
+  --bdr:#1e2d3d;--tx:#e2e8f0;--tx2:#94a3b8;--tx3:#475569;
+  --card:#0d1117;--card-bdr:#1e2d3d;
+}
+[data-theme="light"]{
+  --bg:#f8fafc;--bg2:#ffffff;--bg3:#f1f5f9;
+  --bdr:#e2e8f0;--tx:#0f172a;--tx2:#334155;--tx3:#64748b;
+  --card:#ffffff;--card-bdr:#e2e8f0;
+}
+html,body{
+  height:100%;background:var(--bg);color:var(--tx);
+  font-family:'IBM Plex Sans',sans-serif;font-size:15px;
+  display:flex;align-items:center;justify-content:center;
+}
+.grid-bg{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(255,255,255,.013) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(255,255,255,.013) 1px,transparent 1px);
+  background-size:48px 48px}
+
+.box{
+  position:relative;z-index:1;
+  text-align:center;padding:48px 40px;
+  background:var(--card);border:1px solid var(--card-bdr);
+  border-radius:20px;max-width:400px;width:90%;
+  box-shadow:0 8px 40px rgba(0,0,0,.2);
+}
+
+/* Spinner */
+.spinner{
+  width:48px;height:48px;border-radius:50%;margin:0 auto 24px;
+  border:3px solid var(--bdr);
+  border-top-color:var(--axios);
+  animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Icon states */
+.icon{font-size:40px;margin-bottom:16px;display:none}
+.icon.visible{display:block}
+
+.status-title{
+  font-family:'Syne',sans-serif;font-size:22px;font-weight:800;
+  letter-spacing:-.02em;color:var(--tx);margin-bottom:8px;
+}
+.status-sub{font-size:14px;color:var(--tx3);line-height:1.65;margin-bottom:24px}
+
+/* Plan badge */
+.plan-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:5px 14px;border-radius:100px;
+  font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;
+  letter-spacing:.06em;margin-bottom:20px;
+}
+.plan-badge.free    {background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.25);color:var(--harvest)}
+.plan-badge.axios   {background:rgba(0,212,170,.1);border:1px solid rgba(0,212,170,.25);color:var(--axios)}
+.plan-badge.harvest {background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.25);color:var(--harvest)}
+.plan-badge.pro     {background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);color:var(--sophia)}
+.plan-badge.error   {background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);color:var(--bear)}
+
+/* Redirect buttons */
+.redirect-btns{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+.redir-btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:11px 20px;border-radius:100px;
+  font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;
+  letter-spacing:.05em;text-decoration:none;border:1px solid;
+  transition:180ms cubic-bezier(.4,0,.2,1);cursor:pointer;
+}
+.redir-btn.axios  {color:var(--axios);border-color:rgba(0,212,170,.32);background:rgba(0,212,170,.07)}
+.redir-btn.axios:hover{background:rgba(0,212,170,.16);border-color:var(--axios)}
+.redir-btn.harvest{color:var(--harvest);border-color:rgba(74,222,128,.32);background:rgba(74,222,128,.07)}
+.redir-btn.harvest:hover{background:rgba(74,222,128,.16);border-color:var(--harvest)}
+.redir-btn.sophia {color:var(--sophia);border-color:rgba(201,168,76,.32);background:rgba(201,168,76,.07)}
+.redir-btn.sophia:hover{background:rgba(201,168,76,.16);border-color:var(--sophia)}
+.redir-btn.ghost  {color:var(--tx2);border-color:var(--bdr);background:var(--bg3)}
+.redir-btn.ghost:hover{border-color:var(--tx3);color:var(--tx)}
+
+.progress-bar{
+  width:100%;height:3px;background:var(--bdr);
+  border-radius:2px;overflow:hidden;margin-top:20px;
+}
+.progress-fill{
+  height:100%;border-radius:2px;width:0%;
+  background:linear-gradient(90deg,var(--axios),var(--harvest));
+  transition:width .1s linear;
+}
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<div class="box" id="box">
+  <div class="spinner" id="spinner"></div>
+  <div class="icon" id="icon"></div>
+  <div class="plan-badge" id="plan-badge" style="display:none"></div>
+  <h2 class="status-title" id="status-title">Verificando acceso...</h2>
+  <p class="status-sub" id="status-sub">Estamos comprobando tu sesión y plan. Un momento.</p>
+  <div class="redirect-btns" id="redirect-btns" style="display:none"></div>
+  <div class="progress-bar" id="progress-bar" style="display:none">
+    <div class="progress-fill" id="progress-fill"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+// ══════════════════════════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════════════════════════
+var SUPABASE_URL  = 'https://mycbfhhhsigijmticokk.supabase.co';
+var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im15Y2JmaGhoc2lnaWptdGljb2trIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwMDYwODEsImV4cCI6MjA5MTU4MjA4MX0.R1FLufWCiInZyvrNj9BAIKLyaELIv3LENiR8kyJqDUs';
+var WORKER_URL    = 'https://suite-iq-auth.pedicode-app.workers.dev';
+
+var sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+// Aplicar tema guardado
+var theme = localStorage.getItem('suiteiq_theme') || 'dark';
+document.documentElement.setAttribute('data-theme', theme);
+
+var lang = localStorage.getItem('suiteiq_lang') || 'es';
+
+// ── Textos ──
+var COPY = {
+  es:{
+    checking:"Verificando acceso...",
+    checking_sub:"Estamos comprobando tu sesión y plan. Un momento.",
+    welcome:"¡Bienvenido a Suite-IQ!",
+    free_sub:"Tu plan Free da acceso completo a SOPHIA·IQ.",
+    axios_sub:"Tu plan Esencial incluye acceso completo a AXIOS·IQ.",
+    harvest_sub:"Tu plan Esencial incluye acceso completo a HARVEST·IQ.",
+    pro_sub:"Tu plan Suite-IQ Pro incluye acceso completo a las 3 herramientas.",
+    redirecting:"Redirigiendo en",
+    go_sophia:"Abrir SOPHIA·IQ →",
+    go_axios:"Abrir AXIOS·IQ →",
+    go_harvest:"Abrir HARVEST·IQ →",
+    go_home:"Volver al inicio",
+    error:"Error de autenticación",
+    error_sub:"No pudimos verificar tu sesión. Por favor inténtalo de nuevo.",
+    try_again:"Intentar de nuevo →"
+  },
+  en:{
+    checking:"Verifying access...",
+    checking_sub:"We're checking your session and plan. One moment.",
+    welcome:"Welcome to Suite-IQ!",
+    free_sub:"Your Free plan gives full access to SOPHIA·IQ.",
+    axios_sub:"Your Essential plan includes full access to AXIOS·IQ.",
+    harvest_sub:"Your Essential plan includes full access to HARVEST·IQ.",
+    pro_sub:"Your Suite-IQ Pro plan includes full access to all 3 tools.",
+    redirecting:"Redirecting in",
+    go_sophia:"Open SOPHIA·IQ →",
+    go_axios:"Open AXIOS·IQ →",
+    go_harvest:"Open HARVEST·IQ →",
+    go_home:"Back to home",
+    error:"Authentication error",
+    error_sub:"We couldn't verify your session. Please try again.",
+    try_again:"Try again →"
+  },
+  pt:{
+    checking:"A verificar acesso...",
+    checking_sub:"Estamos a verificar a tua sessão e plano. Um momento.",
+    welcome:"Bem-vindo à Suite-IQ!",
+    free_sub:"O teu plano Free dá acesso completo ao SOPHIA·IQ.",
+    axios_sub:"O teu plano Essencial inclui acesso completo ao AXIOS·IQ.",
+    harvest_sub:"O teu plano Essencial inclui acesso completo ao HARVEST·IQ.",
+    pro_sub:"O teu plano Suite-IQ Pro inclui acesso completo às 3 ferramentas.",
+    redirecting:"A redirecionar em",
+    go_sophia:"Abrir SOPHIA·IQ →",
+    go_axios:"Abrir AXIOS·IQ →",
+    go_harvest:"Abrir HARVEST·IQ →",
+    go_home:"Voltar ao início",
+    error:"Erro de autenticação",
+    error_sub:"Não conseguimos verificar a tua sessão. Por favor tenta novamente.",
+    try_again:"Tentar novamente →"
+  }
+};
+
+var C = COPY[lang] || COPY.es;
+
+// ── DOM helpers ──
+function el(id){ return document.getElementById(id); }
+
+function showError(){
+  el('spinner').style.display  = 'none';
+  el('icon').className         = 'icon visible';
+  el('icon').textContent       = '❌';
+  el('plan-badge').style.display = 'none';
+  el('status-title').textContent = C.error;
+  el('status-sub').textContent   = C.error_sub;
+  el('redirect-btns').style.display = 'flex';
+  el('redirect-btns').innerHTML =
+    '<a href="/login.html" class="redir-btn ghost">' + C.try_again + '</a>' +
+    '<a href="/" class="redir-btn ghost">' + C.go_home + '</a>';
+}
+
+function showSuccess(plan){
+  el('spinner').style.display = 'none';
+  el('icon').className        = 'icon visible';
+  el('icon').textContent      = '✅';
+  el('status-title').textContent = C.welcome;
+
+  // Badge + mensaje según plan
+  var badge = el('plan-badge');
+  badge.style.display = 'inline-flex';
+
+  var btns = '';
+  var destination = '/sophia/index.html';
+  var subText = C.free_sub;
+
+  if(plan === 'essential_axios'){
+    badge.className   = 'plan-badge axios';
+    badge.textContent = '◈ AXIOS·IQ — Esencial';
+    subText      = C.axios_sub;
+    destination  = '/axios/index.html';
+    btns = '<a href="/axios/index.html" class="redir-btn axios">' + C.go_axios + '</a>'
+         + '<a href="/sophia/index.html" class="redir-btn sophia">' + C.go_sophia + '</a>';
+  } else if(plan === 'essential_harvest'){
+    badge.className   = 'plan-badge harvest';
+    badge.textContent = '◈ HARVEST·IQ — Esencial';
+    subText      = C.harvest_sub;
+    destination  = '/harvest/index.html';
+    btns = '<a href="/harvest/index.html" class="redir-btn harvest">' + C.go_harvest + '</a>'
+         + '<a href="/sophia/index.html" class="redir-btn sophia">' + C.go_sophia + '</a>';
+  } else if(plan === 'pro'){
+    badge.className   = 'plan-badge pro';
+    badge.textContent = '◈ Suite-IQ Pro';
+    subText      = C.pro_sub;
+    destination  = '/axios/index.html';
+    btns = '<a href="/axios/index.html" class="redir-btn axios">' + C.go_axios + '</a>'
+         + '<a href="/harvest/index.html" class="redir-btn harvest">' + C.go_harvest + '</a>'
+         + '<a href="/sophia/index.html" class="redir-btn sophia">' + C.go_sophia + '</a>';
+  } else {
+    // free
+    badge.className   = 'plan-badge free';
+    badge.textContent = '◈ Plan Free';
+    subText      = C.free_sub;
+    destination  = '/sophia/index.html';
+    btns = '<a href="/sophia/index.html" class="redir-btn sophia">' + C.go_sophia + '</a>'
+         + '<a href="/#pricing" class="redir-btn ghost">Ver planes →</a>';
+  }
+
+  el('status-sub').textContent = subText;
+  el('redirect-btns').style.display = 'flex';
+  el('redirect-btns').innerHTML = btns;
+
+  // Progress bar de redirección automática (3 seg)
+  el('progress-bar').style.display = 'block';
+  var fill  = el('progress-fill');
+  var total = 3000;
+  var start = Date.now();
+
+  var interval = setInterval(function(){
+    var elapsed = Date.now() - start;
+    var pct = Math.min((elapsed / total) * 100, 100);
+    fill.style.width = pct + '%';
+    if(elapsed >= total){
+      clearInterval(interval);
+      window.location.href = destination;
+    }
+  }, 50);
+}
+
+// ══════════════════════════════════════════════════════════════
+// MAIN — Procesar el callback de Supabase
+// ══════════════════════════════════════════════════════════════
+(async function init(){
+  try {
+    // Supabase procesa automáticamente el token del hash de la URL
+    var { data: { session }, error } = await sb.auth.getSession();
+
+    if(error || !session){
+      // Esperar un poco por si el token está en el hash
+      await new Promise(function(r){ setTimeout(r, 1500); });
+      var result = await sb.auth.getSession();
+      session = result.data.session;
+      if(!session) throw new Error('No session');
+    }
+
+    // Llamar al worker para obtener el plan
+    var res = await fetch(WORKER_URL + '/validate', {
+      headers: { 'Authorization': 'Bearer ' + session.access_token }
+    });
+
+    if(!res.ok) throw new Error('Validate failed');
+    var data = await res.json();
+
+    showSuccess(data.plan || 'free');
+
+  } catch(err){
+    console.error('Callback error:', err);
+    showError();
+  }
+})();
+</script>
+</body>
+</html>
