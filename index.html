@@ -59,6 +59,15 @@ body{background:var(--bg);color:var(--tx);font-family:'IBM Plex Sans',sans-serif
 .theme-btn:hover{border-color:var(--bdr2);color:var(--tx)}
 .nav-cta{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:100px;background:linear-gradient(135deg,rgba(0,212,170,.12),rgba(74,222,128,.07));border:1px solid rgba(0,212,170,.28);color:var(--axios);font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.04em;text-decoration:none;transition:var(--trans);white-space:nowrap}
 .nav-cta:hover{background:rgba(0,212,170,.18);border-color:rgba(0,212,170,.5);transform:translateY(-1px)}
+.nav-login{
+  display:flex;align-items:center;gap:6px;
+  padding:6px 14px;border-radius:100px;
+  background:var(--bg3);border:1px solid var(--bdr2);
+  color:var(--tx2);
+  font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.04em;
+  text-decoration:none;transition:var(--trans);white-space:nowrap;
+}
+.nav-login:hover{border-color:var(--tx3);color:var(--tx);transform:translateY(-1px)}
 
 /* ── HERO ── */
 .hero{padding:96px 0 72px;text-align:center;position:relative}
@@ -288,7 +297,7 @@ body{background:var(--bg);color:var(--tx);font-family:'IBM Plex Sans',sans-serif
 }
 @media(max-width:640px){
   .hero{padding:64px 0 52px}
-  .nav-cta{display:none}
+  .nav-cta,.nav-login{display:none}
   .hero-stats{flex-wrap:wrap}
   .h-stat{min-width:50%;border-bottom:1px solid var(--bdr)}
   .h-stat:nth-child(3),.h-stat:nth-child(4){border-bottom:none}
@@ -335,6 +344,7 @@ body{background:var(--bg);color:var(--tx);font-family:'IBM Plex Sans',sans-serif
         <button class="lang-btn" data-lang="pt">PT</button>
       </div>
       <button class="theme-btn" id="theme-toggle">🌙</button>
+      <a href="/login.html" class="nav-login" id="nav-login-btn" data-i18n="nav.login">Iniciar sesión</a>
       <a href="#pricing" class="nav-cta" data-i18n="nav.cta">Ver precios →</a>
     </div>
   </div>
@@ -537,7 +547,7 @@ body{background:var(--bg);color:var(--tx);font-family:'IBM Plex Sans',sans-serif
 // ══════════════════════════════════════════════════════════════
 var TR = {
 es:{
-  nav:{suite_label:"Suite de Inversión",cta:"Ver precios →"},
+  nav:{suite_label:"Suite de Inversión",cta:"Ver precios →",login:"Iniciar sesión"},
   hero:{
     eyebrow:"Suite de Inversión · 3 Herramientas · Empieza Gratis",
     title_pre:"Inteligencia",
@@ -584,7 +594,7 @@ es:{
   footer:{tagline:"Herramientas de inversión para inversores reales",github:"GitHub ↗",disclaimer:"Suite-IQ es una herramienta educativa e informativa. No constituye asesoramiento financiero. Invierte siempre con criterio propio y, si es necesario, consulta a un asesor financiero profesional regulado."}
 },
 en:{
-  nav:{suite_label:"Investment Suite",cta:"See pricing →"},
+  nav:{suite_label:"Investment Suite",cta:"See pricing →",login:"Sign in"},
   hero:{
     eyebrow:"Investment Suite · 3 Tools · Start Free",
     title_pre:"Intelligence",
@@ -631,7 +641,7 @@ en:{
   footer:{tagline:"Investment tools for real investors",github:"GitHub ↗",disclaimer:"Suite-IQ is an educational and informational tool. It does not constitute financial advice. Always invest with your own judgment and, if necessary, consult a regulated professional financial advisor."}
 },
 pt:{
-  nav:{suite_label:"Suite de Investimento",cta:"Ver preços →"},
+  nav:{suite_label:"Suite de Investimento",cta:"Ver preços →",login:"Iniciar sessão"},
   hero:{
     eyebrow:"Suite de Investimento · 3 Ferramentas · Começa Grátis",
     title_pre:"Inteligência",
