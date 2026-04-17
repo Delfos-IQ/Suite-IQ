@@ -124,7 +124,13 @@ var SUPABASE_URL  = 'https://mycbfhhhsigijmticokk.supabase.co';
 var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im15Y2JmaGhoc2lnaWptdGljb2trIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwMDYwODEsImV4cCI6MjA5MTU4MjA4MX0.R1FLufWCiInZyvrNj9BAIKLyaELIv3LENiR8kyJqDUs';
 var WORKER_URL    = 'https://suite-iq-auth.pedicode-app.workers.dev';
 
-var sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+var sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
+  auth: {
+    flowType: 'implicit',
+    detectSessionInUrl: true,
+    persistSession: true,
+  }
+});
 
 // Aplicar tema guardado
 var theme = localStorage.getItem('suiteiq_theme') || 'dark';
@@ -277,23 +283,56 @@ function showSuccess(plan){
 // ══════════════════════════════════════════════════════════════
 (async function init(){
   try {
-    // Supabase procesa automáticamente el token del hash de la URL
-    var { data: { session }, error } = await sb.auth.getSession();
+    var session = null;
 
-    if(error || !session){
-      // Esperar hasta 3 seg por si el token está en el hash
-      for (var i = 0; i < 5; i++) {
-        await new Promise(function(r){ setTimeout(r, 600); });
+    // 1. Flujo PKCE — el token viene como ?code= en el query string
+    var searchParams = new URLSearchParams(window.location.search);
+    var code = searchParams.get('code');
+
+    if (code) {
+      var exchangeResult = await sb.auth.exchangeCodeForSession(code);
+      if (exchangeResult.data && exchangeResult.data.session) {
+        session = exchangeResult.data.session;
+        // Limpiar la URL sin recargar
+        history.replaceState(null, '', window.location.pathname);
+      }
+    }
+
+    // 2. Flujo implícito — el token viene como #access_token= en el hash
+    if (!session && window.location.hash) {
+      var hash = window.location.hash.substring(1);
+      var params = {};
+      hash.split('&').forEach(function(part) {
+        var pair = part.split('=');
+        if (pair.length === 2) params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+      });
+      if (params.access_token && params.refresh_token) {
+        var setResult = await sb.auth.setSession({
+          access_token:  params.access_token,
+          refresh_token: params.refresh_token,
+        });
+        if (setResult.data && setResult.data.session) {
+          session = setResult.data.session;
+          history.replaceState(null, '', window.location.pathname);
+        }
+      }
+    }
+
+    // 3. Sesión ya existente en localStorage
+    if (!session) {
+      for (var i = 0; i < 4; i++) {
+        await new Promise(function(r){ setTimeout(r, 400); });
         var result = await sb.auth.getSession();
         if (result.data && result.data.session) { session = result.data.session; break; }
       }
-      if(!session) throw new Error('No session');
     }
 
-    // Esperar un momento extra para que el SDK persista la sesión en localStorage
-    await new Promise(function(r){ setTimeout(r, 800); });
+    if (!session) throw new Error('No session found');
 
-    // Llamar al worker para obtener el plan
+    // 4. Esperar a que localStorage quede escrito
+    await new Promise(function(r){ setTimeout(r, 400); });
+
+    // 5. Llamar al worker para obtener el plan
     var res = await fetch(WORKER_URL + '/validate', {
       headers: { 'Authorization': 'Bearer ' + session.access_token }
     });
