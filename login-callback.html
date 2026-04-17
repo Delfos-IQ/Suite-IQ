@@ -255,10 +255,10 @@ function showSuccess(plan){
   el('redirect-btns').style.display = 'flex';
   el('redirect-btns').innerHTML = btns;
 
-  // Progress bar de redirección automática (3 seg)
+  // Progress bar de redirección automática (5 seg — da tiempo al SDK a guardar la sesión)
   el('progress-bar').style.display = 'block';
   var fill  = el('progress-fill');
-  var total = 5500;
+  var total = 5000;
   var start = Date.now();
 
   var interval = setInterval(function(){
@@ -281,12 +281,17 @@ function showSuccess(plan){
     var { data: { session }, error } = await sb.auth.getSession();
 
     if(error || !session){
-      // Esperar un poco por si el token está en el hash
-      await new Promise(function(r){ setTimeout(r, 1500); });
-      var result = await sb.auth.getSession();
-      session = result.data.session;
+      // Esperar hasta 3 seg por si el token está en el hash
+      for (var i = 0; i < 5; i++) {
+        await new Promise(function(r){ setTimeout(r, 600); });
+        var result = await sb.auth.getSession();
+        if (result.data && result.data.session) { session = result.data.session; break; }
+      }
       if(!session) throw new Error('No session');
     }
+
+    // Esperar un momento extra para que el SDK persista la sesión en localStorage
+    await new Promise(function(r){ setTimeout(r, 800); });
 
     // Llamar al worker para obtener el plan
     var res = await fetch(WORKER_URL + '/validate', {

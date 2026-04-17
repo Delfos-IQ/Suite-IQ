@@ -217,6 +217,16 @@
     document.head.appendChild(s);
   }
 
+  // ── Obtener sesión con reintentos ────────────────────────
+  async function getSessionWithRetry(sb, maxRetries, delayMs) {
+    for (var i = 0; i < maxRetries; i++) {
+      var result = await sb.auth.getSession();
+      if (result.data && result.data.session) return result.data.session;
+      if (i < maxRetries - 1) await new Promise(function(r){ setTimeout(r, delayMs); });
+    }
+    return null;
+  }
+
   // ── Main gate logic ───────────────────────────────────────
   function runGate() {
     loadSupabase(async function(sdkError) {
@@ -241,8 +251,8 @@
         // 2. Mostrar overlay de carga
         injectOverlay('loading');
 
-        // 3. Obtener sesión de Supabase
-        var { data: { session } } = await sb.auth.getSession();
+        // 3. Obtener sesión con hasta 5 reintentos cada 600ms
+        var session = await getSessionWithRetry(sb, 5, 600);
 
         if (!session) {
           setCachedAccess(false, null);
