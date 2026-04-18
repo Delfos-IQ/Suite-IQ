@@ -287,35 +287,30 @@ function showSuccess(plan){
   try {
     var session = null;
 
-    // Supabase redirige aquí con el token en el hash (#access_token=...)
-    // El SDK con detectSessionInUrl:true lo procesa automáticamente
-    // Esperamos hasta 6 segundos en reintentos
-    for (var i = 0; i < 12; i++) {
-      await new Promise(function(r){ setTimeout(r, 500); });
+    // Esperar el evento SIGNED_IN — es el más fiable después de un magic link
+    session = await new Promise(function(resolve) {
+      // Timeout de 10 segundos
+      var timeout = setTimeout(function(){ resolve(null); }, 10000);
 
-      // Primero intentar que el SDK detecte la sesión del hash/url
-      var result = await sb.auth.getSession();
-      if (result.data && result.data.session) {
-        session = result.data.session;
-        break;
-      }
+      var subscription = sb.auth.onAuthStateChange(function(event, s) {
+        if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && s) {
+          clearTimeout(timeout);
+          subscription.data.subscription.unsubscribe();
+          resolve(s);
+        }
+      });
 
-      // También intentar onAuthStateChange por si el evento llega tarde
-      if (i === 5) {
-        await new Promise(function(resolve) {
-          var { data: { subscription } } = sb.auth.onAuthStateChange(function(event, s) {
-            if (s) { session = s; subscription.unsubscribe(); resolve(); }
-          });
-          setTimeout(function(){ subscription.unsubscribe(); resolve(); }, 2000);
-        });
-        if (session) break;
-      }
-    }
+      // También intentar getSession por si ya estaba procesado
+      sb.auth.getSession().then(function(result) {
+        if (result.data && result.data.session) {
+          clearTimeout(timeout);
+          try { subscription.data.subscription.unsubscribe(); } catch(e){}
+          resolve(result.data.session);
+        }
+      });
+    });
 
     if (!session) throw new Error('No session found');
-
-    // Esperar a que localStorage quede escrito
-    await new Promise(function(r){ setTimeout(r, 300); });
 
     // Llamar al worker para obtener el plan
     var res = await fetch(WORKER_URL + '/validate', {
