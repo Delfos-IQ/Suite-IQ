@@ -238,7 +238,15 @@
       }
 
       try {
-        var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+        var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
+          auth: {
+            flowType: 'implicit',
+            detectSessionInUrl: false,
+            persistSession: true,
+            autoRefreshToken: true,
+            storageKey: 'suiteiq-auth',
+          }
+        });
 
         // 1. Comprobar caché primero
         var cached = getCachedAccess();

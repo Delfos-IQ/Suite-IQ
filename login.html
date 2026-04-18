@@ -240,7 +240,13 @@ var SUPABASE_URL  = 'https://mycbfhhhsigijmticokk.supabase.co';
 var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im15Y2JmaGhoc2lnaWptdGljb2trIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYwMDYwODEsImV4cCI6MjA5MTU4MjA4MX0.R1FLufWCiInZyvrNj9BAIKLyaELIv3LENiR8kyJqDUs';
 var REDIRECT_URL  = 'https://suite-iq.org/login-callback.html';
 
-var sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+var sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
+  auth: {
+    flowType: 'implicit',
+    detectSessionInUrl: true,
+    storageKey: 'suiteiq-auth',
+  }
+});
 
 // ══════════════════════════════════════════════════════════════
 // i18n
