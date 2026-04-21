@@ -44,6 +44,7 @@
       plan_axios:   'Plan Esencial AXIOS — €5/mes',
       plan_harvest: 'Plan Esencial HARVEST — €5/mes',
       plan_pro:     'Suite-IQ Pro — €10/mes',
+      logout:      'Cerrar sesión',
     },
     en:{
       checking:   'Verifying your access...',
@@ -58,6 +59,7 @@
       plan_axios:   'Essential AXIOS Plan — €5/month',
       plan_harvest: 'Essential HARVEST Plan — €5/month',
       plan_pro:     'Suite-IQ Pro — €10/month',
+      logout:      'Sign out',
     },
     pt:{
       checking:   'A verificar o teu acesso...',
@@ -72,6 +74,7 @@
       plan_axios:   'Plano Essencial AXIOS — €5/mês',
       plan_harvest: 'Plano Essencial HARVEST — €5/mês',
       plan_pro:     'Suite-IQ Pro — €10/mês',
+      logout:      'Terminar sessão',
     }
   };
   var C = COPY[lang] || COPY.es;
@@ -118,6 +121,23 @@
     '.ag-plan-item:last-child{border-bottom:none;padding-bottom:0;}',
     '.ag-plan-price{font-family:"IBM Plex Mono",monospace;font-size:11px;',
     'font-weight:700;color:'+CLR.main+';}',
+    // Logout bar
+    '#ag-user-bar{position:fixed;top:0;right:0;z-index:99998;',
+    'display:flex;align-items:center;gap:10px;',
+    'padding:8px 14px;',
+    'background:rgba(7,10,14,.85);',
+    'border-bottom-left-radius:10px;',
+    'border:1px solid #1e2d3d;border-top:none;border-right:none;',
+    'backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}',
+    '#ag-user-email{font-family:"IBM Plex Mono",monospace;font-size:10px;',
+    'color:#475569;letter-spacing:.04em;max-width:180px;',
+    'overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}',
+    '#ag-logout-btn{font-family:"IBM Plex Mono",monospace;font-size:10px;',
+    'font-weight:700;letter-spacing:.06em;color:'+CLR.main+';',
+    'background:none;border:1px solid '+CLR.bdr+';border-radius:100px;',
+    'padding:4px 12px;cursor:pointer;transition:180ms ease;',
+    'text-decoration:none;white-space:nowrap;}',
+    '#ag-logout-btn:hover{background:'+CLR.bg+';}',
   ].join('');
 
   function injectOverlay(mode) {
@@ -186,7 +206,33 @@
     ].join('');
   }
 
-  // ── Session storage cache (evita llamadas repetidas) ──────
+  // ── Barra de usuario con botón cerrar sesión ─────────────
+  function injectUserBar(email, sb) {
+    var bar = document.createElement('div');
+    bar.id = 'ag-user-bar';
+    bar.innerHTML =
+      '<span id="ag-user-email">' + (email || '') + '</span>' +
+      '<button id="ag-logout-btn">' + (C.logout || 'Cerrar sesión') + '</button>';
+    document.body.appendChild(bar);
+
+    document.getElementById('ag-logout-btn').addEventListener('click', async function() {
+      // Limpiar caché
+      try { sessionStorage.removeItem('ag_session_' + APP); } catch(e){}
+      // Cerrar sesión en Supabase si el SDK está disponible
+      if (sb && sb.auth) {
+        try { await sb.auth.signOut(); } catch(e){}
+      }
+      // Limpiar localStorage de Supabase
+      try {
+        var keys = Object.keys(localStorage).filter(function(k){
+          return k.startsWith('suiteiq-auth') || k.startsWith('sb-');
+        });
+        keys.forEach(function(k){ localStorage.removeItem(k); });
+      } catch(e){}
+      // Redirigir al login
+      window.location.href = LOGIN_URL;
+    });
+  }
   var SESSION_KEY = 'ag_session_' + APP;
   var CACHE_TTL   = 5 * 60 * 1000; // 5 minutos
 
@@ -267,6 +313,7 @@
             return;
           }
           // Acceso OK
+          injectUserBar(data.email, null);
           return;
         } catch(e) {
           console.warn('[AuthGate] localStorage fallback failed:', e);
@@ -328,6 +375,7 @@
         var overlay = document.getElementById('ag-overlay');
         if (overlay) overlay.remove();
         document.body.style.overflow = '';
+        injectUserBar(data.email, sb);
 
       } catch(err) {
         console.error('[AuthGate] Error:', err);
