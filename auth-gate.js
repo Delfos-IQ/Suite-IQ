@@ -208,12 +208,19 @@
 
   // ── Cargar Supabase SDK dinámicamente ────────────────────
   function loadSupabase(cb) {
-    // Si ya está cargado (por la app)
-    if (window.supabase) { cb(); return; }
+    // Si ya está cargado
+    if (window.supabase) { cb(false); return; }
     var s = document.createElement('script');
     s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
-    s.onload = cb;
-    s.onerror = function() { console.error('[AuthGate] Supabase SDK failed to load'); cb(true); };
+    s.onload = function() { cb(false); };
+    s.onerror = function() {
+      // Intentar con unpkg como fallback
+      var s2 = document.createElement('script');
+      s2.src = 'https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+      s2.onload = function() { cb(false); };
+      s2.onerror = function() { cb(true); };
+      document.head.appendChild(s2);
+    };
     document.head.appendChild(s);
   }
 
@@ -230,11 +237,42 @@
   // ── Main gate logic ───────────────────────────────────────
   function runGate() {
     loadSupabase(async function(sdkError) {
+
+      // Si el SDK no cargó, intentar leer el token directamente de localStorage
       if (sdkError) {
-        // Sin SDK no podemos validar — en producción bloquear, en dev dejar pasar
-        console.warn('[AuthGate] SDK error — blocking access');
-        injectOverlay('no_session');
-        return;
+        console.warn('[AuthGate] SDK no disponible — intentando localStorage directo');
+        try {
+          var rawSession = null;
+          // Supabase guarda con la storageKey que configuramos
+          var keys = ['suiteiq-auth', 'sb-' + SUPABASE_URL.split('//')[1].split('.')[0] + '-auth-token'];
+          for (var k = 0; k < keys.length; k++) {
+            var raw = localStorage.getItem(keys[k]);
+            if (raw) { rawSession = JSON.parse(raw); break; }
+          }
+          if (!rawSession || !rawSession.access_token) {
+            injectOverlay('no_session');
+            showNoSession();
+            return;
+          }
+          // Tenemos token — validar con el worker directamente
+          var res = await fetch(WORKER_URL + '/validate', {
+            headers: { 'Authorization': 'Bearer ' + rawSession.access_token }
+          });
+          var data = await res.json();
+          var plan = data.plan || 'free';
+          var allowed = PLAN_ACCESS[APP] || [];
+          if (allowed.indexOf(plan) === -1) {
+            injectOverlay('no_plan');
+            showNoPlan();
+            return;
+          }
+          // Acceso OK
+          return;
+        } catch(e) {
+          console.warn('[AuthGate] localStorage fallback failed:', e);
+          // En caso de error total de red — dejar pasar (mejor UX)
+          return;
+        }
       }
 
       try {
