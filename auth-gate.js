@@ -15,10 +15,10 @@
   var LOGIN_URL     = 'https://suite-iq.org/login.html';
   var PRICING_URL   = 'https://suite-iq.org/#pricing';
 
-  // Planes que dan acceso a cada app
+  // Planes que dan acceso a cada app (free = acceso limitado)
   var PLAN_ACCESS = {
-    axios:   ['essential_axios', 'pro'],
-    harvest: ['essential_harvest', 'pro'],
+    axios:   ['free', 'essential_axios', 'pro'],
+    harvest: ['free', 'essential_harvest', 'pro'],
   };
 
   // App actual — leída del atributo data-app del script tag
@@ -206,7 +206,192 @@
     ].join('');
   }
 
-  // ── Barra de usuario con botón cerrar sesión ─────────────
+  // ── Capa Freemium — restricciones para plan Free ─────────
+  function setupFreemium(plan, email, sb) {
+    // Exponer plan globalmente para que otros scripts puedan consultarlo
+    window.SUITEIQ_PLAN  = plan;
+    window.SUITEIQ_EMAIL = email;
+
+    // Solo aplicar restricciones si es Free
+    if (plan !== 'free') return;
+
+    // Textos del paywall según idioma
+    var PW = {
+      es: { title: 'Función Premium', sub: 'Activa tu plan para acceder a esta herramienta.', btn: 'Ver planes →' },
+      en: { title: 'Premium Feature', sub: 'Activate your plan to access this tool.', btn: 'See plans →' },
+      pt: { title: 'Função Premium', sub: 'Ativa o teu plano para aceder a esta ferramenta.', btn: 'Ver planos →' },
+    };
+    var PW_C = PW[lang] || PW.es;
+
+    // CSS del paywall inline
+    var freeStyle = document.createElement('style');
+    freeStyle.textContent = [
+      '.ag-free-badge{display:inline-flex;align-items:center;gap:5px;',
+      'padding:3px 10px;border-radius:100px;',
+      'font-family:"IBM Plex Mono",monospace;font-size:9px;font-weight:700;',
+      'letter-spacing:.08em;text-transform:uppercase;',
+      'background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.3);',
+      'color:#f59e0b;margin-left:8px;vertical-align:middle;}',
+
+      '.ag-paywall{position:relative;border-radius:12px;overflow:hidden;}',
+      '.ag-paywall-overlay{position:absolute;inset:0;z-index:10;',
+      'display:flex;flex-direction:column;align-items:center;justify-content:center;',
+      'background:rgba(7,10,14,.88);backdrop-filter:blur(6px);',
+      '-webkit-backdrop-filter:blur(6px);border-radius:12px;',
+      'border:1px solid #1e2d3d;text-align:center;padding:28px 20px;}',
+      '.ag-pw-icon{font-size:28px;margin-bottom:10px;}',
+      '.ag-pw-title{font-family:"Syne",sans-serif;font-size:16px;font-weight:800;',
+      'color:#e2e8f0;margin-bottom:6px;letter-spacing:-.01em;}',
+      '.ag-pw-sub{font-size:12px;color:#475569;margin-bottom:16px;line-height:1.5;}',
+      '.ag-pw-btn{display:inline-block;padding:8px 20px;border-radius:100px;',
+      'background:rgba(0,212,170,.1);border:1px solid rgba(0,212,170,.3);',
+      'color:#00d4aa;font-family:"IBM Plex Mono",monospace;',
+      'font-size:10px;font-weight:700;letter-spacing:.06em;',
+      'text-decoration:none;transition:180ms ease;}',
+      '.ag-pw-btn:hover{background:rgba(0,212,170,.2);}',
+    ].join('');
+    document.head.appendChild(freeStyle);
+
+    // Función que inyecta el paywall sobre un elemento
+    function addPaywall(el) {
+      if (!el || el.querySelector('.ag-paywall-overlay')) return;
+      el.classList.add('ag-paywall');
+      var overlay = document.createElement('div');
+      overlay.className = 'ag-paywall-overlay';
+      overlay.innerHTML =
+        '<div class="ag-pw-icon">🔒</div>' +
+        '<div class="ag-pw-title">' + PW_C.title + '</div>' +
+        '<div class="ag-pw-sub">' + PW_C.sub + '</div>' +
+        '<a class="ag-pw-btn" href="' + PRICING_URL + '">' + PW_C.btn + '</a>';
+      el.style.position = 'relative';
+      el.appendChild(overlay);
+    }
+
+    // ── Restricciones AXIOS ───────────────────────────────
+    function applyAxiosRestrictions() {
+      // Interceptar tabs de Screener y Comparador
+      ['tab-screener', 'tab-comparador'].forEach(function(tabId) {
+        var tab = document.getElementById(tabId);
+        if (!tab) return;
+        if (!tab.querySelector('.ag-free-badge')) {
+          var badge = document.createElement('span');
+          badge.className = 'ag-free-badge';
+          badge.textContent = 'PRO';
+          tab.appendChild(badge);
+        }
+      });
+
+      var _originalShowTab = window.showTab;
+      if (_originalShowTab) {
+        window.showTab = function(tab) {
+          if (tab === 'screener' || tab === 'comparador') {
+            _originalShowTab(tab);
+            setTimeout(function() {
+              var content = document.getElementById(tab + '-content');
+              if (content) addPaywall(content);
+            }, 50);
+            return;
+          }
+          _originalShowTab(tab);
+        };
+      }
+
+      // Bloquear sección AI
+      function blockAI() {
+        var aiSection = document.getElementById('ai-section');
+        if (aiSection) {
+          addPaywall(aiSection);
+          var aiBtn = document.getElementById('ai-btn');
+          if (aiBtn) aiBtn.style.pointerEvents = 'none';
+        }
+      }
+      blockAI();
+
+      var observer = new MutationObserver(function() {
+        blockAI();
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+    }
+
+    // ── Restricciones HARVEST ─────────────────────────────
+    function applyHarvestRestrictions() {
+      // Añadir badge PRO a tabs bloqueados
+      ['mt-analisis', 'mt-ingresos'].forEach(function(tabId) {
+        var tab = document.getElementById(tabId);
+        if (!tab) return;
+        if (!tab.querySelector('.ag-free-badge')) {
+          var badge = document.createElement('span');
+          badge.className = 'ag-free-badge';
+          badge.textContent = 'PRO';
+          tab.appendChild(badge);
+        }
+      });
+
+      // Interceptar setMainTab
+      var _originalSetMainTab = window.setMainTab;
+      if (_originalSetMainTab) {
+        window.setMainTab = function(tab) {
+          if (tab === 'analisis' || tab === 'ingresos') {
+            _originalSetMainTab(tab);
+            setTimeout(function() {
+              var content = document.getElementById('view-' + tab) ||
+                            document.querySelector('[id*="' + tab + '"]');
+              // Buscar el contenedor activo
+              var activeView = document.querySelector('.tab-view.active, [data-tab="' + tab + '"]');
+              if (!activeView) {
+                // Fallback: buscar el primer hijo de main-content visible
+                var main = document.getElementById('main-content') ||
+                           document.querySelector('.main-content, .content-area');
+                if (main) activeView = main;
+              }
+              if (activeView) addPaywall(activeView);
+            }, 100);
+            return;
+          }
+          _originalSetMainTab(tab);
+        };
+      }
+
+      // Bloquear botón IA del portfolio
+      function blockHarvestAI() {
+        var aiBtn = document.getElementById('btn-ai-analyze');
+        if (aiBtn && !aiBtn.querySelector('.ag-free-badge')) {
+          aiBtn.style.position = 'relative';
+          aiBtn.style.overflow = 'hidden';
+          var badge = document.createElement('span');
+          badge.className = 'ag-free-badge';
+          badge.textContent = 'PRO';
+          badge.style.marginLeft = '6px';
+          aiBtn.appendChild(badge);
+          aiBtn.onclick = function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            window.location.href = PRICING_URL;
+          };
+        }
+      }
+      blockHarvestAI();
+
+      var observer = new MutationObserver(function() {
+        blockHarvestAI();
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+    }
+
+    // Aplicar restricciones según la app
+    function applyRestrictions() {
+      if (APP === 'axios')   applyAxiosRestrictions();
+      if (APP === 'harvest') applyHarvestRestrictions();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', applyRestrictions);
+    } else {
+      // Aplicar ahora y también tras un pequeño delay por si la app aún no inicializó
+      applyRestrictions();
+      setTimeout(applyRestrictions, 800);
+    }
+  }
   function injectUserBar(email, sb) {
     var bar = document.createElement('div');
     bar.id = 'ag-user-bar';
@@ -314,6 +499,7 @@
           }
           // Acceso OK
           injectUserBar(data.email, null);
+          setupFreemium(plan, data.email, null);
           return;
         } catch(e) {
           console.warn('[AuthGate] localStorage fallback failed:', e);
@@ -376,6 +562,7 @@
         if (overlay) overlay.remove();
         document.body.style.overflow = '';
         injectUserBar(data.email, sb);
+        setupFreemium(plan, data.email, sb);
 
       } catch(err) {
         console.error('[AuthGate] Error:', err);
