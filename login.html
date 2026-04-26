@@ -242,7 +242,7 @@ var REDIRECT_URL  = 'https://suite-iq.org/login-callback.html';
 
 var sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
   auth: {
-    flowType: 'implicit',
+    flowType: 'pkce',
     detectSessionInUrl: true,
     storageKey: 'suiteiq-auth',
   }

@@ -126,7 +126,7 @@ var WORKER_URL    = 'https://suite-iq-auth.pedicode-app.workers.dev';
 
 var sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON, {
   auth: {
-    flowType: 'implicit',
+    flowType: 'pkce',
     detectSessionInUrl: true,
     persistSession: true,
     autoRefreshToken: true,
@@ -256,6 +256,7 @@ function showSuccess(plan){
     subText      = C.free_sub;
     destination  = '/sophia/index.html';
     btns = '<a href="/sophia/index.html" class="redir-btn sophia">' + C.go_sophia + '</a>'
+         + '<a href="/axios/index.html" class="redir-btn ghost" style="font-size:10px;opacity:.7">' + (lang==='en'?'Try AXIOS·IQ (limited)':lang==='pt'?'Experimentar AXIOS·IQ (limitado)':'Probar AXIOS·IQ (limitado)') + '</a>'
          + '<a href="/#pricing" class="redir-btn ghost">Ver planes →</a>';
   }
 
@@ -281,50 +282,98 @@ function showSuccess(plan){
 }
 
 // ══════════════════════════════════════════════════════════════
-// MAIN — Procesar el callback de Supabase
+// MAIN — Procesar el callback de Supabase (PKCE + Implicit)
 // ══════════════════════════════════════════════════════════════
-(async function init(){
-  try {
-    var session = null;
+(function init(){
+  var resolved = false;
 
-    // Esperar el evento SIGNED_IN — es el más fiable después de un magic link
-    session = await new Promise(function(resolve) {
-      // Timeout de 10 segundos
-      var timeout = setTimeout(function(){ resolve(null); }, 10000);
+  function onSession(s) {
+    if (resolved) return;
+    resolved = true;
+    processSession(s);
+  }
 
-      var subscription = sb.auth.onAuthStateChange(function(event, s) {
-        if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && s) {
-          clearTimeout(timeout);
-          subscription.data.subscription.unsubscribe();
-          resolve(s);
-        }
-      });
-
-      // También intentar getSession por si ya estaba procesado
-      sb.auth.getSession().then(function(result) {
-        if (result.data && result.data.session) {
-          clearTimeout(timeout);
-          try { subscription.data.subscription.unsubscribe(); } catch(e){}
-          resolve(result.data.session);
-        }
-      });
-    });
-
-    if (!session) throw new Error('No session found');
-
-    // Llamar al worker para obtener el plan
-    var res = await fetch(WORKER_URL + '/validate', {
-      headers: { 'Authorization': 'Bearer ' + session.access_token }
-    });
-
-    if(!res.ok) throw new Error('Validate failed');
-    var data = await res.json();
-
-    showSuccess(data.plan || 'free');
-
-  } catch(err){
-    console.error('Callback error:', err);
+  function onTimeout() {
+    if (resolved) return;
+    resolved = true;
+    console.error('Callback error:', new Error('No session found'));
     showError();
+  }
+
+  // Timeout de 15 segundos
+  var timer = setTimeout(onTimeout, 15000);
+
+  // ── Intentar PKCE: ?code= en el query string ──────────────
+  var code = new URLSearchParams(window.location.search).get('code');
+  if (code) {
+    sb.auth.exchangeCodeForSession(code)
+      .then(function(result) {
+        if (result.data && result.data.session) {
+          clearTimeout(timer);
+          history.replaceState(null, '', window.location.pathname);
+          onSession(result.data.session);
+        }
+      })
+      .catch(function(err) {
+        console.warn('PKCE exchange failed:', err);
+        // Continuar con los otros métodos
+      });
+  }
+
+  // ── Intentar Implicit: #access_token= en el hash ──────────
+  var hash = window.location.hash;
+  if (hash && hash.includes('access_token')) {
+    var params = {};
+    hash.substring(1).split('&').forEach(function(p) {
+      var kv = p.split('=');
+      if (kv.length === 2) params[kv[0]] = decodeURIComponent(kv[1]);
+    });
+    if (params.access_token && params.refresh_token) {
+      sb.auth.setSession({
+        access_token: params.access_token,
+        refresh_token: params.refresh_token,
+      }).then(function(result) {
+        if (result.data && result.data.session) {
+          clearTimeout(timer);
+          history.replaceState(null, '', window.location.pathname);
+          onSession(result.data.session);
+        }
+      }).catch(function(err) {
+        console.warn('Implicit setSession failed:', err);
+      });
+    }
+  }
+
+  // ── Escuchar onAuthStateChange (más fiable para ambos flujos) ─
+  var sub = sb.auth.onAuthStateChange(function(event, s) {
+    if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && s) {
+      clearTimeout(timer);
+      try { sub.data.subscription.unsubscribe(); } catch(e){}
+      onSession(s);
+    }
+  });
+
+  // ── Comprobar sesión existente ────────────────────────────
+  sb.auth.getSession().then(function(result) {
+    if (result.data && result.data.session) {
+      clearTimeout(timer);
+      try { sub.data.subscription.unsubscribe(); } catch(e){}
+      onSession(result.data.session);
+    }
+  }).catch(function(){});
+
+  async function processSession(s) {
+    try {
+      var res = await fetch(WORKER_URL + '/validate', {
+        headers: { 'Authorization': 'Bearer ' + s.access_token }
+      });
+      if (!res.ok) throw new Error('Validate failed');
+      var data = await res.json();
+      showSuccess(data.plan || 'free');
+    } catch(err) {
+      console.error('Callback error:', err);
+      showError();
+    }
   }
 })();
 </script>
